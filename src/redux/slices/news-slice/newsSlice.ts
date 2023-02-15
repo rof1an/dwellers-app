@@ -9,7 +9,7 @@ type FetchParams = {
 
 export const fetchNews = createAsyncThunk('news/fetchNews', async (params: FetchParams) => {
 	const { pageSize } = params
-	const { data } = await axios.get<NewsData>('https://newsapi.org/v2/everything?q=tesla&from=2023-01-14&sortBy=publishedAt&apiKey=c12870d8ad054d1998726ca54264ccb5', {
+	const { data } = await axios.get<NewsData>('https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&apiKey=c12870d8ad054d1998726ca54264ccb5', {
 		params: {
 			pageSize: pageSize
 		}
