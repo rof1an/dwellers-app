@@ -1,0 +1,44 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  background: rgba(0, 0, 0, 0.456);
+  height: 100vh;
+}
+.active {
+  display: block;
+}
+
+.modalContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 35px;
+  background: rgb(13, 32, 55);
+  background: linear-gradient(
+    0deg,
+    rgb(13, 32, 55, 1) 0%,
+    rgba(48, 73, 83, 1) 100%
+  );
+
+  border-radius: 15px;
+  max-width: 300px;
+  margin: 100px auto;
+  gap: 10px;
+
+  button {
+    margin-top: 30px;
+    max-width: 30%;
+  }
+
+  input {
+    font-size: 17px;
+
+    &::placeholder {
+      font-size: 13px;
+    }
+  }
+}
