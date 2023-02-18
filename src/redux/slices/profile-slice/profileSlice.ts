@@ -1,36 +1,38 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../store'
+import { createSlice } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 
-export type Params = {
-    birth: number | null,
-    city: string | null,
-    languages: string[] | null
+interface ProfileData {
+	city: string;
+	date: string;
+	languages: string;
 }
+
 interface ProfileState {
-    params: Params
+	city: string;
+	date: string;
+	languages: string;
 }
+
+export const updateProfile = createAction<ProfileData>('profile/update');
 
 const initialState: ProfileState = {
-    params: {
-        birth: null,
-        city: null,
-        languages: null
-    }
-}
+	city: '',
+	date: '',
+	languages: '',
+};
 
-export const profileSlice = createSlice({
-    name: 'profile',
-    initialState,
-    reducers: {
-        setParams(state, { payload }: PayloadAction<Params>) {
-            state.params = {
-                ...state.params, ...payload
-            }
-        }
-    },
-})
+const profileSlice = createSlice({
+	name: 'profile',
+	initialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder.addCase(updateProfile, (state, action) => {
+			const { city, date, languages } = action.payload;
+			state.city = city;
+			state.date = date;
+			state.languages = languages;
+		});
+	},
+});
 
-export const profileSliceState = (state: RootState) => state.auth
-
-export const { setParams } = profileSlice.actions
-export default profileSlice.reducer
+export default profileSlice.reducer;

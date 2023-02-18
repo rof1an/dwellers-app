@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import cl from './Input.module.scss'
 
 
-export const Input = ({...props}) => {
+export const Input = ({ ...props }) => {
     return (
-        <input className={cl.input} {...props}/>
+        <input className={cl.input} {...props} />
     );
 };
 

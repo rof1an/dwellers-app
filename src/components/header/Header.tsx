@@ -3,8 +3,8 @@ import { NavLink } from "react-router-dom";
 import { auth } from '../../firebase';
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { setAuth } from '../../redux/slices/auth-slice/authSlice';
-import logo from '../assets/logo.png';
-import logoutIcon from '../assets/logout-svgrepo-com.svg';
+import logo from '../../assets/logo.png';
+import logoutIcon from '../../assets/logout-svgrepo-com.svg';
 import cl from './Header.module.scss';
 
 export const Header = () => {

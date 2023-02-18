@@ -1,14 +1,13 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { FC, useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
-import errIcon from '../../components/assets/error-svgrepo-com.svg';
+import errIcon from '../../assets/error-svgrepo-com.svg';
 import { Button } from "../../components/UI/button/Button";
 import { Input } from "../../components/UI/input/Input";
 import { auth } from '../../firebase';
 import { useAppDispatch } from "../../hooks/hooks";
 import { setAuth } from "../../redux/slices/auth-slice/authSlice";
 import cl from './Auth.module.scss';
-
 
 
 export const Auth: FC = React.memo(() => {
@@ -28,7 +27,12 @@ export const Auth: FC = React.memo(() => {
             })
             .catch(() => {
                 setError(true)
-            });
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setError(false)
+                }, 5000);
+            })
     }
 
     return (

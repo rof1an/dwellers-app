@@ -11,7 +11,6 @@ const Register = lazy(() => import(/* webpackChunkName: "Register" */"../pages/r
 export const publicRoutes = [
     { path: '/', Element: Auth },
     { path: '/register', Element: Register },
-    { path: '/news', Element: News },
 ]
 
 export const privateRoutes = [

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
-import AddAv from '../../components/assets/addImg.png';
-import errIcon from '../../components/assets/error-svgrepo-com.svg';
+import AddAv from '../../assets/addImg.png';
+import errIcon from '../../assets/error-svgrepo-com.svg';
 import { Input } from "../../components/UI/input/Input";
 import { useCreateUser } from '../../hooks/useCreateUser';
 import cl from "../register/Register.module.scss";
@@ -26,7 +26,9 @@ export const Register = () => {
             await useCreateUser({ email, password, file, displayName });
             navigate('/')
         } catch (err) {
-            setError(true);
+            setTimeout(() => {
+                setError(true);
+            }, 5000);
         }
     }
 
@@ -55,7 +57,7 @@ export const Register = () => {
             {error && (
                 <div className='modal'>
                     <img src={errIcon} alt="" />
-                    <span>Incorrect login or password!</span>
+                    <span>Something went wrong!</span>
                 </div>
             )}
         </div>

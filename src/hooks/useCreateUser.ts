@@ -1,7 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { useNavigate } from 'react-router-dom';
 import { auth, db, storage } from '../firebase';
 
 

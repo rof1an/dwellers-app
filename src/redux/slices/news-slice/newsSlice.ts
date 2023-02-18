@@ -1,20 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { RootState } from '../../store'
-import { NewsData, NewsState, NewsStatusEnums } from './types'
+import { ArticlesResponse, NewsState, NewsStatusEnums } from './types'
 
-type FetchParams = {
-	pageSize: number
-}
+type FetchParams = { page: number }
 
 export const fetchNews = createAsyncThunk('news/fetchNews', async (params: FetchParams) => {
-	const { pageSize } = params
-	const { data } = await axios.get<NewsData>('https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&apiKey=c12870d8ad054d1998726ca54264ccb5', {
+	const { page } = params
+
+	const api_token = 'Waf2OVrntRDtjqLJOM04B8FxzT5bGqaDjteRT9qd';
+	const { data } = await axios.get('https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&', {
 		params: {
-			pageSize: pageSize
+			api_token,
+			page,
 		}
 	})
-
 	return data
 })
 
@@ -31,7 +31,7 @@ export const newsSlice = createSlice({
 		builder.addCase(fetchNews.pending, (state) => {
 			state.status = NewsStatusEnums.LOADING
 		});
-		builder.addCase(fetchNews.fulfilled, (state, { payload }) => {
+		builder.addCase(fetchNews.fulfilled, (state, { payload }: PayloadAction<ArticlesResponse>) => {
 			state.status = NewsStatusEnums.FULFILLED
 			state.news = payload
 		});

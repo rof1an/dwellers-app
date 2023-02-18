@@ -12,8 +12,8 @@
 }
 
 .mainImg {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   border-radius: 25px;
   background-color: rgba(0, 0, 0, 0.4);
   box-shadow: 1px 1px 15px #000;
@@ -34,11 +34,16 @@
 
 .subtitle {
   font-size: 15px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: -5px 5px 10px 0;
+
+  img {
+    width: 25px;
+  }
 }
 
-.mainAbout p {
-  padding-bottom: 10px;
-}
 
 .profileTitle {
   letter-spacing: 2px;
@@ -49,6 +54,10 @@
   display: flex;
   gap: 20%;
   align-items: start;
+
+  p {
+    padding-bottom: 10px;
+  }
 }
 
 .profileInfo .left {

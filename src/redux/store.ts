@@ -3,7 +3,6 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } fro
 import storage from 'redux-persist/lib/storage';
 import { authSlice } from './slices/auth-slice/authSlice';
 import newsSlice from './slices/news-slice/newsSlice';
-import profileSlice from './slices/profile-slice/profileSlice';
 
 
 const persistConfig = {
@@ -13,7 +12,6 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
-    profile: profileSlice,
     news: newsSlice
 })
 

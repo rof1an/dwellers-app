@@ -10,25 +10,20 @@ export interface NewsState {
 }
 
 
-
-interface Source {
-	id: string | null;
-	name: string;
-}
-
-export interface NewsItems {
-	source: Source;
-	author: string;
+export interface Article {
 	title: string;
 	description: string;
-	url: string;
-	urlToImage: string;
-	publishedAt: string | number;
 	content: string;
+	url: string;
+	image: string;
+	publishedAt: string;
+	source: {
+		name: string;
+		url: string;
+	};
 }
 
-export interface NewsData {
-	status: string,
-	totalResults: number,
-	articles: NewsItems[]
+export interface ArticlesResponse {
+	totalArticles: number;
+	articles: Article[];
 }

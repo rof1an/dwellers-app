@@ -12,14 +12,14 @@
   }
 
   .title {
-    font-size: 23px;
+    font-size: 19px;
     text-transform: uppercase;
     text-decoration: underline;
   }
 
   .img {
-    width: 250px;
-    height: 200px;
+    width: 350px;
+    height: 150px;
     object-fit: cover;
   }
 
@@ -29,10 +29,11 @@
     gap: 30px;
     color: #ffffff;
     flex-direction: row-reverse;
+    justify-content: space-between;
   }
 
   .descr {
-    font-size: 18px;
+    font-size: 13px;
     color: #ccc;
     max-width: 650px;
     overflow: hidden;
@@ -45,5 +46,12 @@
     padding-left: 10px;
     font-size: 15px;
     color: #ccc;
+  }
+
+  .bottomInfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
   }
 }
