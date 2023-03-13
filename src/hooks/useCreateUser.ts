@@ -1,50 +1,52 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { auth, db, storage } from '../firebase';
-
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { auth, db, storage } from '../firebase'
 
 interface Params {
-	email: string,
-	password: string,
-	file: File,
-	displayName: string,
+	email: string
+	password: string
+	file: File
+	displayName: string
 	setError: (arg: boolean) => void
 }
 
 export const useCreateUser = async (params: Params) => {
 	const { email, password, file, displayName, setError } = params
 
+	let defaultImgUrl = "https://winnote.ru/wp-content/uploads/2016/01/1454222417_del_recent_avatar1.png"
 
 	//Create user
-	const res = await createUserWithEmailAndPassword(auth, email, password);
+	const res = await createUserWithEmailAndPassword(auth, email, password)
+	const date = new Date().getTime()
+	const storageRef = ref(storage, `${displayName + date}`)
 
-	const date = new Date().getTime();
-	const storageRef = ref(storage, `${displayName + date}`);
+	// Upload profile image and update profile
+	try {
+		let downloadURL = defaultImgUrl
 
-	await uploadBytesResumable(storageRef, file).then(() => {
-		getDownloadURL(storageRef).then(async (downloadURL) => {
-			try {
-				//Update profile
-				await updateProfile(res.user, {
-					displayName,
-					photoURL: downloadURL,
-				});
+		if (file) {
+			await uploadBytesResumable(storageRef, file)
+			downloadURL = await getDownloadURL(storageRef)
+		}
 
-				//create user on firestore
-				await setDoc(doc(db, "users", res.user.uid), {
-					uid: res.user.uid,
-					displayName,
-					email,
-					photoURL: downloadURL,
-				});
+		await updateProfile(res.user, {
+			displayName,
+			photoURL: downloadURL,
+		})
 
-				// create empty chats collection
-				await setDoc(doc(db, "userChats", res.user.uid), {})
+		// Create user on firestore
+		await setDoc(doc(db, 'users', res.user.uid), {
+			uid: res.user.uid,
+			displayName,
+			email,
+			photoURL: downloadURL,
+		})
 
-			} catch (err) {
-				setError(true);
-			}
-		});
-	});
+		// Create empty chats collection
+		await setDoc(doc(db, 'userChats', res.user.uid), {})
+	} catch (err) {
+		setError(true)
+	}
 }
+

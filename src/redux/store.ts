@@ -1,31 +1,32 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { authSlice } from './slices/auth-slice/authSlice';
-import newsSlice from './slices/news-slice/newsSlice';
-
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { persistReducer } from 'redux-persist'
+import persistStore from 'redux-persist/es/persistStore'
+import storage from 'redux-persist/lib/storage'
+import authSlice from './slices/auth-slice/authSlice'
+import chatSlice from './slices/chat-slice/chatSlice'
+import newsSlice from './slices/news-slice/newsSlice'
 
 const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage,
+	key: 'root',
+	storage,
 }
 const rootReducer = combineReducers({
-    auth: authSlice.reducer,
-    news: newsSlice
+	auth: authSlice,
+	news: newsSlice,
+	chat: chatSlice
 })
-
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+const middleware = getDefaultMiddleware({
+	immutableCheck: true,
+	serializableCheck: false,
+	thunk: true,
 })
 
+export const store = configureStore({
+	reducer: persistedReducer,
+	middleware: () => middleware,
+})
+export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
