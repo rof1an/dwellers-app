@@ -1,0 +1,52 @@
+.form {
+	text-align: center;
+	background: rgba(0, 0, 0, 0.33);
+	box-shadow: 1px 1px 10px #000;
+	max-width: 320px;
+	width: 100%;
+	margin: 15px auto 15px;
+	padding: 20px 20px;
+}
+
+.heading {
+	color: white;
+}
+
+.inputs {
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.haveAcc {
+	font-size: 13px;
+	text-align: end;
+}
+
+.formBtn {
+	margin-top: 130px;
+
+	button {
+		width: 100%;
+		text-transform: uppercase;
+	}
+}
+
+.modal {
+	position: absolute;
+	display: flex;
+	top: 1%;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+	font-size: 18px;
+	gap: 10px;
+	border-radius: 10px;
+	font-weight: bold;
+	background: rgba(0, 0, 0, 0.92);
+
+	img {
+		width: 25px;
+		height: 25px;
+	}
+}

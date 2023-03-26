@@ -1,11 +1,12 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { useAppSelector } from '../hooks/hooks'
-import { privateRoutes, publicRoutes } from '../router/routes'
+import { privateRoutes, publicRoutes } from '../routes/routes'
 import { Loader } from './UI/loader/Loader'
 
 export const AppRouter = () => {
 	const { isAuth } = useAppSelector((state) => state.auth)
+
 
 	return (
 		<Suspense fallback={<Loader />}>

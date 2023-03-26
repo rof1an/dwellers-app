@@ -1,6 +1,6 @@
 export type UserInfo = {
 	displayName: string,
-	photoUrl: string,
+	photoURL: string,
 	uid: string
 }
 

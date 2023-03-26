@@ -1,8 +1,8 @@
-import React, { FC, PropsWithChildren, ButtonHTMLAttributes } from 'react';
+import React, { FC, PropsWithChildren, ButtonHTMLAttributes } from 'react'
 import cl from './Button.module.scss'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    onClick?: (arg: any) => void
+    onClick?: () => void
 }
 
 export const Button: FC<ButtonProps> = ({ children, ...props }) => {
@@ -10,5 +10,5 @@ export const Button: FC<ButtonProps> = ({ children, ...props }) => {
         <button {...props} className={cl.button}>
             {children}
         </button>
-    );
-};
+    )
+}

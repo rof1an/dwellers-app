@@ -1,4 +1,3 @@
-
 declare module '*.svg' {
     const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>
     const path: string
@@ -12,24 +11,25 @@ declare module '*.png' {
 }
 
 declare module '*.svg' {
-    import React = require('react');
-    export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
-    const src: string;
-    export default src;
+    import React = require('react')
+    export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>
+    const src: string
+    export default src
 }
 
 declare module '*.img' {
-    import React = require('react');
-    const alt: string;
-    export default alt;
+    import React = require('react')
+    const alt: string
+    export default alt
 }
 
 declare module '*.scss' {
-    const content: any;
-    export default content;
+    const content: any
+    export default content
 }
 
 declare module 'useDispatch' {
     interface DefaultRootState extends ApplicationState { }
 }
+
 

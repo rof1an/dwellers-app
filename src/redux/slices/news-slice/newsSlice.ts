@@ -1,30 +1,24 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { NewsService } from '../../../API/NewsService'
 import { RootState } from '../../store'
-import { ArticlesResponse, NewsState, NewsStatusEnums } from './types'
+import { News, NewsState, NewsStatusEnums, OneNews } from './types'
 
-
-const api_token = 'Waf2OVrntRDtjqLJOM04B8FxzT5bGqaDjteRT9qd'
 
 export const fetchNews = createAsyncThunk('news/fetchNews', async (params: { page: number }) => {
 	const { page } = params
-	const { data } = await axios.get('https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&', {
-		params: {
-			api_token,
-			page,
-		},
-	})
-	return data
+	return NewsService.getAll(page)
+	// return data
 })
 
 export const fetchNewsById = createAsyncThunk('news/fetchNewsById', async (params: { id: string }) => {
 	const { id } = params
-	const { data } = await axios.get(`https://api.marketaux.com/v1/news/uuid/${id}?api_token=${api_token}`)
-	return data
+	return NewsService.getById(id)
+	// return data
 })
 
 const initialState: NewsState = {
-	news: [],
+	news: null,
+	oneNews: null,
 	status: NewsStatusEnums.LOADING,
 }
 
@@ -33,27 +27,27 @@ export const newsSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(fetchNews.pending, (state) => {
-			state.status = NewsStatusEnums.LOADING
-		})
-		builder.addCase(fetchNews.fulfilled, (state, { payload }: PayloadAction<ArticlesResponse>) => {
-			state.status = NewsStatusEnums.FULFILLED
-			state.news = payload
-		})
-		builder.addCase(fetchNews.rejected, (state) => {
-			state.status = NewsStatusEnums.ERROR
-		})
-		builder.addCase(fetchNewsById.pending, (state) => {
-			state.status = NewsStatusEnums.LOADING
-		})
-		builder.addCase(fetchNewsById.fulfilled, (state, { payload }: PayloadAction<ArticlesResponse>) => {
-			state.status = NewsStatusEnums.FULFILLED
-			state.news = payload
-		}
-		)
-		builder.addCase(fetchNewsById.rejected, (state) => {
-			state.status = NewsStatusEnums.ERROR
-		})
+		builder
+			.addCase(fetchNews.pending, (state) => {
+				state.status = NewsStatusEnums.LOADING
+			})
+			.addCase(fetchNews.fulfilled, (state, { payload }: PayloadAction<News>) => {
+				state.status = NewsStatusEnums.FULFILLED
+				state.news = payload
+			})
+			.addCase(fetchNews.rejected, (state) => {
+				state.status = NewsStatusEnums.ERROR
+			})
+			.addCase(fetchNewsById.pending, (state) => {
+				state.status = NewsStatusEnums.LOADING
+			})
+			.addCase(fetchNewsById.fulfilled, (state, { payload }: PayloadAction<OneNews>) => {
+				state.status = NewsStatusEnums.FULFILLED
+				state.oneNews = payload
+			})
+			.addCase(fetchNewsById.rejected, (state) => {
+				state.status = NewsStatusEnums.ERROR
+			})
 	},
 })
 

@@ -1,23 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '../../../firebase'
-import { AuthState } from './types'
+import { AuthState, CurrUser } from './types'
 
 const initialState: AuthState = {
 	isAuth: false,
 	currentUser: null,
 	isLoading: true,
-	error: null,
-	status: null,
+	error: '',
+	status: '',
 }
 
-export const fetchCurrentUser = createAsyncThunk('auth/fetchCurrentUser', async () => {
-	return new Promise((resolve, reject) => {
-		const unsub = onAuthStateChanged(auth, (user: any) => {
+export const fetchCurrentUser = createAsyncThunk<User>('auth/fetchCurrentUser', async () => {
+	return new Promise((resolve) => {
+		const unsub = onAuthStateChanged(auth, (user) => {
 			if (user) {
 				resolve(user)
-			} else {
-				reject('User not found')
 			}
 			unsub()
 		})
@@ -33,19 +31,20 @@ const authSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(fetchCurrentUser.pending, (state) => {
-			state.isLoading = true
-		})
-		builder.addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
-			state.currentUser = payload
-			state.isLoading = false
-			state.error = null
-		})
-		builder.addCase(fetchCurrentUser.rejected, (state, action) => {
-			state.currentUser = null
-			state.isLoading = false
-			state.error = action.error.message
-		})
+		builder
+			.addCase(fetchCurrentUser.pending, (state) => {
+				state.isLoading = true
+			})
+			.addCase(fetchCurrentUser.fulfilled, (state, action: PayloadAction<User>) => {
+				state.currentUser = action.payload
+				state.isLoading = false
+				state.error = null
+			})
+			.addCase(fetchCurrentUser.rejected, (state, action) => {
+				state.currentUser = null
+				state.isLoading = false
+				state.error = action.error.message
+			})
 	},
 })
 

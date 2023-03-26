@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import authSlice from './slices/auth-slice/authSlice'
 import chatSlice from './slices/chat-slice/chatSlice'
 import newsSlice from './slices/news-slice/newsSlice'
+import weatherSlice from './slices/weather-slice/weatherSlice'
 
 const persistConfig = {
 	key: 'root',
@@ -13,7 +14,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
 	auth: authSlice,
 	news: newsSlice,
-	chat: chatSlice
+	chat: chatSlice,
+	weather: weatherSlice
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
