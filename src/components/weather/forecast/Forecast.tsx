@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem, AccordionItemButton, AccordionItemHeading, AccordionItemPanel, } from "react-accessible-accordion"
 
-import cl from "./Forecast.module.scss"
 import { IForecast } from '../../../pages/weather/Weather'
+import cl from "./Forecast.module.scss"
 
 
 const WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -21,12 +21,16 @@ export const Forecast = ({ data }: { data: IForecast }) => {
 								<div className={cl.dailyItem}>
 									<img src={`icons/${item.weather[0].icon}.png`} className={cl.iconSm} alt="weather" />
 									<label className={cl.day}>{forecastDays[idx]}</label>
-									<label className={cl.descr}>{item.weather[0].description}</label>
+
 									<label className={cl.minMax}>{Math.round(item.main.temp_max)}°C /{Math.round(item.main.temp_min)}°C</label>
 								</div>
 							</AccordionItemButton>
 						</AccordionItemHeading>
-						<AccordionItemPanel>
+						<AccordionItemPanel className={cl.itemPanel}>
+							<label className={cl.descr}>
+								Statu
+								s: {item.weather[0].description}
+							</label>
 							<div className={cl.dailyDetailsGrid}>
 								<div className={cl.dailyDetailsGridItem}>
 									<label>Pressure:</label>
