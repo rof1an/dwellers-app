@@ -3,7 +3,7 @@ import addImg from '../../assets/addImg.png'
 import { Button } from '../../components/UI/button/Button'
 import { Input } from '../../components/UI/input/Input'
 import { useAppSelector } from '../../hooks/hooks'
-import { handleSend } from '../../utils/handles/handleSend'
+import { handleSend } from '../../utils/firebase-handles/handleSend'
 import cl from './../../pages/chats/Chats.module.scss'
 
 export const ChatSenders = () => {
@@ -59,7 +59,7 @@ export const ChatSenders = () => {
 				)}
 				<Button onClick={handleSendMessage}>Send</Button>
 			</div>
-			{isImageModalOpen && (
+			{isImageModalOpen && imgUrl && (
 				<div onClick={() => setIsImageModalOpen(false)} className={cl.selectedImgModal}>
 					<img
 						onClick={(e) => e.stopPropagation()}

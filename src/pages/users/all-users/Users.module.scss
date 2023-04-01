@@ -1,0 +1,48 @@
+.root {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+
+	.userList {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15px;
+		max-width: 70%;
+		width: 100%;
+
+		.userItem {
+			padding: 5px;
+			background-color: rgba(0, 0, 0, 0.368627451);
+			box-shadow: 1px 1px 8px #000;
+
+			.userPhoto {
+				width: 130px;
+				height: 130px;
+				object-fit: cover;
+			}
+
+			.userName {
+				font-size: 20px;
+				text-transform: capitalize;
+			}
+
+			.info {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				img {
+					width: 30px;
+					height: 30px;
+					transition: all 0.4s ease;
+					cursor: pointer;
+
+					&:hover {
+						filter: drop-shadow(0px 0px 6px aqua);
+					}
+				}
+			}
+		}
+	}
+}

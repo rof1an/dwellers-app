@@ -5,6 +5,7 @@ import { CurrentWeather } from '../../components/weather/currWeather/CurrentWeat
 import { Forecast } from '../../components/weather/forecast/Forecast'
 import { useAppSelector } from '../../hooks/hooks'
 import cl from './Weather.module.scss'
+import { motion } from 'framer-motion'
 
 
 type Main = {
@@ -119,7 +120,7 @@ export interface IForecast {
 
 export type SearchData = {
 	value: string,
-	label?: string
+	label: string
 }
 
 export const Weather = () => {
@@ -156,7 +157,8 @@ export const Weather = () => {
 	}
 
 	return (
-		<div className={cl.root}>
+		<div
+			className={cl.root}>
 			<Search onSearchChange={handleOnSearchChange} />
 			{currWeather && (
 				<CurrentWeather data={currWeather} />

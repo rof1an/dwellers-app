@@ -6,8 +6,9 @@ export const Navbar = () => {
 	const [links] = useState([
 		{ id: 2, title: 'Home', link: '/home' },
 		{ id: 3, title: 'News', link: '/news' },
-		{ id: 4, title: 'Messages', link: '/chats' },
-		{ id: 5, title: 'Weather', link: '/weather' }
+		{ id: 4, title: 'Users', link: '/users' },
+		{ id: 5, title: 'Messages', link: '/chats' },
+		{ id: 6, title: 'Weather', link: '/weather' },
 	])
 
 	return (

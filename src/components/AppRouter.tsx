@@ -7,7 +7,6 @@ import { Loader } from './UI/loader/Loader'
 export const AppRouter = () => {
 	const { isAuth } = useAppSelector((state) => state.auth)
 
-
 	return (
 		<Suspense fallback={<Loader />}>
 			{isAuth ? (

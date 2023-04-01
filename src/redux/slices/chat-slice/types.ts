@@ -1,7 +1,7 @@
 export type UserInfo = {
 	displayName: string,
 	photoURL: string,
-	uid: string
+	uid: string,
 }
 
 export interface ChatState {

@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import AddAv from '../../assets/addImg.png'
 import errIcon from '../../assets/error-svgrepo-com.svg'
 import { Input } from "../../components/UI/input/Input"
-import { createUser } from '../../utils/handles/createUser'
+import { createUser } from '../../utils/firebase-handles/createUser'
 import cl from "../register/Register.module.scss"
 import { Button } from './../../components/UI/button/Button'
 import './../../index.scss'

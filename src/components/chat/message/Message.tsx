@@ -1,6 +1,6 @@
 import React from 'react'
+import { IMessage } from '../../../@types/chat-types'
 import { useAppSelector } from '../../../hooks/hooks'
-import { IMessage } from '../Chat'
 import cl from './Message.module.scss'
 
 interface MessageProps {
@@ -25,7 +25,7 @@ export const Message = ({ message, createdAt }: MessageProps) => {
 				<span className={cl.messageTime}>{createdAt}</span>
 			</div>
 			<div className={` ${message.senderId === currentUser?.uid ? cl.messageContentOwner : cl.messageContent} `}>
-				{message.text && <p>{message.text}</p>}
+				{message?.text && <p>{message?.text}</p>}
 				{message.img && (
 					<img className={cl.messageImg} src={message?.img} alt="" />
 				)}

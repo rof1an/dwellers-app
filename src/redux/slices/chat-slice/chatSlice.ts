@@ -13,15 +13,18 @@ const chatSlice = createSlice({
 	name: 'chat',
 	initialState,
 	reducers: {
-		setCurrentUser(state, { payload }: PayloadAction<UserInfo>) {
+		setCurrentUser(state, { payload }: PayloadAction<UserInfo | null>) {
 			state.currentUser = payload
 		},
-		setChatInfo(state, { payload }: PayloadAction<UserInfo>) {
+		setChatInfo(state, { payload }: PayloadAction<UserInfo | null>) {
 			state.clickedUser = payload
-			if (state.currentUser) {
+
+			if (state.currentUser && payload?.uid) {
 				state.chatId = payload.uid > state.currentUser.uid
-					? payload.uid + state.currentUser.uid
-					: state.currentUser?.uid + payload.uid
+					? payload?.uid + state.currentUser.uid
+					: state.currentUser.uid + payload?.uid
+			} else {
+				state.chatId = ''
 			}
 		}
 	},
@@ -29,6 +32,5 @@ const chatSlice = createSlice({
 
 
 export const chatState = (state: RootState) => state.chat
-
 export const { setChatInfo, setCurrentUser } = chatSlice.actions
 export default chatSlice.reducer

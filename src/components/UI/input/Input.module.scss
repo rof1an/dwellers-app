@@ -1,14 +1,14 @@
-input {
+.input {
 	background: none;
 	padding: 10px;
 	border: 1px solid #12c7f5;
 	outline: none;
-	color: white;
+	color: white !important;
 
 	&:focus {
 		box-shadow: 0 0 10px rgb(31 199 255 / 70%);
 	}
 	&::placeholder {
-		color: rgba(255, 255, 255, 0.75);
+		color: rgba(255, 255, 255, 0.75) !important;
 	}
 }

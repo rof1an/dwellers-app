@@ -24,7 +24,7 @@ declare module '*.img' {
 }
 
 declare module '*.scss' {
-    const content: any
+    const content: Record<string, string>
     export default content
 }
 

@@ -1,5 +1,8 @@
 import { lazy } from 'react'
 import { Home } from '../pages/home/Home'
+import { Users } from '../pages/users/all-users/Users'
+import { FriendsRequests } from '../pages/users/friends-requests/FriendsRequests'
+import { Friends } from '../pages/users/friends/Friends'
 import { Weather } from '../pages/weather/Weather'
 
 const Auth = lazy(() =>
@@ -41,5 +44,8 @@ export const privateRoutes = [
 	{ path: '/chats', Element: Chats },
 	{ path: '/news', Element: News },
 	{ path: '/news/:id', Element: NewsId },
+	{ path: '/users', Element: Users },
+	{ path: '/users/friends', Element: Friends },
+	{ path: '/users/friendsRequests', Element: FriendsRequests },
 	{ path: '/weather', Element: Weather }
 ]

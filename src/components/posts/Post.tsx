@@ -1,16 +1,11 @@
 import { FC } from 'react'
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
+import { PostProps } from '../../@types/home-types'
 import deleteIcon from '../../assets/delete-2-svgrepo-com.svg'
 import { useAppSelector } from '../../hooks/hooks'
-import { TPost } from './Posts'
 import cl from './Posts.module.scss'
 
-interface PostProps {
-	deletePost: (arg: string) => void
-	timeAgo: string
-	post: TPost
-}
 
 export const Post: FC<PostProps> = ({ timeAgo, post, deletePost }) => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser)
@@ -19,7 +14,7 @@ export const Post: FC<PostProps> = ({ timeAgo, post, deletePost }) => {
 	return (
 		<div className={cl.post}>
 			<div>
-				<img className={cl.postPhoto} src={currentUser?.photoURL} alt='img' />
+				{currentUser?.photoURL && <img className={cl.postPhoto} src={currentUser.photoURL} alt='img' />}
 			</div>
 			<div className={cl.postBlock}>
 				<div className={cl.postContent}>

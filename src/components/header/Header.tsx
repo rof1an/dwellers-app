@@ -40,7 +40,7 @@ export const Header = () => {
 								<span>Log out</span>
 							</div>
 						</NavLink>
-						<img className={cl.logo} src={currentUser?.photoURL} />
+						{currentUser?.photoURL && <img className={cl.logo} src={currentUser.photoURL} />}
 					</div>
 				) : (
 					<NavLink to='/'>

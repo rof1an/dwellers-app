@@ -44,6 +44,12 @@
 	box-shadow: 1px 1px 8px #000;
 	border-radius: 25px;
 	padding: 7px 15px 15px 25px;
+
+	.subBlock {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 }
 
 .subtitle {
@@ -65,11 +71,18 @@
 
 .profileInfo {
 	display: flex;
-	gap: 20%;
+	gap: 40px;
 	align-items: start;
 
 	p {
 		padding-bottom: 10px;
+	}
+
+	.right {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 }
 

@@ -16,3 +16,4 @@ export const getPagesArray = (totalCount: number) => {
 	}
 	return result
 }
+

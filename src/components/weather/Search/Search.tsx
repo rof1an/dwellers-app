@@ -1,13 +1,12 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import { AsyncPaginate } from 'react-select-async-paginate'
-import { GEO_API_URL } from '../../../API/WeatherService'
+import { CitiesService } from '../../../API/CitiesService'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { SearchData } from '../../../pages/weather/Weather'
 import { setCityLat, setCityLon, setCurrentCity } from '../../../redux/slices/weather-slice/weatherSlice'
 
 
-type OptionsCity = {
+export type OptionsCity = {
 	city: string
 	country: string
 	countryCode: string
@@ -50,24 +49,7 @@ export const Search = ({ onSearchChange }: ISearch) => {
 	}
 
 	const loadOptions = async (value: string) => {
-		const res = await axios.get(`${GEO_API_URL}/cities?`, {
-			params: {
-				minPopulation: 100000,
-				namePrefix: `${value}`,
-			},
-			headers: {
-				'X-RapidAPI-Key': '3336e223a8mshc9173f5870301a9p144a1ajsn58af1431be0d',
-				'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
-			}
-		})
-		return {
-			options: res.data.data.map((city: OptionsCity) => {
-				return {
-					value: `${city.latitude} ${city.longitude}`,
-					label: `${city.name} ${city.countryCode}`
-				}
-			})
-		}
+		return await CitiesService.loadOptions(value)
 	}
 
 	return (
@@ -78,6 +60,12 @@ export const Search = ({ onSearchChange }: ISearch) => {
 				value={search}
 				onChange={(searchData) => searchData && handleOnChange(searchData)}
 				loadOptions={(value) => loadOptions(value)}
+				styles={{
+					singleValue: (base) => ({
+						...base,
+						color: '#000 !important'
+					}),
+				}}
 			/>
 		</div>
 	)

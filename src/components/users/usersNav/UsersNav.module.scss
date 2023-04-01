@@ -1,0 +1,36 @@
+.linkUl {
+	height: fit-content;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	max-width: 270px;
+	width: 100%;
+	background-color: var(--mainBg);
+	box-shadow: 1px 1px 3px #000;
+	border-radius: 10px;
+	gap: 5px;
+	padding: 7px;
+
+	.linkItem {
+		overflow: hidden;
+		padding: 10px 15px;
+		border-radius: 10px;
+	}
+
+	.activeLink {
+		background-color: #00000046;
+		position: relative;
+
+		&::before {
+			position: absolute;
+			content: '';
+			height: 38px;
+			border-radius: 10px 10px 0px 0px;
+			width: 6px;
+			background: #d9a460;
+			left: 0px;
+			top: 1px;
+		}
+	}
+}

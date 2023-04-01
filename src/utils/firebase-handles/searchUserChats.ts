@@ -1,6 +1,6 @@
 import { User } from 'firebase/auth'
 import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
-import { FindUserData } from '../../components/chat/ChatSearch'
+import { FindUserData } from '../../@types/chat-types'
 import { db } from '../../firebase'
 
 

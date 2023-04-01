@@ -1,0 +1,60 @@
+.root {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+
+	.content {
+		width: 71.3%;
+		.requests {
+			list-style: none;
+			background-color: rgba(0, 0, 0, 0.368627451);
+			box-shadow: 1px 1px 8px #000;
+			padding: 20px;
+
+			h2 {
+				line-height: 0;
+				margin: 10px 0 25px 0;
+			}
+
+			.requesterItem {
+				display: flex;
+				align-items: center;
+				padding: 10px 0;
+				border-top: 1px solid #787878;
+
+				.reqImg {
+					width: 100px;
+					height: 100px;
+					object-fit: cover;
+					border-radius: 50%;
+					margin-right: 30px;
+				}
+				.reqName {
+					font-size: 23px;
+					color: aqua;
+					text-transform: capitalize;
+				}
+				.reqInfo {
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+
+					.btns {
+						display: flex;
+						gap: 30px;
+
+						button {
+							border-radius: 10px;
+							background-color: #3c3c3cc0;
+							color: #ccc;
+
+							&:hover {
+								background-color: transparent;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

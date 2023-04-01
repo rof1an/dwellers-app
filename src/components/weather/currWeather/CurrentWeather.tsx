@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Switcher } from '../../../components/UI/checkbox/Switcher'
 import { IWeather } from '../../../pages/weather/Weather'
@@ -22,13 +23,15 @@ export const CurrentWeather = ({ data }: currWeather) => {
 				</div>
 				<img src={`icons/${data.weather[0].icon}.png`} className={cl.weatherIcon} alt="weather" />
 			</div>
-			<Switcher isChecked={isCelsius} setIsChecked={setIsCelsius} />
+			<motion.div whileTap={{ scale: 0.95 }}>
+				<Switcher isChecked={isCelsius} setIsChecked={setIsCelsius} />
+			</motion.div>
 			<div className={cl.bottom}>
-				{isCelsius ? (
-					<p className={cl.temp}>{Math.round(data.main.temp)}°C</p>
-				) : (
-					<p className={cl.temp}>{Math.round(tempF)}°F</p>
-				)}
+				<div>
+					<motion.p className={cl.temp}>
+						{isCelsius ? Math.round(data.main.temp) : Math.round(tempF)}°{isCelsius ? "C" : "F"}
+					</motion.p>
+				</div>
 				<div className={cl.details}>
 					<div className={cl.paramRow}>
 						<span className={`${cl.paramLabel} ${cl.top}`}>Details</span>

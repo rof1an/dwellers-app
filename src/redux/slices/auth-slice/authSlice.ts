@@ -6,7 +6,7 @@ import { AuthState, CurrUser } from './types'
 const initialState: AuthState = {
 	isAuth: false,
 	currentUser: null,
-	isLoading: true,
+	isLoading: false,
 	error: '',
 	status: '',
 }

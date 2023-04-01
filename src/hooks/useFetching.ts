@@ -4,14 +4,14 @@ type Fetch = () => void
 
 export const useFetching = (callback: Fetch) => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string>('')
+	const [error, setError] = useState<boolean>(false)
 
 	const fetching = () => {
 		try {
 			setLoading(true)
 			callback()
 		} catch (err) {
-			setError(String(err))
+			setError(true)
 			setLoading(false)
 		} finally {
 			setLoading(false)

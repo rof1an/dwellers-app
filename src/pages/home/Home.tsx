@@ -1,5 +1,6 @@
 import { Posts } from '../../components/posts/Posts'
-import { Profile } from './profile/Profile'
+import { Profile } from '../../components/profile/Profile'
+
 
 export const Home = () => {
     return (
