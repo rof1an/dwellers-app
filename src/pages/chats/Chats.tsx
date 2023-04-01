@@ -1,4 +1,4 @@
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { ChatsProps, IMessage } from '../../@types/chat-types'
 import { Loader } from '../../components/UI/loader/Loader'
@@ -7,6 +7,7 @@ import { db } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { setChatInfo, setCurrentUser } from '../../redux/slices/chat-slice/chatSlice'
 import { UserInfo } from '../../redux/slices/chat-slice/types'
+import { getBothUid } from '../../utils/getBothUid'
 import { Chat } from './../../components/chat/Chat'
 import cl from './Chats.module.scss'
 
@@ -15,20 +16,17 @@ export const Chats = () => {
 	const dispatch = useAppDispatch()
 	const [chats, setChats] = useState<ChatsProps[]>([])
 	const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null)
-	const [lastMessageInfo, setLastMessageInfo] = useState<IMessage>()
+	const [lastSenderId, setLastSenderId] = useState<IMessage>()
 
 	const { currentUser } = useAppSelector(state => state.auth)
 	const chatsArray = Object.entries(chats)
 
 	React.useEffect(() => {
 		const getData = () => {
-			const unsub = onSnapshot(doc(db, "userChats", currentUser!.uid), (doc) => {
+			const getChats = onSnapshot(doc(db, "userChats", currentUser!.uid), (doc) => {
 				setChats(doc.data() as ChatsProps[])
 			})
-
-			return () => {
-				unsub()
-			}
+			return () => getChats()
 		}
 		currentUser?.uid && getData()
 
@@ -37,11 +35,20 @@ export const Chats = () => {
 		}
 	}, [currentUser?.uid])
 
+
 	const handleSelect = (clickedUser: UserInfo) => {
+		const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
+
 		dispatch(setCurrentUser(currentUser as UserInfo))
 		dispatch(setChatInfo(clickedUser))
 		setSelectedUser(clickedUser)
+
+		onSnapshot(doc(db, "chats", uid), (doc) => {
+			const data = doc.data()?.messages
+			setLastSenderId(data[data.length - 1])
+		})
 	}
+	console.log(lastSenderId?.senderId === currentUser?.uid)
 
 	return (
 		<>
@@ -60,14 +67,14 @@ export const Chats = () => {
 											key={chat[0]}
 											onClick={() => handleSelect(chat[1].userInfo)}
 										>
-											<img src={chat[1].userInfo.photoURL} alt="" />
+											{chat[1]?.userInfo?.photoURL && <img src={chat[1].userInfo.photoURL} alt="" />}
 											<div className={cl.userText}>
-												<span className={cl.userName}>{chat[1].userInfo.displayName}</span>
+												<span className={cl.userName}>{chat[1]?.userInfo?.displayName}</span>
 												{chat[1].lastMessage?.text && (
 													<span className={cl.lastMsg}>
-														{/* {lastMessageInfo && (
-															<b>{lastMessageInfo?.senderId === currentUser?.uid ? 'You' : 'He'}: </b>
-														)} */}
+														{lastSenderId && (
+															<b>{lastSenderId?.senderId === currentUser?.uid ? 'You' : 'He'}: </b>
+														)}
 														{chat[1].lastMessage?.text}
 													</span>
 												)}

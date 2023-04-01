@@ -7,6 +7,7 @@ import { db } from '../../firebase'
 import { useAppSelector } from '../../hooks/hooks'
 import cl from '../../pages/chats/Chats.module.scss'
 import { searchUserChats } from '../../utils/firebase-handles/searchUserChats'
+import { getBothUid } from '../../utils/getBothUid'
 
 export const ChatSearch = () => {
 	const [findUser, setFindUser] = useState<FindUserData | null>(null)
@@ -32,7 +33,7 @@ export const ChatSearch = () => {
 	const handleSelect = useCallback(async () => {
 		if (!findUser || !currentUser) return
 
-		const combinedId = currentUser.uid > findUser.uid ? currentUser.uid + findUser.uid : findUser.uid + currentUser.uid
+		const combinedId = getBothUid.getUid(currentUser.uid, findUser.uid)
 		await searchUserChats({ combinedId, findUser, currentUser })
 		setFindUser(null)
 		setFindUserName('')

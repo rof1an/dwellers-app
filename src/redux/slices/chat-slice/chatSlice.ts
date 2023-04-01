@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { getBothUid } from '../../../utils/getBothUid'
 import { RootState } from '../../store'
 import { ChatState, UserInfo } from './types'
 
@@ -19,10 +20,8 @@ const chatSlice = createSlice({
 		setChatInfo(state, { payload }: PayloadAction<UserInfo | null>) {
 			state.clickedUser = payload
 
-			if (state.currentUser && payload?.uid) {
-				state.chatId = payload.uid > state.currentUser.uid
-					? payload?.uid + state.currentUser.uid
-					: state.currentUser.uid + payload?.uid
+			if (state.currentUser && state.clickedUser && payload?.uid) {
+				state.chatId = getBothUid.getUid(payload?.uid, state.currentUser?.uid)
 			} else {
 				state.chatId = ''
 			}

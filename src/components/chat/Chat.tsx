@@ -3,7 +3,7 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import React, { useRef, useState } from 'react'
 import { IMessage } from '../../@types/chat-types'
 import { db } from '../../firebase'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { useAppSelector } from '../../hooks/hooks'
 import cl from './../../pages/chats/Chats.module.scss'
 import { ChatSenders } from './ChatSenders'
 import { Message } from './message/Message'
@@ -37,7 +37,7 @@ export const Chat = () => {
 			{clickedUser && (
 				<>
 					<span className={cl.chatUsername}>
-						<img src={clickedUser?.photoURL} alt="" />
+						{clickedUser?.photoURL && <img src={clickedUser?.photoURL} alt="" />}
 						{clickedUser?.displayName}
 					</span>
 

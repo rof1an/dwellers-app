@@ -56,12 +56,14 @@ export const handleSend = async ({ img, data, text }: HandleSendProps) => {
 	await updateDoc(doc(db, "userChats", data.currentUser!.uid), {
 		[data.chatId + '.lastMessage']: {
 			text: text || '...',
+			sender: ''
 		},
 		[data.chatId + '.date']: serverTimestamp(),
 	})
 	await updateDoc(doc(db, "userChats", data.clickedUser!.uid), {
 		[data.chatId + '.lastMessage']: {
 			text: text || '...',
+			sender: ''
 		},
 		[data.chatId + '.date']: serverTimestamp(),
 	})
