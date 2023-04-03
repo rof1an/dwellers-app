@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { OptionsCity } from '../components/weather/Search/Search'
 import { GEO_API_URL } from './WeatherService'
+import { OptionsCity } from '../@types/weather-types'
 
 export const CitiesService = {
 	loadOptions: async (value: string) => {

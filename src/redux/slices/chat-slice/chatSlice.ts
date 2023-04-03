@@ -7,7 +7,8 @@ import { ChatState, UserInfo } from './types'
 const initialState: ChatState = {
 	chatId: '',
 	currentUser: null,
-	clickedUser: null
+	clickedUser: null,
+	lastSenderId: ''
 }
 
 const chatSlice = createSlice({
@@ -25,11 +26,14 @@ const chatSlice = createSlice({
 			} else {
 				state.chatId = ''
 			}
+		},
+		setLastSender: (state, { payload }) => {
+			state.lastSenderId = payload
 		}
 	},
 })
 
 
 export const chatState = (state: RootState) => state.chat
-export const { setChatInfo, setCurrentUser } = chatSlice.actions
+export const { setChatInfo, setCurrentUser, setLastSender } = chatSlice.actions
 export default chatSlice.reducer

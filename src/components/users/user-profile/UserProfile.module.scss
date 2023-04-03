@@ -1,0 +1,115 @@
+.image {
+	height: 300px;
+	max-width: 1330px;
+	width: 100%;
+}
+
+.mainInfo {
+	display: flex;
+	margin: 15px 0 15px 0;
+	color: #cccccc;
+	max-height: 220px;
+}
+
+.mainImg {
+	width: 210px;
+	height: 210px;
+	border-radius: 25px;
+	background-color: rgba(0, 0, 0, 0.4);
+	box-shadow: 1px 1px 15px #000;
+	margin-right: 25px;
+	padding: 5px;
+	object-fit: cover;
+}
+
+.mainAbout {
+	width: 100%;
+	line-height: 0;
+	font-size: 20px;
+	background-color: rgba(0, 0, 0, 0.37);
+	box-shadow: 1px 1px 8px #000;
+	border-radius: 25px;
+	padding: 7px 15px 15px 25px;
+
+	hr {
+		margin: 0;
+	}
+
+	.subBlock {
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+
+		.interaction {
+			display: flex;
+			gap: 20px;
+		}
+
+		span {
+			cursor: pointer;
+			font-size: 15px;
+			color: aqua;
+			display: flex;
+			align-items: center;
+			flex-direction: row-reverse;
+
+			img {
+				width: 29px;
+				height: 29px;
+			}
+
+			.invertSvg {
+				filter: invert(1);
+				padding-right: 7px;
+			}
+		}
+	}
+}
+
+.subtitle {
+	font-size: 15px;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+
+	img {
+		width: 25px;
+	}
+}
+
+.profileTitle {
+	text-transform: capitalize;
+	letter-spacing: 2px;
+	color: #fff;
+}
+
+.profileInfo {
+	display: flex;
+	gap: 40px;
+	align-items: start;
+
+	p {
+		padding-bottom: 10px;
+	}
+
+	.right {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+
+		span {
+			color: aqua;
+		}
+	}
+}
+
+.profileInfo .left {
+	color: white;
+}
+
+.noneInfo {
+	color: rgb(21, 156, 156);
+}

@@ -13,6 +13,8 @@ export const Chat = () => {
 	const chatContainerRef = useRef<HTMLUListElement>(null)
 	const [messages, setMessages] = useState<IMessage[]>([])
 	const { chatId, clickedUser } = useAppSelector(state => state.chat)
+	const { currentUser } = useAppSelector(state => state.auth)
+	// const chatId = getBothUid.getUid(selectedUser?.uid, currentUser!.uid)
 
 	React.useEffect(() => {
 		if (chatId) {

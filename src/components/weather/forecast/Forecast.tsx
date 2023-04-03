@@ -1,23 +1,14 @@
-import {
-	Accordion,
-	AccordionItem,
-	AccordionItemButton,
-	AccordionItemHeading,
-	AccordionItemPanel,
-} from 'react-accessible-accordion'
-
 import { AnimatePresence, motion } from 'framer-motion'
-import { IForecast } from '../../../pages/weather/Weather'
+import { Accordion, AccordionItem, AccordionItemButton, AccordionItemHeading, AccordionItemPanel, } from 'react-accessible-accordion'
+import { WEEK_DAYS } from '../../../consts'
 import cl from './Forecast.module.scss'
-
-const WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+import { IForecast } from '../../../@types/weather-types'
 
 export const Forecast = ({ data }: { data: IForecast }) => {
 	const dayInAWeek = new Date().getDay()
 	const forecastDays = WEEK_DAYS.slice(dayInAWeek, WEEK_DAYS.length).concat(
 		WEEK_DAYS.slice(0, dayInAWeek)
 	)
-
 	return (
 		<motion.div
 			initial={{ opacity: 0, height: 0 }}

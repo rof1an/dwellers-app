@@ -14,14 +14,14 @@ export const weatherSlice = createSlice({
 		setCurrentCity: (state, { payload }: PayloadAction<string>) => {
 			state.currentCity = payload
 		},
-		setCityLat: (state, { payload }: PayloadAction<string>) => {
+		setWeatherCityLat: (state, { payload }: PayloadAction<string>) => {
 			state.lat = payload
 		},
-		setCityLon: (state, { payload }: PayloadAction<string>) => {
+		setWeatherCityLon: (state, { payload }: PayloadAction<string>) => {
 			state.lon = payload
 		},
 	},
 })
 
-export const { setCurrentCity, setCityLat, setCityLon } = weatherSlice.actions
+export const { setCurrentCity, setWeatherCityLat, setWeatherCityLon } = weatherSlice.actions
 export default weatherSlice.reducer

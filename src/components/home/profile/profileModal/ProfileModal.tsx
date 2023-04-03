@@ -1,16 +1,16 @@
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import React, { FC, useState } from 'react'
-import { HandleSubmitForm, Lang, ProfileProps, ProfileValues } from '../../../@types/home-types'
-import { CitiesService } from '../../../API/CitiesService'
-import { auth, db } from '../../../firebase'
-import { useAppSelector } from '../../../hooks/hooks'
-import { SearchData } from '../../../pages/weather/Weather'
-import { options } from '../../../utils/languageList'
-import { PaginateSelect } from '../../UI/Selects/AsyncPaginate'
-import { ReactSelect } from '../../UI/Selects/ReactSelect'
-import { Button } from '../../UI/button/Button'
-import { Input } from '../../UI/input/Input'
+import { HandleSubmitForm, Lang, ProfileProps, ProfileValues } from '../../../../@types/home-types'
+import { CitiesService } from '../../../../API/CitiesService'
+import { auth, db } from '../../../../firebase'
+import { useAppSelector } from '../../../../hooks/hooks'
+import { options } from '../../../../utils/languageList'
+import { PaginateSelect } from '../../../UI/Selects/AsyncPaginate'
+import { ReactSelect } from '../../../UI/Selects/ReactSelect'
+import { Button } from '../../../UI/button/Button'
+import { Input } from '../../../UI/input/Input'
 import cl from './ProfileModal.module.scss'
+import { SearchData } from '../../../../@types/weather-types'
 
 
 export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, setValue }) => {
@@ -19,12 +19,14 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 	const { currentUser } = useAppSelector(state => state.auth)
 
 	React.useEffect(() => {
-		const unsub = onSnapshot(doc(db, 'users', currentUser!.uid), (doc) => {
-			doc.exists() && setNewValues(doc.data() as ProfileValues)
-		})
+		if (currentUser?.uid) {
+			const unsub = onSnapshot(doc(db, 'users', currentUser!.uid), (doc) => {
+				doc.exists() && setNewValues(doc.data() as ProfileValues)
+			})
 
-		return () => {
-			unsub()
+			return () => {
+				unsub()
+			}
 		}
 	}, [])
 

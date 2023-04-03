@@ -3,6 +3,7 @@ import { Home } from '../pages/home/Home'
 import { Users } from '../pages/users/all-users/Users'
 import { FriendsRequests } from '../pages/users/friends-requests/FriendsRequests'
 import { Friends } from '../pages/users/friends/Friends'
+import { UserPage } from '../pages/users/user-page/UserPage'
 import { Weather } from '../pages/weather/Weather'
 
 const Auth = lazy(() =>
@@ -33,18 +34,19 @@ const Register = lazy(() =>
 )
 
 export const publicRoutes = [
-	{ path: '/', Element: Auth },
+	{ path: '/login', Element: Auth },
 	{ path: '/register', Element: Register },
 ]
 
 export const privateRoutes = [
-	{ path: '/home', Element: Home },
-	{ path: '/', Element: Auth },
+	{ path: '/', Element: Home },
+	{ path: '/login', Element: Auth },
 	{ path: '/register', Element: Register },
 	{ path: '/chats', Element: Chats },
 	{ path: '/news', Element: News },
 	{ path: '/news/:id', Element: NewsId },
 	{ path: '/users', Element: Users },
+	{ path: '/users/:userId', Element: UserPage },
 	{ path: '/users/friends', Element: Friends },
 	{ path: '/users/friendsRequests', Element: FriendsRequests },
 	{ path: '/weather', Element: Weather }

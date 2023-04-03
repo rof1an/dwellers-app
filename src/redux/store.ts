@@ -6,6 +6,7 @@ import authSlice from './slices/auth-slice/authSlice'
 import chatSlice from './slices/chat-slice/chatSlice'
 import newsSlice from './slices/news-slice/newsSlice'
 import weatherSlice from './slices/weather-slice/weatherSlice'
+import usersSlice from './slices/users-slice/usersSlice'
 
 const persistConfig = {
 	key: 'root',
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
 	auth: authSlice,
 	news: newsSlice,
 	chat: chatSlice,
-	weather: weatherSlice
+	weather: weatherSlice,
+	users: usersSlice
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

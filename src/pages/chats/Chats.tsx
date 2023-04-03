@@ -1,11 +1,11 @@
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { ChatsProps, IMessage } from '../../@types/chat-types'
+import { ChatsProps } from '../../@types/chat-types'
 import { Loader } from '../../components/UI/loader/Loader'
 import { ChatSearch } from '../../components/chat/ChatSearch'
 import { db } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setChatInfo, setCurrentUser } from '../../redux/slices/chat-slice/chatSlice'
+import { setChatInfo, setCurrentUser, setLastSender } from '../../redux/slices/chat-slice/chatSlice'
 import { UserInfo } from '../../redux/slices/chat-slice/types'
 import { getBothUid } from '../../utils/getBothUid'
 import { Chat } from './../../components/chat/Chat'
@@ -15,14 +15,14 @@ import cl from './Chats.module.scss'
 export const Chats = () => {
 	const dispatch = useAppDispatch()
 	const [chats, setChats] = useState<ChatsProps[]>([])
-	const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null)
-	const [lastSenderId, setLastSenderId] = useState<IMessage>()
+	const [selectedUser, setSelectedUser] = useState<any>({})
 
 	const { currentUser } = useAppSelector(state => state.auth)
+	const { lastSenderId, clickedUser } = useAppSelector(state => state.chat)
 	const chatsArray = Object.entries(chats)
 
 	React.useEffect(() => {
-		const getData = () => {
+		const getData = async () => {
 			const getChats = onSnapshot(doc(db, "userChats", currentUser!.uid), (doc) => {
 				setChats(doc.data() as ChatsProps[])
 			})
@@ -35,20 +35,22 @@ export const Chats = () => {
 		}
 	}, [currentUser?.uid])
 
+	React.useEffect(() => {
+		const getLastSender = async () => {
+			const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
+			const docSnap = await getDoc(doc(db, "chats", uid))
+			const data = docSnap.data()?.messages
+			dispatch(setLastSender(data[data.length - 1]))
+		}
 
-	const handleSelect = (clickedUser: UserInfo) => {
-		const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
+		getLastSender()
+	})
 
+	const handleSelect = async (clickedUserInfo: UserInfo) => {
 		dispatch(setCurrentUser(currentUser as UserInfo))
-		dispatch(setChatInfo(clickedUser))
-		setSelectedUser(clickedUser)
-
-		onSnapshot(doc(db, "chats", uid), (doc) => {
-			const data = doc.data()?.messages
-			setLastSenderId(data[data.length - 1])
-		})
+		dispatch(setChatInfo(clickedUserInfo))
+		setSelectedUser(clickedUserInfo)
 	}
-	console.log(lastSenderId?.senderId === currentUser?.uid)
 
 	return (
 		<>
@@ -73,7 +75,7 @@ export const Chats = () => {
 												{chat[1].lastMessage?.text && (
 													<span className={cl.lastMsg}>
 														{lastSenderId && (
-															<b>{lastSenderId?.senderId === currentUser?.uid ? 'You' : 'He'}: </b>
+															<b>{lastSenderId === currentUser?.uid ? 'You' : 'He'}: </b>
 														)}
 														{chat[1].lastMessage?.text}
 													</span>

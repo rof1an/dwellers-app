@@ -4,7 +4,7 @@ import cl from '../navbar/Navbar.module.scss'
 
 export const Navbar = () => {
 	const [links] = useState([
-		{ id: 2, title: 'Home', link: '/home' },
+		{ id: 2, title: 'Home', link: '/' },
 		{ id: 3, title: 'News', link: '/news' },
 		{ id: 4, title: 'Users', link: '/users' },
 		{ id: 5, title: 'Messages', link: '/chats' },

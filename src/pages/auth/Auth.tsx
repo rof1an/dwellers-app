@@ -23,7 +23,7 @@ export const Auth: FC = React.memo(() => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then(() => {
 				dispatch(setAuth(true))
-				navigate('/home')
+				navigate('/')
 			})
 			.catch(() => {
 				setError(true)

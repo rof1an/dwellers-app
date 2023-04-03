@@ -11,7 +11,7 @@ type Coord = {
 
 export const WeatherService = {
 	getWeather: async ({ lat, lon }: Coord) => {
-		const { data } = await axios.get(`${WTH_API_URL}/weather?lat=${lat}&lon=${lon}&`, {
+		const { data } = await axios.get(`${WTH_API_URL}/weather?lat=${lat}&lon=${lon}`, {
 			params: {
 				appid: `${WTH_API_KEY}`,
 				units: 'metric'
@@ -20,7 +20,7 @@ export const WeatherService = {
 		return data
 	},
 	getForecast: async ({ lat, lon }: Coord) => {
-		const { data } = await axios.get(`${WTH_API_URL}/forecast?lat=${lat}&lon=${lon}&`, {
+		const { data } = await axios.get(`${WTH_API_URL}/forecast?lat=${lat}&lon=${lon}`, {
 			params: {
 				appid: `${WTH_API_KEY}`,
 				units: 'metric'

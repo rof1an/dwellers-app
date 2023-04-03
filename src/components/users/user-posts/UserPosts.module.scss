@@ -1,0 +1,46 @@
+.posts {
+	.post {
+		display: flex;
+		margin-top: 30px;
+		border-radius: 15px;
+		padding: 15px 10px;
+		background-color: #0000005e;
+		box-shadow: 1px 1px 8px #000;
+		max-width: 500px;
+		width: 100%;
+
+		.postPhoto {
+			width: 100px;
+			height: 100px;
+			object-fit: cover;
+			border-radius: 50%;
+		}
+
+		.postAuthor {
+			display: flex;
+			flex-direction: column;
+
+			h2 {
+				margin: 0;
+			}
+
+			span {
+				font-size: 13px;
+			}
+		}
+
+		.postContent {
+			padding-left: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: baseline;
+		}
+
+		.postBlock {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			width: 100%;
+		}
+	}
+}

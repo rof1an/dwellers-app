@@ -1,3 +1,5 @@
+import { User } from 'firebase/auth'
+
 export type UserInfo = {
 	displayName: string,
 	photoURL: string,
@@ -7,5 +9,6 @@ export type UserInfo = {
 export interface ChatState {
 	chatId: string,
 	currentUser: UserInfo | null,
-	clickedUser: UserInfo | null
+	clickedUser: UserInfo | null,
+	lastSenderId: any
 }

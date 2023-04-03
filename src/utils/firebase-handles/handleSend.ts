@@ -11,11 +11,14 @@ export interface HandleSendProps {
 		chatId: string,
 		currentUser: UserInfo | null,
 		clickedUser: UserInfo | null
-	}
+	},
+	lastSenderId: string
 }
 
-export const handleSend = async ({ img, data, text }: HandleSendProps) => {
+
+export const handleSend = async ({ img, data, text, lastSenderId }: HandleSendProps) => {
 	const storageRef = ref(storage, uuid())
+
 
 	if (img && text.length > 0) {
 		const uploadTaskSnapshot = await uploadBytesResumable(storageRef, img)
@@ -56,15 +59,19 @@ export const handleSend = async ({ img, data, text }: HandleSendProps) => {
 	await updateDoc(doc(db, "userChats", data.currentUser!.uid), {
 		[data.chatId + '.lastMessage']: {
 			text: text || '...',
-			sender: ''
 		},
 		[data.chatId + '.date']: serverTimestamp(),
 	})
 	await updateDoc(doc(db, "userChats", data.clickedUser!.uid), {
 		[data.chatId + '.lastMessage']: {
 			text: text || '...',
-			sender: ''
 		},
 		[data.chatId + '.date']: serverTimestamp(),
+	})
+
+	await updateDoc(doc(db, 'userChats', data.currentUser!.uid), {
+		[data.chatId + '.sender']: {
+			senderId: lastSenderId
+		}
 	})
 }

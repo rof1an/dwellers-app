@@ -1,5 +1,5 @@
 import { AsyncPaginate } from 'react-select-async-paginate'
-import cl from '../../profile/profileModal/ProfileModal.module.scss'
+import cl from '../../home/profile/profileModal/ProfileModal.module.scss'
 
 const customStyles = {
 	control: (base) => ({

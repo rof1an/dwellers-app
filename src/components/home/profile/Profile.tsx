@@ -2,24 +2,22 @@ import { updateProfile } from 'firebase/auth'
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useState } from 'react'
-import { ProfileData } from '../../@types/home-types'
-import changeSvg from '../../assets/edit-svgrepo-com.svg'
-import { auth, db, storage } from '../../firebase'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { fetchCurrentUser } from '../../redux/slices/auth-slice/authSlice'
-import { Button } from '../UI/button/Button'
-import { Loader } from '../UI/loader/Loader'
+import { ProfileData } from '../../../@types/home-types'
+import changeSvg from '../../../assets/edit-svgrepo-com.svg'
+import { auth, db, storage } from '../../../firebase'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
+import { fetchCurrentUser, setAccountData } from '../../../redux/slices/auth-slice/authSlice'
+import { AccountData } from '../../../redux/slices/auth-slice/types'
+import { Button } from '../../UI/button/Button'
+import { Loader } from '../../UI/loader/Loader'
 import cl from './Profile.module.scss'
 import { ProfileModal } from './profileModal/ProfileModal'
-
 
 export const Profile = () => {
 	const dispatch = useAppDispatch()
 	const [modalVisible, setModalVisible] = useState<boolean>(false)
 	const [data, setData] = useState<ProfileData>({
-		city: { label: '', value: '' },
-		date: '',
-		languages: [],
+		city: { label: '', value: '' }, date: '', languages: [],
 	})
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -35,15 +33,13 @@ export const Profile = () => {
 		if (currentUser?.uid) {
 			const unsub = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
 				setIsLoading(true)
-				setData({ ...data, ...doc.data() } as ProfileData)
+				setData((prevData) => ({ ...prevData, ...doc.data() }))
+				dispatch(setAccountData(doc.data() as AccountData))
 				setIsLoading(false)
 			})
-
-			return () => {
-				unsub()
-			}
+			return () => unsub()
 		}
-	}, [])
+	}, [currentUser])
 
 	React.useEffect(() => {
 		handleChangeAvatar()

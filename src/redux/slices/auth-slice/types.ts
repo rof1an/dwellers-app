@@ -1,11 +1,24 @@
 import { User } from 'firebase/auth'
 
+export type AccountData = {
+	accountCity: {
+		value: string,
+		label: string
+	},
+	languages: {
+		label: string
+		value: string
+	}[],
+	dateOfBirth: string
+}
+
 export interface AuthState {
 	isAuth: boolean
 	currentUser: User | null
 	isLoading: boolean
 	error: string | null | undefined
-	status: string
+	status: string,
+	accountData: AccountData
 }
 
 export interface CurrUser {

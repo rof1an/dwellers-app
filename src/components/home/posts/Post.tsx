@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
-import { PostProps } from '../../@types/home-types'
-import deleteIcon from '../../assets/delete-2-svgrepo-com.svg'
-import { useAppSelector } from '../../hooks/hooks'
+import { PostProps } from '../../../@types/home-types'
+import { useAppSelector } from '../../../hooks/hooks'
+import deleteIcon from '../../../assets/delete-2-svgrepo-com.svg'
 import cl from './Posts.module.scss'
 
 

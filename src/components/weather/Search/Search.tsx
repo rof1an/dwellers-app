@@ -1,36 +1,17 @@
 import React, { useState } from 'react'
 import { AsyncPaginate } from 'react-select-async-paginate'
+import { ISearch, SearchData } from '../../../@types/weather-types'
 import { CitiesService } from '../../../API/CitiesService'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
-import { SearchData } from '../../../pages/weather/Weather'
-import { setCityLat, setCityLon, setCurrentCity } from '../../../redux/slices/weather-slice/weatherSlice'
+import { setWeatherCityLat, setWeatherCityLon, setCurrentCity } from '../../../redux/slices/weather-slice/weatherSlice'
 
-
-export type OptionsCity = {
-	city: string
-	country: string
-	countryCode: string
-	id: number
-	latitude: number
-	longitude: number
-	name: string
-	population: number
-	region: string
-	regionCode: string
-	regionWdId: string
-	type: string
-	wikiDataId: string
-
-}
-
-interface ISearch {
-	onSearchChange: (arg: SearchData) => void,
-}
 
 export const Search = ({ onSearchChange }: ISearch) => {
 	const dispatch = useAppDispatch()
 	const [search, setSearch] = useState<SearchData>({ value: '', label: '' })
+
 	const { currentCity } = useAppSelector(state => state.weather)
+	const { accountCity } = useAppSelector(state => state.auth.accountData)
 
 	React.useEffect(() => {
 		currentCity && setSearch({ ...search, label: currentCity })
@@ -41,15 +22,21 @@ export const Search = ({ onSearchChange }: ISearch) => {
 
 		if (searchData.label) {
 			dispatch(setCurrentCity(searchData.label))
+		} else {
+			dispatch(setCurrentCity(accountCity.label))
 		}
-		dispatch(setCityLat(splittedCoord[0]))
-		dispatch(setCityLon(splittedCoord[1]))
+		dispatch(setWeatherCityLat(splittedCoord[0]))
+		dispatch(setWeatherCityLon(splittedCoord[1]))
 		setSearch(searchData)
 		onSearchChange(searchData)
 	}
 
 	const loadOptions = async (value: string) => {
-		return await CitiesService.loadOptions(value)
+		if (value) {
+			return await CitiesService.loadOptions(value)
+		} else {
+			return await CitiesService.loadOptions(accountCity.label)
+		}
 	}
 
 	return (
@@ -57,8 +44,8 @@ export const Search = ({ onSearchChange }: ISearch) => {
 			<AsyncPaginate
 				placeholder='Search for city'
 				debounceTimeout={600}
-				value={search}
-				onChange={(searchData) => searchData && handleOnChange(searchData)}
+				value={search.label ? search : accountCity}
+				onChange={(searchData) => searchData && handleOnChange(searchData as SearchData)}
 				loadOptions={(value) => loadOptions(value)}
 				styles={{
 					singleValue: (base) => ({

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '../../../firebase'
-import { AuthState, CurrUser } from './types'
+import { AccountData, AuthState } from './types'
 
 const initialState: AuthState = {
 	isAuth: false,
@@ -9,6 +9,14 @@ const initialState: AuthState = {
 	isLoading: false,
 	error: '',
 	status: '',
+	accountData: {
+		accountCity: {
+			value: '',
+			label: ''
+		},
+		languages: [],
+		dateOfBirth: ''
+	}
 }
 
 export const fetchCurrentUser = createAsyncThunk<User>('auth/fetchCurrentUser', async () => {
@@ -29,6 +37,9 @@ const authSlice = createSlice({
 		setAuth(state, { payload }: PayloadAction<boolean>) {
 			state.isAuth = payload
 		},
+		setAccountData: (state, { payload }: PayloadAction<AccountData>) => {
+			state.accountData = payload
+		}
 	},
 	extraReducers: (builder) => {
 		builder
@@ -48,5 +59,5 @@ const authSlice = createSlice({
 	},
 })
 
-export const { setAuth } = authSlice.actions
+export const { setAuth, setAccountData } = authSlice.actions
 export default authSlice.reducer

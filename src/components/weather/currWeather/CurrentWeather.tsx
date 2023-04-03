@@ -1,12 +1,8 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Switcher } from '../../../components/UI/checkbox/Switcher'
-import { IWeather } from '../../../pages/weather/Weather'
 import cl from './CurrentWeather.module.scss'
-
-interface currWeather {
-	data: IWeather
-}
+import { currWeather } from '../../../@types/weather-types'
 
 export const CurrentWeather = ({ data }: currWeather) => {
 	const [isCelsius, setIsCelsius] = useState<boolean>(true)
@@ -18,7 +14,7 @@ export const CurrentWeather = ({ data }: currWeather) => {
 		<div className={cl.weather}>
 			<div className={cl.top}>
 				<div>
-					<p className={cl.city}>{data.city}</p>
+					<p className={cl.city}>{data.accountCity}</p>
 					<p className={cl.weatherDescr}>{data.weather[0].description}</p>
 				</div>
 				<img src={`icons/${data.weather[0].icon}.png`} className={cl.weatherIcon} alt="weather" />

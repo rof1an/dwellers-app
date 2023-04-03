@@ -8,26 +8,12 @@
 	display: flex;
 	margin: 15px 0 15px 0;
 	color: #cccccc;
-	max-height: 756px;
-
-	.avatar {
-		position: relative;
-	}
-
-	.changeMainImg {
-		width: 30px;
-		position: absolute;
-		bottom: 10px;
-		right: 30px;
-		cursor: pointer;
-		backdrop-filter: brightness(0.55);
-		border-radius: 30%;
-	}
+	max-height: 220px;
 }
 
 .mainImg {
-	width: 220px;
-	height: 220px;
+	width: 210px;
+	height: 210px;
 	border-radius: 25px;
 	background-color: rgba(0, 0, 0, 0.4);
 	box-shadow: 1px 1px 15px #000;
@@ -65,6 +51,7 @@
 }
 
 .profileTitle {
+	text-transform: capitalize;
 	letter-spacing: 2px;
 	color: #fff;
 }
