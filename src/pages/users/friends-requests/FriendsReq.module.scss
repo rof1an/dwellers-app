@@ -10,10 +10,25 @@
 			background-color: rgba(0, 0, 0, 0.368627451);
 			box-shadow: 1px 1px 8px #000;
 			padding: 20px;
+			height: 80vh;
 
 			h2 {
+				font-size: 20px;
+				display: inline-block;
 				line-height: 0;
 				margin: 10px 0 25px 0;
+				background-color: #3c3c3c;
+				padding: 20px 15px;
+				border-radius: 15px;
+
+				span {
+					margin-left: 10px;
+					color: aqua;
+					font-size: 22px;
+					background-color: #2e2e2e;
+					padding: 0px 10px;
+					border-radius: 20px;
+				}
 			}
 
 			.requesterItem {

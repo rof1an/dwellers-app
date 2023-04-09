@@ -19,15 +19,16 @@ export const Search = ({ onSearchChange }: ISearch) => {
 
 	const handleOnChange = (searchData: SearchData) => {
 		const splittedCoord = searchData.value.split(' ')
+		console.log(splittedCoord)
 
 		if (searchData.label) {
 			dispatch(setCurrentCity(searchData.label))
-		} else {
-			accountCity.label && dispatch(setCurrentCity(accountCity.label))
+		} else if (accountCity.label) {
+			dispatch(setCurrentCity(accountCity.label))
 		}
+		setSearch(searchData)
 		dispatch(setWeatherCityLat(splittedCoord[0]))
 		dispatch(setWeatherCityLon(splittedCoord[1]))
-		setSearch(searchData)
 		onSearchChange(searchData)
 	}
 

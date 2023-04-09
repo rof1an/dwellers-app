@@ -7,62 +7,51 @@ import { Forecast } from '../../components/weather/forecast/Forecast'
 import { useAppSelector } from '../../hooks/hooks'
 import cl from './Weather.module.scss'
 
-
 export const Weather = () => {
 	const [currWeather, setCurrWeather] = useState<IWeather | null>(null)
 	const [forecast, setForecast] = useState<IForecast | null>(null)
 
-	const { currentCity, lat, lon } = useAppSelector(state => state.weather)
-	const { accountCity } = useAppSelector(state => state.auth.accountData)
-	const [accountCityLongitude, accountCityLatitude] = accountCity ? accountCity?.value.split(' ') : ['', '']
+	const { currentCity, lat, lon } = useAppSelector((state) => state.weather)
+	const { accountCity } = useAppSelector((state) => state.auth.accountData)
 
-	React.useEffect(() => {
-		const unsub = async () => {
-			if (currentCity || accountCity) {
-				const currWthFetch = await WeatherService.getWeather(
-					currentCity ? { lat, lon } : { lat: accountCityLatitude, lon: accountCityLongitude }
-				)
-				const forecastFetch = await WeatherService.getForecast(
-					lat && lon ? { lat, lon } : { lat: accountCityLatitude, lon: accountCityLongitude }
-				)
+	const fetchWeatherData = async (lat: string, lon: string) => {
+		const currWthFetch = await WeatherService.getWeather({ lat, lon })
+		const forecastFetch = await WeatherService.getForecast({ lat, lon })
+		return { currWeather: currWthFetch, forecast: forecastFetch }
+	}
 
-				try {
-					setCurrWeather({ accountCity: currentCity ? currentCity : accountCity.label, ...currWthFetch })
-					setForecast({ accountCity: currentCity ? currentCity : accountCity.label, ...forecastFetch })
-				} catch (err) {
-					console.log(err)
-				}
-			}
-		}
-
-		unsub()
-	}, [])
-
-	const handleOnSearchChange = async (searchData: SearchData) => {
-		const location = lat && lon ? { lat, lon } : { lat: accountCityLatitude, lon: accountCityLongitude }
-
-		const currWthFetch = await WeatherService.getWeather(location)
-		const forecastFetch = await WeatherService.getForecast(location)
+	const updateWeatherData = async (searchData: SearchData) => {
+		const latitide = searchData ? searchData.value.split(' ')[0] : lat
+		const longitude = searchData ? searchData.value.split(' ')[1] : lon
 
 		try {
-			setCurrWeather(searchData && { accountCity: searchData.label, ...currWthFetch })
-			setForecast(searchData && { accountCity: searchData.label, ...forecastFetch })
+			const { currWeather, forecast } = await fetchWeatherData(latitide, longitude)
+			const accountCityLabel = searchData ? searchData.label : accountCity.label
+			setCurrWeather({ accountCity: accountCityLabel, ...currWeather })
+			setForecast({ accountCity: accountCityLabel, ...forecast })
 		} catch (err) {
 			console.log(err)
 		}
 	}
 
+	React.useEffect(() => {
+		if (lat && lon) {
+			const data = {
+				value: lat + ' ' + lon,
+				label: currentCity!
+			}
+			updateWeatherData(data)
+		} else {
+			updateWeatherData(accountCity)
+		}
+	}, [])
+
+
 	return (
-		<div
-			className={cl.root}>
-			<Search onSearchChange={handleOnSearchChange} />
-			{currWeather && (
-				<CurrentWeather data={currWeather} />
-			)}
-			{forecast && (
-				<Forecast data={forecast} />
-			)}
+		<div className={cl.root}>
+			<Search onSearchChange={updateWeatherData} />
+			{currWeather && <CurrentWeather data={currWeather} />}
+			{forecast && <Forecast data={forecast} />}
 		</div>
 	)
 }
-

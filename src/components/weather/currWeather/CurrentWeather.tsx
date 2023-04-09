@@ -1,14 +1,15 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { currWeather } from '../../../@types/weather-types'
 import { Switcher } from '../../../components/UI/checkbox/Switcher'
 import cl from './CurrentWeather.module.scss'
-import { currWeather } from '../../../@types/weather-types'
 
 export const CurrentWeather = ({ data }: currWeather) => {
 	const [isCelsius, setIsCelsius] = useState<boolean>(true)
 
 	const tempF = (data.main.temp * 9 / 5) + 32
 	const feelsLikeF = (data.main.feels_like * 9 / 5) + 32
+	console.log(data)
 
 	return (
 		<div className={cl.weather}>

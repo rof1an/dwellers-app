@@ -102,7 +102,10 @@ export const FriendsRequests = () => {
 			<UsersNavigation allUsers='/users' friends='/users/friends' friendsRequst={location} />
 			<div className={cl.content}>
 				<ul className={cl.requests}>
-					<h2>New friend requests</h2>
+					<h2>
+						New friend requests
+						<span>0</span>
+					</h2>
 					{requests.map((req) => {
 						return (
 							<li className={cl.requesterItem} key={req.requester.requesterUid}>
