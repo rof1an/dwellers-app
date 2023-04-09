@@ -12,7 +12,7 @@ type Recipient = {
 	recipientUid: string
 	recipientImg: string
 }
-type Requester = {
+export type Requester = {
 	requesterName: string
 	requesterUid: string
 	requesterImg: string
@@ -27,6 +27,7 @@ export const FriendsRequests = () => {
 	const location = useLocation().pathname
 	const [requests, setRequests] = useState<RequestValues[]>([])
 	const { currentUser } = useAppSelector((state) => state.auth)
+	const requesterUid = requests.map((req) => req.requester.requesterUid)
 
 	React.useEffect(() => {
 		getRequests()
@@ -63,24 +64,37 @@ export const FriendsRequests = () => {
 	}
 
 	const acceptRequest = async (user: Requester) => {
-		const reqUid = requests.map((req) => req.requester.requesterUid)
-		const docUid = currentUser!.uid > reqUid[0]
-			? user?.requesterName + currentUser!.uid + reqUid[0] : user?.requesterName + reqUid[0] + currentUser!.uid
+		const senderFriendsRef = doc(db, 'userFriends', user.requesterUid)
+		const recipientRef = doc(db, 'userFriends', currentUser!.uid)
+		const docUid = currentUser!.uid > requesterUid[0]
+			? user?.requesterName + currentUser!.uid + requesterUid[0] : user?.requesterName + requesterUid[0] + currentUser!.uid
 
-		const userFriendsRef = doc(db, 'userFriends', currentUser!.uid)
-		const userFriendsDoc = await getDoc(userFriendsRef)
+		const userFriendsDoc = await getDoc(recipientRef)
 		const currentFriends = userFriendsDoc.data()?.friends || []
 		const updatedFriends = [...currentFriends, user]
 
-		await setDoc(userFriendsRef, { friends: updatedFriends })
+		await setDoc(recipientRef, { friends: updatedFriends })
 		await deleteDoc(doc(db, 'friendsRequests', docUid))
+
+		// Add user to the sender's friend list
+		const senderFriendsDoc = await getDoc(senderFriendsRef)
+		const senderCurrentFriends = senderFriendsDoc.data()?.friends || []
+		const senderUpdatedFriends = [...senderCurrentFriends, {
+			requesterName: currentUser!.displayName,
+			requesterUid: currentUser!.uid,
+			requesterImg: currentUser!.photoURL,
+		}]
+
+		await setDoc(senderFriendsRef, { friends: senderUpdatedFriends })
 
 		const updatedRequests = requests.filter((req) => req.requester.requesterUid !== user.requesterUid)
 		setRequests(updatedRequests)
 	}
 
-	const rejectRequest = () => {
-
+	const rejectRequest = async (user: Requester) => {
+		const docUid = currentUser!.uid > requesterUid[0]
+			? user?.requesterName + currentUser!.uid + requesterUid[0] : user?.requesterName + requesterUid[0] + currentUser!.uid
+		await deleteDoc(doc(db, 'friendsRequests', docUid))
 	}
 
 	return (
@@ -97,7 +111,7 @@ export const FriendsRequests = () => {
 									<span className={cl.reqName}>{req.requester.requesterName}</span>
 									<div className={cl.btns}>
 										<Button onClick={() => acceptRequest(req.requester)}>Accept the request</Button>
-										<Button>Reject the request</Button>
+										<Button onClick={() => rejectRequest(req.requester)}>Reject the request</Button>
 									</div>
 								</div>
 							</li>

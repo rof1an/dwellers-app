@@ -49,21 +49,21 @@ export const customStyles = {
 		WebkitOverflowScrolling: 'touch',
 		position: 'relative',
 		overflow: 'hidden',
+		overflowX: 'auto',
 		flexWrap: 'nowrap',
-		overflowX: 'scroll',
 		maxWidth: '275px',
 		padding: '2px 8px 5px 8px',
 		boxSizing: 'border-box',
 		'&::-webkit-scrollbar': {
-			height: '7px',
+			height: '4px',
 			backgroundColor: 'aqua',
 		},
 		'&::-webkit-scrollbar-thumb': {
-			backgroundColor: '#fff',
+			backgroundColor: '#000',
 			border: '1px solid aqua',
 		},
 		'&::-moz-scrollbar': {
-			height: '7px',
+			height: '4px',
 			backgroundColor: '#fff',
 		},
 		'&::-moz-scrollbar-thumb': {

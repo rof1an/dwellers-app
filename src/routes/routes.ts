@@ -34,13 +34,13 @@ const Register = lazy(() =>
 )
 
 export const publicRoutes = [
-	{ path: '/login', Element: Auth },
+	{ path: '/', Element: Auth },
 	{ path: '/register', Element: Register },
 ]
 
 export const privateRoutes = [
-	{ path: '/', Element: Home },
-	{ path: '/login', Element: Auth },
+	{ path: '/home', Element: Home },
+	{ path: '/', Element: Auth },
 	{ path: '/register', Element: Register },
 	{ path: '/chats', Element: Chats },
 	{ path: '/news', Element: News },

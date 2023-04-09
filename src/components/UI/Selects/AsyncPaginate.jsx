@@ -6,6 +6,8 @@ const customStyles = {
 		...base,
 		backgroundColor: 'transparent',
 		borderColor: 'aqua',
+		border: 'none',
+		borderWidth: 0,
 		color: '#fff',
 		':hover': {
 			borderColor: '#fff',

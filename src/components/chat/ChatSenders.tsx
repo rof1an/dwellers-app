@@ -13,10 +13,10 @@ export const ChatSenders = () => {
 	const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
 	const data = useAppSelector((state) => state.chat)
-	const { lastSenderId = '' } = useAppSelector(state => state.chat)
+	const { lastSender } = useAppSelector(state => state.chat)
 
 	const handleSendMessage = () => {
-		handleSend({ img, data, text, lastSenderId })
+		lastSender && handleSend({ img, data, text, lastSender })
 		setText('')
 		setImg(null)
 		setImgUrl(null)

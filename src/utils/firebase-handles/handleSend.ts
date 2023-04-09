@@ -2,7 +2,7 @@ import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { v4 as uuid } from 'uuid'
 import { db, storage } from '../../firebase'
-import { UserInfo } from '../../redux/slices/chat-slice/types'
+import { LastSender, UserInfo } from '../../redux/slices/chat-slice/types'
 
 export interface HandleSendProps {
 	img: File | null,
@@ -12,11 +12,10 @@ export interface HandleSendProps {
 		currentUser: UserInfo | null,
 		clickedUser: UserInfo | null
 	},
-	lastSenderId: string
+	lastSender: LastSender
 }
 
-
-export const handleSend = async ({ img, data, text, lastSenderId }: HandleSendProps) => {
+export const handleSend = async ({ img, data, text, lastSender }: HandleSendProps) => {
 	const storageRef = ref(storage, uuid())
 
 
@@ -71,7 +70,7 @@ export const handleSend = async ({ img, data, text, lastSenderId }: HandleSendPr
 
 	await updateDoc(doc(db, 'userChats', data.currentUser!.uid), {
 		[data.chatId + '.sender']: {
-			senderId: lastSenderId
+			senderId: lastSender
 		}
 	})
 }

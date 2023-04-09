@@ -3,7 +3,7 @@ import { AsyncPaginate } from 'react-select-async-paginate'
 import { ISearch, SearchData } from '../../../@types/weather-types'
 import { CitiesService } from '../../../API/CitiesService'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
-import { setWeatherCityLat, setWeatherCityLon, setCurrentCity } from '../../../redux/slices/weather-slice/weatherSlice'
+import { setCurrentCity, setWeatherCityLat, setWeatherCityLon } from '../../../redux/slices/weather-slice/weatherSlice'
 
 
 export const Search = ({ onSearchChange }: ISearch) => {
@@ -23,7 +23,7 @@ export const Search = ({ onSearchChange }: ISearch) => {
 		if (searchData.label) {
 			dispatch(setCurrentCity(searchData.label))
 		} else {
-			dispatch(setCurrentCity(accountCity.label))
+			accountCity.label && dispatch(setCurrentCity(accountCity.label))
 		}
 		dispatch(setWeatherCityLat(splittedCoord[0]))
 		dispatch(setWeatherCityLon(splittedCoord[1]))
@@ -45,7 +45,7 @@ export const Search = ({ onSearchChange }: ISearch) => {
 				placeholder='Search for city'
 				debounceTimeout={600}
 				value={search.label ? search : accountCity}
-				onChange={(searchData) => searchData && handleOnChange(searchData as SearchData)}
+				onChange={(searchData) => handleOnChange(searchData as SearchData)}
 				loadOptions={(value) => loadOptions(value)}
 				styles={{
 					singleValue: (base) => ({

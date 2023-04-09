@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth'
 
 export type UserInfo = {
 	displayName: string,
@@ -6,9 +5,16 @@ export type UserInfo = {
 	uid: string,
 }
 
+export type LastSender = {
+	date: { seconds: number, nanoseconds: number },
+	id: string,
+	senderId: string,
+	text: string
+}
+
 export interface ChatState {
 	chatId: string,
 	currentUser: UserInfo | null,
 	clickedUser: UserInfo | null,
-	lastSenderId: any
+	lastSender: LastSender | null
 }

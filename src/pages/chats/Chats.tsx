@@ -18,7 +18,7 @@ export const Chats = () => {
 	const [selectedUser, setSelectedUser] = useState<any>({})
 
 	const { currentUser } = useAppSelector(state => state.auth)
-	const { lastSenderId, clickedUser } = useAppSelector(state => state.chat)
+	const { lastSender, clickedUser } = useAppSelector(state => state.chat)
 	const chatsArray = Object.entries(chats)
 
 	React.useEffect(() => {
@@ -34,17 +34,21 @@ export const Chats = () => {
 			dispatch(setChatInfo(null))
 		}
 	}, [currentUser?.uid])
+	console.log(clickedUser)
 
 	React.useEffect(() => {
 		const getLastSender = async () => {
-			const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
-			const docSnap = await getDoc(doc(db, "chats", uid))
-			const data = docSnap.data()?.messages
-			dispatch(setLastSender(data[data.length - 1]))
+			if (clickedUser && currentUser) {
+				console.log(clickedUser.uid > currentUser?.uid ? clickedUser?.uid + currentUser?.uid : currentUser?.uid + clickedUser?.uid)
+				const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
+				const docSnap = await getDoc(doc(db, "chats", uid))
+				const data = docSnap.data()?.messages
+				dispatch(setLastSender(data[data.length - 1]))
+			}
 		}
 
 		getLastSender()
-	})
+	}, [])
 
 	const handleSelect = async (clickedUserInfo: UserInfo) => {
 		dispatch(setCurrentUser(currentUser as UserInfo))
@@ -74,8 +78,8 @@ export const Chats = () => {
 												<span className={cl.userName}>{chat[1]?.userInfo?.displayName}</span>
 												{chat[1].lastMessage?.text && (
 													<span className={cl.lastMsg}>
-														{lastSenderId && (
-															<b>{lastSenderId === currentUser?.uid ? 'You' : 'He'}: </b>
+														{lastSender && (
+															<b>{lastSender.senderId === currentUser?.uid ? 'You' : 'He'}: </b>
 														)}
 														{chat[1].lastMessage?.text}
 													</span>

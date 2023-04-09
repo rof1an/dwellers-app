@@ -37,8 +37,11 @@ const authSlice = createSlice({
 		setAuth(state, { payload }: PayloadAction<boolean>) {
 			state.isAuth = payload
 		},
-		setAccountData: (state, { payload }: PayloadAction<AccountData>) => {
-			state.accountData = payload
+		setAccountData: (state, { payload }: PayloadAction<any>) => {
+			state.accountData = {
+				accountCity: payload.city,
+				...payload
+			}
 		}
 	},
 	extraReducers: (builder) => {

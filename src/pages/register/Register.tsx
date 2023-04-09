@@ -23,7 +23,7 @@ export const Register: FC = () => {
 
         try {
             await createUser({ email, password, img: file, displayName, setError })
-            navigate('/login')
+            navigate('/')
         } catch (err) {
             setError(true)
         } finally {

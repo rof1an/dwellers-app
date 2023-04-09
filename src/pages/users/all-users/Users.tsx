@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth'
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import addFriend from '../../../assets/addFriend.png'
@@ -42,25 +42,27 @@ export const Users = () => {
 
 	// send request to friend
 	const handleSendRequest = async ({ recipientName, recipientUid, recipientImg }: HandleRequestProps) => {
-		const refUid = currentUser!.uid > recipientUid
-			? currentUser?.displayName + currentUser!.uid + recipientUid : currentUser?.displayName + recipientUid + currentUser!.uid
-		const requestRef = doc(db, 'friendsRequests', refUid)
+		const refUid = `${currentUser?.displayName}${currentUser!.uid > recipientUid
+			? currentUser!.uid : recipientUid}${currentUser!.uid <= recipientUid ? currentUser!.uid : recipientUid}`
 
-		// check if request to friends didn't yet
-		// if (querySnapshot.size === 0) {
-		await setDoc(requestRef, {
-			requester: {
-				name: currentUser?.displayName,
-				photoUrl: currentUser?.photoURL,
-				uid: currentUser?.uid,
-			},
-			recipient: {
-				name: recipientName,
-				photoUrl: recipientImg,
-				uid: recipientUid
-			}
-		})
-		// }
+		const userFriendsDoc = await getDoc(doc(db, 'userFriends', currentUser!.uid))
+		const friendsList = await userFriendsDoc?.data()?.friends
+		const isAlreadyFriends = friendsList && friendsList.some((friend: any) => friend.uid === recipientUid)
+
+		if (!isAlreadyFriends) {
+			await setDoc(doc(db, 'friendsRequests', refUid), {
+				requester: {
+					name: currentUser?.displayName,
+					photoUrl: currentUser?.photoURL,
+					uid: currentUser?.uid,
+				},
+				recipient: {
+					name: recipientName,
+					photoUrl: recipientImg,
+					uid: recipientUid,
+				},
+			})
+		}
 	}
 
 	// checking if there is a user

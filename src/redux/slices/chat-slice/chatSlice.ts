@@ -8,7 +8,7 @@ const initialState: ChatState = {
 	chatId: '',
 	currentUser: null,
 	clickedUser: null,
-	lastSenderId: ''
+	lastSender: null
 }
 
 const chatSlice = createSlice({
@@ -28,7 +28,7 @@ const chatSlice = createSlice({
 			}
 		},
 		setLastSender: (state, { payload }) => {
-			state.lastSenderId = payload
+			state.lastSender = payload
 		}
 	},
 })

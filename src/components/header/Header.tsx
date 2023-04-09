@@ -24,7 +24,7 @@ export const Header = () => {
 	return (
 		<header className={cl.header}>
 			<div className={cl.headerContent}>
-				<NavLink to='/' className={(img) => (img.isActive ? cl.transformImg : '')}>
+				<NavLink to='/home' className={(img) => (img.isActive ? cl.transformImg : '')}>
 					<div className={cl.headerPanel}>
 						<img className={cl.headerImg} src={logo} />
 						<p>
@@ -34,7 +34,7 @@ export const Header = () => {
 				</NavLink>
 				{isAuth ? (
 					<div className={cl.logInfo}>
-						<NavLink to='/login'>
+						<NavLink to='/'>
 							<div className={cl.logout} onClick={signOutFromAccount}>
 								<img src={logoutIcon} />
 								<span>Log out</span>
@@ -43,7 +43,7 @@ export const Header = () => {
 						{currentUser?.photoURL && <img className={cl.logo} src={currentUser.photoURL} />}
 					</div>
 				) : (
-					<NavLink to='/login'>
+					<NavLink to='/'>
 						<div className={cl.login} onClick={signOutFromAccount}>
 							<img src={logoutIcon} />
 							<span>Log in</span>

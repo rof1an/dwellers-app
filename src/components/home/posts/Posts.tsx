@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
-import { Timestamp, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { Timestamp, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import 'react-tooltip/dist/react-tooltip.css'
@@ -38,9 +38,10 @@ export const Posts = () => {
 			date: Timestamp.now(),
 		}
 		const updatedPostsArray = [newPost, ...postsArray]
-
-		await updateDoc(postsRef, { posts: updatedPostsArray })
-		setPostText('')
+		if (postText) {
+			await setDoc(postsRef, { posts: updatedPostsArray })
+			setPostText('')
+		}
 	}
 
 	React.useEffect(() => {
@@ -88,11 +89,12 @@ export const Posts = () => {
 
 						return (
 							<motion.div
+								key={post.postId}
 								initial={{ height: 0 }}
 								animate={{ height: 'auto' }}
 								transition={{ duration: 0.4 }}
 							>
-								<Post key={post.id} timeAgo={timeAgo} post={post} deletePost={deletePost} />
+								<Post timeAgo={timeAgo} post={post} deletePost={deletePost} />
 							</motion.div>
 						)
 					})}
