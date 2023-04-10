@@ -55,7 +55,6 @@ export const Chats = () => {
 		dispatch(setChatInfo(clickedUserInfo))
 		setSelectedUser(clickedUserInfo)
 	}
-	console.log(lastSender?.senderId === currentUser?.uid)
 
 	return (
 		<>

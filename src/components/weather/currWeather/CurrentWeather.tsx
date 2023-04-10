@@ -9,7 +9,6 @@ export const CurrentWeather = ({ data }: currWeather) => {
 
 	const tempF = (data.main.temp * 9 / 5) + 32
 	const feelsLikeF = (data.main.feels_like * 9 / 5) + 32
-	console.log(data)
 
 	return (
 		<div className={cl.weather}>

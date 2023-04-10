@@ -19,7 +19,6 @@ export const Search = ({ onSearchChange }: ISearch) => {
 
 	const handleOnChange = (searchData: SearchData) => {
 		const splittedCoord = searchData.value.split(' ')
-		console.log(splittedCoord)
 
 		if (searchData.label) {
 			dispatch(setCurrentCity(searchData.label))
