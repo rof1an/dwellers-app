@@ -1,5 +1,11 @@
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/build/index.html"
   status = 200
 
+[build]
+  command = "npm run build"
+  publish = "build"
+  functions = "functions"
+  base = "/"
+  copy = "public/index.html"
