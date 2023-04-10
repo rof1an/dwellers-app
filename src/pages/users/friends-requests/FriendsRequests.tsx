@@ -26,6 +26,7 @@ interface RequestValues {
 export const FriendsRequests = () => {
 	const location = useLocation().pathname
 	const [requests, setRequests] = useState<RequestValues[]>([])
+	const [requestsCount, setRequestsCount] = useState<number>(0)
 	const { currentUser } = useAppSelector((state) => state.auth)
 	const requesterUid = requests.map((req) => req.requester.requesterUid)
 
@@ -58,7 +59,7 @@ export const FriendsRequests = () => {
 				}
 				requestsData.push(request as RequestValues)
 			})
-
+			setRequestsCount(requestsData.length)
 			setRequests(requestsData)
 		})
 	}
@@ -86,7 +87,6 @@ export const FriendsRequests = () => {
 		}]
 
 		await setDoc(senderFriendsRef, { friends: senderUpdatedFriends })
-
 		const updatedRequests = requests.filter((req) => req.requester.requesterUid !== user.requesterUid)
 		setRequests(updatedRequests)
 	}
@@ -104,7 +104,7 @@ export const FriendsRequests = () => {
 				<ul className={cl.requests}>
 					<h2>
 						New friend requests
-						<span>0</span>
+						<span>{requestsCount}</span>
 					</h2>
 					{requests.map((req) => {
 						return (

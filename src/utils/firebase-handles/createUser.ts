@@ -39,6 +39,9 @@ export const createUser = async (params: Params) => {
 		})
 		// Create empty chats collection
 		await setDoc(doc(db, 'userChats', res.user.uid), {})
+		await setDoc(doc(db, 'userSettings', res.user.uid), {
+			clockActive: false
+		})
 	} catch (err) {
 		setError(true)
 	}

@@ -16,7 +16,7 @@ export const ChatSenders = () => {
 	const { lastSender } = useAppSelector(state => state.chat)
 
 	const handleSendMessage = () => {
-		lastSender && handleSend({ img, data, text, lastSender })
+		handleSend({ img, data, text, lastSender })
 		setText('')
 		setImg(null)
 		setImgUrl(null)

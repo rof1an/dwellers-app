@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from '../hooks/hooks'
 import { privateRoutes, publicRoutes } from '../routes/routes'
 import { Loader } from './UI/loader/Loader'
@@ -9,19 +9,24 @@ export const AppRouter = () => {
 
 	return (
 		<Suspense fallback={<Loader />}>
-			{isAuth ? (
-				<Routes>
-					{privateRoutes.map(({ path, Element }) => (
-						<Route key={path} path={path} element={<Element />} />
-					))}
-				</Routes>
-			) : (
-				<Routes>
-					{publicRoutes.map(({ path, Element }) => (
-						<Route key={path} path={path} element={<Element />} />
-					))}
-				</Routes>
-			)}
+			<Routes>
+				{publicRoutes.map(({ path, Element }) => (
+					<Route key={path} path={path} element={<Element />} />
+				))}
+				{privateRoutes.map(({ path, Element }) => (
+					<Route
+						key={path}
+						path={path}
+						element={
+							isAuth ? (
+								<Element />
+							) : (
+								<Navigate to="/" replace={true} />
+							)
+						}
+					/>
+				))}
+			</Routes>
 		</Suspense>
 	)
 }

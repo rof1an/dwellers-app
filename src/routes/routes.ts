@@ -5,6 +5,7 @@ import { FriendsRequests } from '../pages/users/friends-requests/FriendsRequests
 import { Friends } from '../pages/users/friends/Friends'
 import { UserPage } from '../pages/users/user-page/UserPage'
 import { Weather } from '../pages/weather/Weather'
+import { Navigate } from 'react-router-dom'
 
 const Auth = lazy(() =>
 	import(/* webpackChunkName: "Auth" */ '../pages/auth/Auth').then((module) => ({
@@ -49,5 +50,5 @@ export const privateRoutes = [
 	{ path: '/users/:userId', Element: UserPage },
 	{ path: '/users/friends', Element: Friends },
 	{ path: '/users/friendsRequests', Element: FriendsRequests },
-	{ path: '/weather', Element: Weather }
+	{ path: '/weather', Element: Weather },
 ]

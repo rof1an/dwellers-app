@@ -1,0 +1,50 @@
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	background: rgba(0, 0, 0, 0.456);
+	height: 100vh;
+	overflow: hidden;
+	z-index: 10;
+	transition: opacity 0.3s ease-in-out;
+
+	.modalContent {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		padding: 20px 5px;
+		background: #2f2f32;
+		border-radius: 15px;
+		max-width: 500px;
+		width: 100%;
+		margin: 100px auto;
+
+		h2 {
+			margin: 0;
+			color: aqua;
+			text-align: center;
+		}
+
+		ul {
+			list-style: none;
+		}
+
+		.contentList {
+			margin-top: 30px;
+
+			li {
+				label {
+					padding-left: 10px;
+				}
+			}
+		}
+	}
+}
+
+.active {
+	display: block;
+	opacity: 1;
+}

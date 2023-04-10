@@ -12,7 +12,7 @@ export interface HandleSendProps {
 		currentUser: UserInfo | null,
 		clickedUser: UserInfo | null
 	},
-	lastSender: LastSender
+	lastSender: LastSender | null
 }
 
 export const handleSend = async ({ img, data, text, lastSender }: HandleSendProps) => {

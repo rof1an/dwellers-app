@@ -33,6 +33,7 @@
 
 	hr {
 		margin: 0;
+		border-color: rgba(204, 204, 204, 0.48);
 	}
 
 	.subBlock {
@@ -101,7 +102,8 @@
 		overflow: hidden;
 
 		span {
-			color: aqua;
+			color: #ccc;
+			font-size: 17px;
 		}
 	}
 }

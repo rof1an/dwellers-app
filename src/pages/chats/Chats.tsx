@@ -1,4 +1,4 @@
-import { doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { ChatsProps } from '../../@types/chat-types'
 import { Loader } from '../../components/UI/loader/Loader'
@@ -34,16 +34,16 @@ export const Chats = () => {
 			dispatch(setChatInfo(null))
 		}
 	}, [currentUser?.uid])
-	console.log(clickedUser)
 
 	React.useEffect(() => {
 		const getLastSender = async () => {
 			if (clickedUser && currentUser) {
-				console.log(clickedUser.uid > currentUser?.uid ? clickedUser?.uid + currentUser?.uid : currentUser?.uid + clickedUser?.uid)
-				const uid = getBothUid.getUid(currentUser!.uid, clickedUser!.uid)
-				const docSnap = await getDoc(doc(db, "chats", uid))
-				const data = docSnap.data()?.messages
-				dispatch(setLastSender(data[data.length - 1]))
+				const uid = getBothUid.getUid(currentUser.uid, clickedUser.uid)
+
+				onSnapshot(doc(db, "chats", uid), (doc) => {
+					const data = doc.data()?.messages
+					dispatch(setLastSender(data[data.length - 1]))
+				})
 			}
 		}
 
@@ -55,6 +55,7 @@ export const Chats = () => {
 		dispatch(setChatInfo(clickedUserInfo))
 		setSelectedUser(clickedUserInfo)
 	}
+	console.log(lastSender?.senderId === currentUser?.uid)
 
 	return (
 		<>
@@ -79,7 +80,9 @@ export const Chats = () => {
 												{chat[1].lastMessage?.text && (
 													<span className={cl.lastMsg}>
 														{lastSender && (
-															<b>{lastSender.senderId === currentUser?.uid ? 'You' : 'He'}: </b>
+															<b>{lastSender.senderId === currentUser?.uid && (
+																currentUser.photoURL && <img className={cl.lastMsgImg} src={currentUser.photoURL} alt="" />
+															)}</b>
 														)}
 														{chat[1].lastMessage?.text}
 													</span>

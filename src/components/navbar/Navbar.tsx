@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import cl from '../navbar/Navbar.module.scss'
+import { NavSettings } from './navSettings/NavSettings'
 
 export const Navbar = () => {
+	const [isSettingsVisible, setIsSettingsVisible] = useState(false)
 	const [links] = useState([
 		{ id: 2, title: 'Home', link: '/home' },
 		{ id: 3, title: 'News', link: '/news' },
@@ -23,6 +25,12 @@ export const Navbar = () => {
 					</NavLink>
 				))}
 			</ul>
+			<ul className={cl.bottomBtn}>
+				<li
+					onClick={() => setIsSettingsVisible(true)}
+					className={cl.bottomLink}>Settings</li>
+			</ul>
+			<NavSettings isVisible={isSettingsVisible} setIsVisible={setIsSettingsVisible} />
 		</div>
 	)
 }

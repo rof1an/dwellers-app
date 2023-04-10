@@ -1,11 +1,19 @@
 .navigation {
 	margin-top: 15px;
-	margin-right: 15px;
 	height: fit-content;
 	min-width: 155px;
 	background-color: var(--mainBg);
 	box-shadow: 0 0 15px 1px #000;
 	border-radius: 10px;
+
+	.bottomBtn {
+		list-style: none;
+		padding-left: 10px;
+
+		li {
+			cursor: pointer;
+		}
+	}
 }
 
 .nav {

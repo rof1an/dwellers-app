@@ -63,13 +63,23 @@
 			}
 
 			.lastMsg {
+				margin-top: 5px;
 				color: #ccc;
 				font-size: 13px;
+				display: flex;
+				align-items: center;
 
 				b {
 					color: aqua;
 					font-weight: 400;
 					letter-spacing: -0.5px;
+				}
+
+				.lastMsgImg {
+					margin-right: 5px;
+					width: 20px;
+					height: 20px;
+					object-fit: cover;
 				}
 			}
 		}
@@ -80,7 +90,6 @@
 		flex-direction: column;
 		box-shadow: 1px 1px 10px -2px #000;
 		background-color: rgba(0, 0, 0, 0.17);
-		margin: -5px 0;
 
 		.users {
 			margin: -1px 0;

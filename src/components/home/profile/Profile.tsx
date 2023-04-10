@@ -97,9 +97,9 @@ export const Profile = () => {
 							<p>City:</p>
 						</div>
 						<div className={cl.right}>
-							<p>{data.date}</p>
-							<p>{data.languages && data.languages.map((l) => l.label).join(', ')}</p>
-							<p>{data.city.label}</p>
+							<p>{data.date ? data.date : <span className={cl.emptyInfo}>none</span>}</p>
+							<p>{data.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
+							<p>{data.city.label ? data.city.label : <span className={cl.emptyInfo}>none</span>}</p>
 						</div>
 					</div>
 				</div>
