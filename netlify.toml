@@ -2,8 +2,3 @@
 from = "/*"
 to = "build/index.html"
 status = 200
-
-
-[build]
-command = "yarn build"
-publish = "build" 
