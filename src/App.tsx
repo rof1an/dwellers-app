@@ -19,7 +19,7 @@ export const App: FC = () => {
                 console.log(doc.data()?.clockActive)
             })
         }
-    }, [])
+    }, [currentUser])
 
     return (
         <div className='App'>

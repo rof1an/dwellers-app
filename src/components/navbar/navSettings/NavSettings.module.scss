@@ -33,15 +33,44 @@
 		}
 
 		.contentList {
-			margin-top: 30px;
-			gap: 20px;
+			padding: 20px;
 			display: flex;
 			flex-direction: column;
 
-			li {
-				label {
-					padding-left: 10px;
+			.item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 10px;
+
+				.itemSeperator {
+					display: flex;
+					gap: 10px;
 				}
+
+				.itemImg {
+					width: 40px;
+					height: 40px;
+					object-fit: cover;
+				}
+				span {
+					color: #fff;
+					font-size: 16px;
+				}
+				p {
+					color: #ccc;
+					font-size: 12px;
+					margin: 0;
+				}
+				.itemSwitcher {
+					cursor: pointer;
+					font-size: 15px;
+					color: aqua;
+					text-decoration: underline;
+				}
+			}
+			hr {
+				width: 100%;
 			}
 		}
 	}

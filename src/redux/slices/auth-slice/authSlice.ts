@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '../../../firebase'
-import { AccountData, AuthState } from './types'
+import { AuthState } from './types'
 
 const initialState: AuthState = {
 	isAuth: false,
@@ -37,9 +37,9 @@ const authSlice = createSlice({
 		setAuth(state, { payload }: PayloadAction<boolean>) {
 			state.isAuth = payload
 		},
-		setAccountData: (state, { payload }: PayloadAction<any>) => {
+		setAccountData: (state, { payload }: PayloadAction<any | null>) => {
 			state.accountData = {
-				accountCity: payload.city,
+				accountCity: payload?.city,
 				...payload
 			}
 		}

@@ -1,9 +1,13 @@
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { deleteUser, signOut } from 'firebase/auth'
+import { deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import { db } from '../../../firebase'
-import { useAppSelector } from '../../../hooks/hooks'
+import { useNavigate } from 'react-router-dom'
+import deleteImg from '../../../assets/close-boxed-svgrepo-com.svg'
+import clockSvg from '../../../assets/icons8-часы.svg'
+import { auth, db } from '../../../firebase'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
+import { setAuth } from '../../../redux/slices/auth-slice/authSlice'
 import cl from './NavSettings.module.scss'
-import { Button } from '../../UI/button/Button'
 
 interface INavSettings {
 	isVisible: boolean,
@@ -11,6 +15,8 @@ interface INavSettings {
 }
 
 export const NavSettings = ({ isVisible, setIsVisible }: INavSettings) => {
+	const navigate = useNavigate()
+	const dispatch = useAppDispatch()
 	const [isClockActive, setIsClockActive] = useState(false)
 	const { currentUser } = useAppSelector(state => state.auth)
 
@@ -23,8 +29,25 @@ export const NavSettings = ({ isVisible, setIsVisible }: INavSettings) => {
 		}
 	}
 
-	const deleteAccount = () => {
-
+	const deleteAccount = async () => {
+		try {
+			if (currentUser) {
+				await signOut(auth).then(() => {
+					dispatch(setAuth(false))
+					localStorage.removeItem('persist:root')
+					setIsVisible(false)
+					navigate('/')
+				})
+				await deleteUser(currentUser).then(() => {
+					deleteDoc(doc(db, "users", currentUser.uid))
+					deleteDoc(doc(db, "userSettings", currentUser.uid))
+					deleteDoc(doc(db, "userPosts", currentUser.uid))
+					deleteDoc(doc(db, "friendsRequests", currentUser.uid))
+				})
+			}
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	useEffect(() => {
@@ -47,13 +70,35 @@ export const NavSettings = ({ isVisible, setIsVisible }: INavSettings) => {
 				className={cl.modalContent}>
 				<h2>App settings</h2>
 				<ul className={cl.contentList}>
-					<li>
-						<input onChange={activateClock} type="checkbox" />
-						<label>Add a watch to the home page</label>
+
+					<li className={cl.item}>
+						<div className={cl.itemSeperator}>
+							<img className={cl.itemImg} src={clockSvg} alt="" />
+							<div>
+								<span>Add a clock</span>
+								<p>Turn on the clock display near the navigation bar</p>
+							</div>
+						</div>
+						<span
+							onClick={activateClock}
+							className={cl.itemSwitcher}>{isClockActive ? 'Enabled' : 'Disabled'}</span>
 					</li>
-					<li>
-						<Button>Delete an account</Button>
+					<hr />
+
+					<li className={cl.item}>
+						<div className={cl.itemSeperator}>
+							<img className={cl.itemImg} src={deleteImg} alt="" />
+							<div>
+								<span>Delete an account</span>
+								<p>Completely delete the account and all data</p>
+							</div>
+						</div>
+						<span
+							onClick={deleteAccount}
+							className={cl.itemSwitcher}>Delete</span>
 					</li>
+					<hr />
+
 				</ul>
 			</div>
 		</div>
