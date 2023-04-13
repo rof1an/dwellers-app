@@ -12,13 +12,11 @@ export const App: FC = () => {
     const [isClockActive, setIsClockActive] = useState(false)
     const { currentUser } = useAppSelector(state => state.auth)
 
-
     useEffect(() => {
         if (currentUser?.uid) {
             onSnapshot(doc(db, 'userSettings', currentUser.uid), (doc) => {
                 setIsClockActive(doc.data()?.clockActive)
                 console.log(doc.data()?.clockActive)
-
             })
         }
     }, [])

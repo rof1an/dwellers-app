@@ -11,7 +11,13 @@ export const AppRouter = () => {
 		<Suspense fallback={<Loader />}>
 			<Routes>
 				{publicRoutes.map(({ path, Element }) => (
-					<Route key={path} path={path} element={<Element />} />
+					<Route key={path} path={path} element={
+						isAuth ? (
+							<Navigate to="/home" replace={true} />
+						) : (
+							<Element />
+						)
+					} />
 				))}
 				{privateRoutes.map(({ path, Element }) => (
 					<Route
