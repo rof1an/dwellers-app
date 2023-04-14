@@ -28,22 +28,23 @@ export const NavSettings = ({ isVisible, setIsVisible }: INavSettings) => {
 			})
 		}
 	}
+	console.log(currentUser && true)
 
 	const deleteAccount = async () => {
 		try {
 			if (currentUser) {
+				await deleteDoc(doc(db, "users", currentUser.uid))
+				await deleteDoc(doc(db, "userSettings", currentUser.uid))
+				await deleteDoc(doc(db, "userPosts", currentUser.uid))
+				await deleteDoc(doc(db, "userChats", currentUser.uid))
+				await deleteDoc(doc(db, "friendsRequests", currentUser.uid))
 				await signOut(auth).then(() => {
 					dispatch(setAuth(false))
 					localStorage.removeItem('persist:root')
 					setIsVisible(false)
 					navigate('/')
 				})
-				await deleteUser(currentUser).then(() => {
-					deleteDoc(doc(db, "users", currentUser.uid))
-					deleteDoc(doc(db, "userSettings", currentUser.uid))
-					deleteDoc(doc(db, "userPosts", currentUser.uid))
-					deleteDoc(doc(db, "friendsRequests", currentUser.uid))
-				})
+				await deleteUser(currentUser)
 			}
 		} catch (error) {
 			console.error(error)

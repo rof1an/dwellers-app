@@ -16,7 +16,6 @@ export const App: FC = () => {
         if (currentUser?.uid) {
             onSnapshot(doc(db, 'userSettings', currentUser.uid), (doc) => {
                 setIsClockActive(doc.data()?.clockActive)
-                console.log(doc.data()?.clockActive)
             })
         }
     }, [currentUser])
