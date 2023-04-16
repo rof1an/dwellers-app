@@ -1,9 +1,10 @@
 import { updateProfile } from 'firebase/auth'
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProfileData } from '../../../@types/home-types'
 import changeSvg from '../../../assets/edit-svgrepo-com.svg'
+import closedAccSvg from '../../../assets/icons8-замок.svg'
 import { auth, db, storage } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { fetchCurrentUser, setAccountData } from '../../../redux/slices/auth-slice/authSlice'
@@ -16,6 +17,7 @@ import { ProfileModal } from './profileModal/ProfileModal'
 export const Profile = () => {
 	const dispatch = useAppDispatch()
 	const [modalVisible, setModalVisible] = useState<boolean>(false)
+	const [isPrivateAcc, setIsPrivateAcc] = useState(false)
 	const [data, setData] = useState<ProfileData>({
 		city: { label: '', value: '' }, date: '', languages: [],
 	})
@@ -25,15 +27,16 @@ export const Profile = () => {
 	const { currentUser } = useAppSelector((state) => state.auth)
 	const displayName = currentUser?.displayName?.replace(/^\w/, (c: string) => c.toUpperCase())
 
-	React.useEffect(() => {
+	useEffect(() => {
 		dispatch(fetchCurrentUser())
 	}, [currentUser])
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (currentUser?.uid) {
 			const unsub = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
 				setIsLoading(true)
 				setData((prevData) => ({ ...prevData, ...doc.data() }))
+				setIsPrivateAcc(doc.data()?.isPrivate)
 				dispatch(setAccountData(doc.data() as AccountData))
 				setIsLoading(false)
 			})
@@ -41,7 +44,7 @@ export const Profile = () => {
 		}
 	}, [currentUser])
 
-	React.useEffect(() => {
+	useEffect(() => {
 		handleChangeAvatar()
 	}, [selectedFile])
 
@@ -81,7 +84,10 @@ export const Profile = () => {
 					</label>
 				</div>
 				<div className={cl.mainAbout}>
-					<h2 className={cl.profileTitle}>{displayName}</h2>
+					<div className={cl.nameBlock}>
+						<h2 className={cl.profileTitle}>{displayName}</h2>
+						{isPrivateAcc && <img src={closedAccSvg} alt="" />}
+					</div>
 					<hr />
 					<div className={cl.subBlock}>
 						<h3 className={cl.subtitle}>

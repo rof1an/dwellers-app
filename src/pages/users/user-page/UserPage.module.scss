@@ -50,6 +50,12 @@
 	}
 }
 
+.right {
+	.rightInfo {
+		color: aqua;
+	}
+}
+
 .profileTitle {
 	text-transform: capitalize;
 	letter-spacing: 2px;
@@ -79,4 +85,11 @@
 
 .noneInfo {
 	color: rgb(21, 156, 156);
+}
+
+.privatePosts {
+	background-color: rgba(0, 0, 0, 0.37);
+	box-shadow: 1px 1px 8px #000;
+	border-radius: 25px;
+	padding: 7px 15px 15px 25px;
 }

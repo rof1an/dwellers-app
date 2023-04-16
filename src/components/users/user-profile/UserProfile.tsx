@@ -58,9 +58,9 @@ export const UserProfile = () => {
 							<p>City:</p>
 						</div>
 						<div className={cl.right}>
-							<p>{data.date ? data.date : <span>none</span>}</p>
-							<p>{data.languages.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span>none</span>}</p>
-							<p>{data.city.label ? data.city.label : <span>none</span>}</p>
+							<p className={cl.rightInfo}>{data.date ? data.date : <span>none</span>}</p>
+							<p className={cl.rightInfo}>{data.languages.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span>none</span>}</p>
+							<p className={cl.rightInfo}>{data.city.label ? data.city.label : <span>none</span>}</p>
 						</div>
 					</div>
 				</div>

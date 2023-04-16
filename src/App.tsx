@@ -18,7 +18,7 @@ export const App: FC = () => {
                 setIsClockActive(doc.data()?.clockActive)
             })
         }
-    }, [currentUser])
+    }, [])
 
     return (
         <div className='App'>
