@@ -1,14 +1,19 @@
 import { doc, onSnapshot } from 'firebase/firestore'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ProfileData } from '../../../@types/home-types'
 import addFriendSvg from '../../../assets/addFriend.png'
 import sendMessageSvg from '../../../assets/send-mail-2574.svg'
 import { db } from '../../../firebase'
-import { useAppSelector } from '../../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
+import { setChatInfo } from '../../../redux/slices/chat-slice/chatSlice'
+import { UserInfo } from '../../../redux/slices/chat-slice/types'
 import { Loader } from '../../UI/loader/Loader'
 import cl from './UserProfile.module.scss'
 
 export const UserProfile = () => {
+	const navigate = useNavigate()
+	const dispatch = useAppDispatch()
 	const [data, setData] = useState<ProfileData>({
 		city: { label: '', value: '' }, date: '', languages: [],
 	})
@@ -25,6 +30,11 @@ export const UserProfile = () => {
 			return () => getData()
 		}
 	}, [selectedUser?.uid])
+
+	const openChatWithUser = () => {
+		navigate('/chats')
+		dispatch(setChatInfo(selectedUser as UserInfo))
+	}
 
 	return (
 		<>
@@ -45,7 +55,7 @@ export const UserProfile = () => {
 								<p>add to friends</p>
 								<img src={addFriendSvg} alt="" />
 							</span>
-							<span>
+							<span onClick={openChatWithUser}>
 								<p>Send a message</p>
 								<img className={cl.invertSvg} src={sendMessageSvg} alt="" />
 							</span>

@@ -3,18 +3,48 @@
 	justify-content: space-between;
 	flex-direction: row-reverse;
 
+	.usersBlock {
+		max-width: 70%;
+		width: 100%;
+		min-height: 80vh;
+		padding: 15px;
+		background-color: rgba(0, 0, 0, 0.37);
+		box-shadow: 1px 1px 8px #000;
+		margin-top: 15px;
+	}
+
+	.usersTitle {
+		margin: 0;
+		font-size: 20px;
+		display: inline-block;
+		line-height: 0;
+		margin: 10px 0;
+		background-color: #3c3c3c;
+		padding: 20px 15px;
+		border-radius: 15px;
+
+		span {
+			margin-left: 10px;
+			color: aqua;
+			font-size: 22px;
+			background-color: #2e2e2e;
+			padding: 0px 10px 0 5px;
+			border-radius: 20px;
+		}
+	}
+
 	.userList {
 		list-style: none;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 15px;
-		max-width: 70%;
-		width: 100%;
+		padding: 0;
 
 		.userItem {
 			padding: 5px;
-			background-color: rgba(0, 0, 0, 0.368627451);
-			box-shadow: 1px 1px 8px #000;
+			height: fit-content;
+			background-color: rgba(0, 0, 0, 0.228627);
+			box-shadow: 1px 0px 4px #000;
 
 			.userPhoto {
 				width: 130px;

@@ -25,6 +25,7 @@ export const Users = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [isError, setIsError] = useState(false)
 	const { currentUser } = useAppSelector((state) => state.auth)
+	const allUsersCount = users.filter(user => user.uid !== currentUser?.uid).length
 
 	// get all users from firebase with custom hook
 	const [fetchUsers, loading, error] = useFetching(async () => {
@@ -88,33 +89,39 @@ export const Users = () => {
 				friends='friends'
 				friendsRequst={`${location}/friendsRequests`}
 			/>
-			<ul className={cl.userList}>
-				{isLoading ? (
-					<Loader />
-				) : isError ? (
-					<span>Error</span>
-				) : (
-					users.filter(users => users.uid !== currentUser?.uid).map((user) => {
-						return (
-							<li key={user.uid} className={cl.userItem}>
-								{user.photoURL &&
-									<img onClick={() => selectUser(user)}
-										src={user.photoURL}
-										className={cl.userPhoto} alt='' />
-								}
-								<div className={cl.info}>
-									<span className={cl.userName}>{user.displayName}</span>
-									<img
-										onClick={() => checkSendRequest(user)}
-										src={addFriend}
-										alt='add'
-									/>
-								</div>
-							</li>
-						)
-					})
-				)}
-			</ul>
+			<div className={cl.usersBlock}>
+				<h2 className={cl.usersTitle}>
+					Users in dwellers:
+					<span> {allUsersCount}</span>
+				</h2>
+				<ul className={cl.userList}>
+					{isLoading ? (
+						<Loader />
+					) : isError ? (
+						<span>Error</span>
+					) : (
+						users.filter(users => users.uid !== currentUser?.uid).map((user) => {
+							return (
+								<li key={user.uid} className={cl.userItem}>
+									{user.photoURL &&
+										<img onClick={() => selectUser(user)}
+											src={user.photoURL}
+											className={cl.userPhoto} alt='' />
+									}
+									<div className={cl.info}>
+										<span className={cl.userName}>{user.displayName}</span>
+										<img
+											onClick={() => checkSendRequest(user)}
+											src={addFriend}
+											alt='add'
+										/>
+									</div>
+								</li>
+							)
+						})
+					)}
+				</ul>
+			</div>
 		</div>
 	)
 }

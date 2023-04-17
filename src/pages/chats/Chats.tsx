@@ -5,7 +5,7 @@ import { Loader } from '../../components/UI/loader/Loader'
 import { ChatSearch } from '../../components/chat/ChatSearch'
 import { db } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setChatInfo, setCurrentUser, setLastSender } from '../../redux/slices/chat-slice/chatSlice'
+import { setChatInfo, setCurrentUser, setLastMsgSender } from '../../redux/slices/chat-slice/chatSlice'
 import { UserInfo } from '../../redux/slices/chat-slice/types'
 import { getBothUid } from '../../utils/getBothUid'
 import { Chat } from './../../components/chat/Chat'
@@ -42,20 +42,19 @@ export const Chats = () => {
 
 				onSnapshot(doc(db, "chats", uid), (doc) => {
 					const data = doc.data()?.messages
-					dispatch(setLastSender(data[data.length - 1]))
+					dispatch(setLastMsgSender(data[data.length - 1]))
 				})
 			}
 		}
 
 		getLastSender()
-	}, [])
+	}, [selectedUser])
 
-	const handleSelect = async (clickedUserInfo: UserInfo) => {
+	const handleSelect = (clickedUserInfo: UserInfo) => {
 		dispatch(setCurrentUser(currentUser as UserInfo))
 		dispatch(setChatInfo(clickedUserInfo))
-		setSelectedUser(clickedUserInfo)
+		setSelectedUser(clickedUserInfo.uid)
 	}
-	console.log(lastSender?.senderId === currentUser?.uid)
 
 	return (
 		<>
@@ -70,7 +69,7 @@ export const Chats = () => {
 							<>
 								{chatsArray.sort((a, b) => b[1].date - a[1].date).map(chat => {
 									return (
-										<li className={selectedUser === chat[1].userInfo ? `${cl.user} ${cl.selectedUser}` : `${cl.user}`}
+										<li className={selectedUser === chat[1].userInfo?.uid ? `${cl.user} ${cl.selectedUser}` : `${cl.user}`}
 											key={chat[0]}
 											onClick={() => handleSelect(chat[1].userInfo)}
 										>
@@ -81,7 +80,7 @@ export const Chats = () => {
 													<span className={cl.lastMsg}>
 														{lastSender && (
 															<b>{lastSender.senderId === currentUser?.uid && (
-																currentUser.photoURL && <img className={cl.lastMsgImg} src={currentUser.photoURL} alt="" />
+																currentUser?.photoURL && <img className={cl.lastMsgImg} src={currentUser.photoURL} alt="" />
 															)}</b>
 														)}
 														{chat[1].lastMessage?.text}

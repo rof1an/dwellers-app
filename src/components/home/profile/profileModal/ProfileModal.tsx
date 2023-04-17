@@ -1,6 +1,7 @@
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import React, { FC, useState } from 'react'
 import { HandleSubmitForm, Lang, ProfileProps, ProfileValues } from '../../../../@types/home-types'
+import { SearchData } from '../../../../@types/weather-types'
 import { CitiesService } from '../../../../API/CitiesService'
 import { auth, db } from '../../../../firebase'
 import { useAppSelector } from '../../../../hooks/hooks'
@@ -10,7 +11,6 @@ import { ReactSelect } from '../../../UI/Selects/ReactSelect'
 import { Button } from '../../../UI/button/Button'
 import { Input } from '../../../UI/input/Input'
 import cl from './ProfileModal.module.scss'
-import { SearchData } from '../../../../@types/weather-types'
 
 
 export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, setValue }) => {
@@ -49,13 +49,6 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 		setValue(newValues)
 	}
 
-
-	// const handleInputCloseClick = (name: keyof ProfileProps) => {
-	// 	setNewValues({ ...newValues, [name]: '' })
-	// 	localStorage.removeItem(name)
-	// }
-
-
 	const handleChangeCity = (searchData: SearchData) => {
 		setNewValues({ ...newValues, city: searchData })
 	}
@@ -85,7 +78,7 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 				<div className={cl.formItem}>
 					<Input
 						onChange={handleInputChange}
-						value={newValues.date}
+						value={newValues.date !== undefined && newValues.date}
 						name='date' type='date'
 						className={cl.formInput}
 					/>

@@ -1,6 +1,7 @@
 import { arrayRemove, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { IFriend } from '../../../@types/users-types'
 import { UsersNavigation } from '../../../components/users/usersNav/UsersNavigation'
 import { db } from '../../../firebase'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -10,7 +11,7 @@ import cl from './Friends.module.scss'
 export const Friends = () => {
 	const location = useLocation()
 	const { currentUser } = useAppSelector(state => state.auth)
-	const [friends, setFriends] = useState([])
+	const [friends, setFriends] = useState<IFriend[]>([])
 
 	React.useEffect(() => {
 		const unsub = onSnapshot(doc(db, 'userFriends', currentUser!.uid), (doc) => {
@@ -24,22 +25,28 @@ export const Friends = () => {
 	}, [])
 
 	const deleteFriend = async (user: Requester) => {
-		const userFriendsRef = doc(db, 'userFriends', currentUser!.uid)
-
-		await updateDoc(userFriendsRef, {
+		await updateDoc(doc(db, 'userFriends', currentUser!.uid), {
 			friends: arrayRemove({
 				requesterImg: user.requesterImg,
 				requesterUid: user.requesterUid,
 				requesterName: user.requesterName
 			})
 		})
+		await updateDoc(doc(db, 'userFriends', user.requesterUid), {
+			friends: arrayRemove({
+				requesterImg: currentUser?.photoURL,
+				requesterUid: currentUser?.uid,
+				requesterName: currentUser?.displayName
+			})
+		})
 	}
+	console.log(friends)
 
 	return (
 		<div className={cl.root}>
 			<UsersNavigation allUsers='/users' friends={location.pathname} friendsRequst='../users/friendsRequests' />
 			<ul>
-				{friends.map((friend: any) => {
+				{friends.map((friend) => {
 					return (
 						<li
 							onClick={() => deleteFriend(friend)}

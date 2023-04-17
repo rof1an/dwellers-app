@@ -27,7 +27,7 @@ const chatSlice = createSlice({
 				state.chatId = ''
 			}
 		},
-		setLastSender: (state, { payload }) => {
+		setLastMsgSender: (state, { payload }) => {
 			state.lastSender = payload
 		}
 	},
@@ -35,5 +35,5 @@ const chatSlice = createSlice({
 
 
 export const chatState = (state: RootState) => state.chat
-export const { setChatInfo, setCurrentUser, setLastSender } = chatSlice.actions
+export const { setChatInfo, setCurrentUser, setLastMsgSender } = chatSlice.actions
 export default chatSlice.reducer

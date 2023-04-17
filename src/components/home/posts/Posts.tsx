@@ -2,6 +2,8 @@ import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { Timestamp, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import 'react-tooltip/dist/react-tooltip.css'
 import { v4 as uuid } from 'uuid'
 import { TPost } from '../../../@types/home-types'
@@ -13,7 +15,7 @@ import { Loader } from '../../UI/loader/Loader'
 import './../../../index.scss'
 import { Post } from './Post'
 import cl from './Posts.module.scss'
-
+import { ToastNofify } from '../../../utils/ToastNotify'
 
 export const Posts = () => {
 	const [posts, setPosts] = useState<TPost[]>([])
@@ -39,6 +41,7 @@ export const Posts = () => {
 		const updatedPostsArray = [newPost, ...postsArray]
 		if (postText) {
 			await setDoc(postsRef, { posts: updatedPostsArray })
+			ToastNofify.successNotify('Post was created')
 			setPostText('')
 		}
 	}
@@ -65,8 +68,8 @@ export const Posts = () => {
 		await updateDoc(postsRef, {
 			posts: updatedPostsArray,
 		})
-
 		setPosts(updatedPostsArray)
+		ToastNofify.successNotify('Post was deleted')
 	}
 
 	return (
@@ -86,6 +89,7 @@ export const Posts = () => {
 						<span>All posts</span>
 						<span>My posts</span>
 					</div>
+					<ToastContainer />
 					<hr style={{ borderColor: 'rgb(204 204 204 / 18%)' }} />
 
 					{posts?.length > 0 ?
