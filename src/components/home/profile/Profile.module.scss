@@ -89,6 +89,7 @@
 	display: flex;
 	gap: 40px;
 	align-items: start;
+	font-size: 18px;
 
 	p {
 		padding-bottom: 10px;
@@ -99,11 +100,9 @@
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-		color: aqua;
 
 		.emptyInfo {
 			color: #ccc;
-			font-size: 17px;
 		}
 	}
 }

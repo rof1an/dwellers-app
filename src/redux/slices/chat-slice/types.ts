@@ -1,5 +1,6 @@
+import { ChatsProps } from '../../../@types/chat-types'
 
-export type UserInfo = {
+export type TUserInfo = {
 	displayName: string,
 	photoURL: string,
 	uid: string,
@@ -14,7 +15,7 @@ export type LastSender = {
 
 export interface ChatState {
 	chatId: string,
-	currentUser: UserInfo | null,
-	clickedUser: UserInfo | null,
-	lastSender: LastSender | null
+	currentUser: TUserInfo | null,
+	clickedUser: TUserInfo | null,
+	lastSender: LastSender | null,
 }

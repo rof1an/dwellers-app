@@ -1,7 +1,8 @@
 import { User } from 'firebase/auth'
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import addFriend from '../../../assets/addFriend.png'
 import { Loader } from '../../../components/UI/loader/Loader'
 import { UsersNavigation } from '../../../components/users/usersNav/UsersNavigation'
@@ -9,12 +10,19 @@ import { db } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { useFetching } from '../../../hooks/useFetching'
 import { setSelectedUser } from '../../../redux/slices/users-slice/usersSlice'
+import { ToastNofify } from '../../../utils/ToastNotify'
 import cl from './Users.module.scss'
 
 type HandleRequestProps = {
 	recipientName: string,
 	recipientUid: string,
 	recipientImg: string
+}
+
+type TRequester = {
+	requesterImg: string,
+	requesterName: string,
+	requesterUid: string
 }
 
 export const Users = () => {
@@ -48,9 +56,16 @@ export const Users = () => {
 
 		const userFriendsDoc = await getDoc(doc(db, 'userFriends', currentUser!.uid))
 		const friendsList = await userFriendsDoc?.data()?.friends
-		const isAlreadyFriends = friendsList && friendsList.some((friend: any) => friend.uid === recipientUid)
+		const isAlreadyFriends = friendsList && friendsList.some((friend: TRequester) => friend.requesterUid === recipientUid)
 
-		if (!isAlreadyFriends) {
+		const queryRequests = await getDocs(query(collection(db, 'friendsRequests'),
+			where('recipient.uid', '==', recipientUid),
+			where('requester.uid', '==', currentUser!.uid)))
+		const isRequestHas = queryRequests.docs.length > 0 && queryRequests.docs[0].data()
+
+		if (isRequestHas) {
+			ToastNofify.errorNotify('Request already sent')
+		} else if (!isAlreadyFriends) {
 			await setDoc(doc(db, 'friendsRequests', refUid), {
 				requester: {
 					name: currentUser?.displayName,
@@ -63,6 +78,7 @@ export const Users = () => {
 					uid: recipientUid,
 				},
 			})
+			ToastNofify.successNotify('Request was sended')
 		}
 	}
 
@@ -84,6 +100,7 @@ export const Users = () => {
 
 	return (
 		<div className={cl.root}>
+			<ToastContainer />
 			<UsersNavigation
 				allUsers={location}
 				friends='friends'
@@ -110,11 +127,14 @@ export const Users = () => {
 									}
 									<div className={cl.info}>
 										<span className={cl.userName}>{user.displayName}</span>
-										<img
+										<button
 											onClick={() => checkSendRequest(user)}
-											src={addFriend}
-											alt='add'
-										/>
+											className={cl.addFriendBtn}>
+											<img
+												src={addFriend}
+												alt='add'
+											/>
+										</button>
 									</div>
 								</li>
 							)

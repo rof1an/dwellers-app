@@ -1,9 +1,10 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import defaultAvatar from '../../../src/assets/defaultAvatar.png'
 import { auth, db, storage } from '../../firebase'
 
-interface Params {
+interface IParams {
 	email: string,
 	password: string,
 	img?: File | null,
@@ -11,21 +12,27 @@ interface Params {
 	setError: (arg: boolean) => void
 }
 
-export const createUser = async (params: Params) => {
+export const createUser = async (params: IParams) => {
 	const { email, password, img, displayName, setError } = params
-	let defaultImgUrl = "https://winnote.ru/wp-content/uploads/2016/01/1454222417_del_recent_avatar1.png"
+
+	const defaultImgResponse = await fetch(defaultAvatar)
+	const defaultImgBlob = await defaultImgResponse.blob()
 
 	//Create user
 	const res = await createUserWithEmailAndPassword(auth, email, password)
-	const storageRef = ref(storage, `${'avatar'}-${displayName}-${email}`)
+	const storageRef = ref(storage, `${'avatar'}-${email}`)
 
 	// Upload profile image and update profile
 	try {
-		let downloadURL = defaultImgUrl
+		let downloadURL = defaultAvatar
 		if (img) {
 			await uploadBytesResumable(storageRef, img)
 			downloadURL = await getDownloadURL(storageRef)
+		} else {
+			await uploadBytesResumable(storageRef, defaultImgBlob)
+			downloadURL = await getDownloadURL(storageRef)
 		}
+
 		await updateProfile(res.user, {
 			displayName,
 			photoURL: downloadURL,
@@ -46,4 +53,3 @@ export const createUser = async (params: Params) => {
 		setError(true)
 	}
 }
-

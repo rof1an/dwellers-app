@@ -2,22 +2,22 @@ import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { v4 as uuid } from 'uuid'
 import { db, storage } from '../../firebase'
-import { LastSender, UserInfo } from '../../redux/slices/chat-slice/types'
+import { LastSender, TUserInfo } from '../../redux/slices/chat-slice/types'
 
 export interface HandleSendProps {
 	img: File | null,
 	text: string,
 	data: {
 		chatId: string,
-		currentUser: UserInfo | null,
-		clickedUser: UserInfo | null
+		currentUser: TUserInfo | null,
+		clickedUser: TUserInfo | null
 	},
 	lastSender: LastSender | null
 }
 
 export const handleSend = async ({ img, data, text, lastSender }: HandleSendProps) => {
+	console.log(data.chatId)
 	const storageRef = ref(storage, uuid())
-
 
 	if (img && text.length > 0) {
 		const uploadTaskSnapshot = await uploadBytesResumable(storageRef, img)
@@ -33,6 +33,8 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 			}),
 		})
 	} else if (text.length > 0) {
+		console.log(data, 'aa')
+
 		await updateDoc(doc(db, 'chats', data.chatId), {
 			messages: arrayUnion({
 				id: uuid(),

@@ -40,7 +40,6 @@ export const Friends = () => {
 			})
 		})
 	}
-	console.log(friends)
 
 	return (
 		<div className={cl.root}>

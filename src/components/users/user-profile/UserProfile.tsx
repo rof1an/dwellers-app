@@ -1,4 +1,4 @@
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileData } from '../../../@types/home-types'
@@ -6,8 +6,9 @@ import addFriendSvg from '../../../assets/addFriend.png'
 import sendMessageSvg from '../../../assets/send-mail-2574.svg'
 import { db } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
-import { setChatInfo } from '../../../redux/slices/chat-slice/chatSlice'
-import { UserInfo } from '../../../redux/slices/chat-slice/types'
+import { setChatInfo, setCurrentUser } from '../../../redux/slices/chat-slice/chatSlice'
+import { TUserInfo } from '../../../redux/slices/chat-slice/types'
+import { getBothUid } from '../../../utils/getBothUid'
 import { Loader } from '../../UI/loader/Loader'
 import cl from './UserProfile.module.scss'
 
@@ -19,6 +20,7 @@ export const UserProfile = () => {
 	})
 	const [isLoading, setIsLoading] = useState(false)
 	const { selectedUser } = useAppSelector(state => state.users)
+	const { currentUser } = useAppSelector(state => state.auth)
 
 	React.useEffect(() => {
 		if (selectedUser?.uid) {
@@ -31,9 +33,18 @@ export const UserProfile = () => {
 		}
 	}, [selectedUser?.uid])
 
-	const openChatWithUser = () => {
+	const openChatWithUser = async () => {
+		const combinedId = getBothUid.getUid(currentUser!.uid, selectedUser!.uid)
+		const docRef = doc(db, 'chats', combinedId)
+		const docSnap = await getDoc(docRef)
+
+		dispatch(setChatInfo(selectedUser as TUserInfo))
+		dispatch(setCurrentUser(currentUser as TUserInfo))
+
+		if (!docSnap.exists()) {
+			await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+		}
 		navigate('/chats')
-		dispatch(setChatInfo(selectedUser as UserInfo))
 	}
 
 	return (

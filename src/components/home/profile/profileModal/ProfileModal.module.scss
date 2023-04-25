@@ -10,6 +10,10 @@
 	overflow: hidden;
 	z-index: 10;
 	transition: opacity 0.3s ease-in-out;
+
+	input {
+		outline: none;
+	}
 }
 
 .active {
@@ -22,13 +26,13 @@
 	justify-content: center;
 	flex-direction: column;
 	padding: 35px;
-	background: rgb(13, 32, 55);
-	background: linear-gradient(0deg, rgb(13, 32, 55, 1) 0%, rgba(48, 73, 83, 1) 100%);
+	background: #2f2f32;
 
 	border-radius: 15px;
-	max-width: 300px;
+	max-width: 500px;
+	width: 100%;
 	margin: 100px auto;
-	gap: 30px;
+	gap: 20px;
 
 	button {
 		max-width: 30%;
@@ -45,6 +49,16 @@
 	h2 {
 		margin: 0 0 20px 0;
 		color: white;
+	}
+}
+
+.itemBlock {
+	display: flex;
+	justify-content: space-between;
+
+	.deleteItemValue {
+		font-weight: 500;
+		color: #c8c8c8a8;
 	}
 }
 
@@ -72,6 +86,11 @@
 		height: 25px;
 		filter: invert(0.6);
 	}
+
+	span {
+		color: aqua;
+		font-size: 15px;
+	}
 }
 
 .formInput {
@@ -80,21 +99,34 @@
 	z-index: 2;
 	position: relative;
 	padding: 0 10px;
-	width: 92%;
+	width: 95.5%;
 	background: none;
 	border: 1px solid #12c7f5;
 	border-radius: 4px;
 	border-style: solid;
+	outline: none;
+
+	&:hover,
+	&:focus {
+		box-shadow: 0 0 10px rgba(31, 199, 255, 0.7);
+	}
 
 	&.paginate {
 		padding: 0 !important;
 		box-sizing: initial;
 		width: 100%;
+
+		&:hover,
+		&:focus {
+			box-shadow: 0 0 10px rgba(31, 199, 255, 0.7);
+		}
 	}
 }
 
 .paginateWrapper {
 	position: relative;
+	outline: none;
+
 	.placeholder {
 		position: absolute;
 		top: 0;
@@ -104,23 +136,8 @@
 		color: #ccc;
 		pointer-events: none;
 	}
-}
-
-.formLabel {
-	position: absolute;
-	left: 15px;
-	right: 15px;
-	top: 0;
-	z-index: 1;
-	white-space: nowrap;
-	overflow: hidden;
-	line-height: 40px;
-	transition: 0.3s;
-}
-
-.formInput:focus ~ .formLabel,
-.formInput:not(:placeholder-shown).formInput:not(:focus) ~ .formLabel {
-	top: -32px;
-	font-size: 13px;
-	left: 0;
+	span {
+		color: aqua;
+		font-size: 15px;
+	}
 }

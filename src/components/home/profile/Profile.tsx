@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { ProfileData } from '../../../@types/home-types'
 import changeSvg from '../../../assets/edit-svgrepo-com.svg'
 import closedAccSvg from '../../../assets/icons8-замок.svg'
-import { auth, db, storage } from '../../../firebase'
+import { db, storage } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { fetchCurrentUser, setAccountData } from '../../../redux/slices/auth-slice/authSlice'
 import { AccountData } from '../../../redux/slices/auth-slice/types'
@@ -25,11 +25,11 @@ export const Profile = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const { currentUser } = useAppSelector((state) => state.auth)
-	const displayName = currentUser?.displayName?.replace(/^\w/, (c: string) => c.toUpperCase())
+	const displayName = currentUser?.displayName?.replace(/^\w/, (w: string) => w.toUpperCase())
 
 	useEffect(() => {
 		dispatch(fetchCurrentUser())
-	}, [currentUser])
+	}, [])
 
 	useEffect(() => {
 		if (currentUser?.uid) {
@@ -49,12 +49,13 @@ export const Profile = () => {
 	}, [selectedFile])
 
 	const handleChangeAvatar = async () => {
-		if (auth.currentUser && selectedFile) {
-			const storageRef = ref(storage, `${'avatar'}-${currentUser?.displayName}-${currentUser?.email}`)
+		if (currentUser && selectedFile) {
+			setIsLoading(true)
+			const storageRef = ref(storage, `${'avatar'}-${currentUser?.email}`)
 			const downloadURL = await getDownloadURL(storageRef)
 
 			await uploadBytes(storageRef, selectedFile)
-			await updateProfile(auth.currentUser, {
+			await updateProfile(currentUser, {
 				photoURL: downloadURL,
 			})
 			await updateDoc(doc(db, 'users', currentUser!.uid), {
@@ -62,6 +63,7 @@ export const Profile = () => {
 			})
 
 			dispatch(fetchCurrentUser())
+			setIsLoading(false)
 		}
 	}
 
@@ -103,9 +105,9 @@ export const Profile = () => {
 							<p>City:</p>
 						</div>
 						<div className={cl.right}>
-							<p>{data.date ? data.date : <span className={cl.emptyInfo}>none</span>}</p>
-							<p>{data.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
-							<p>{data.city.label ? data.city.label : <span className={cl.emptyInfo}>none</span>}</p>
+							<p>{data?.date ? data.date : <span className={cl.emptyInfo}>none</span>}</p>
+							<p>{data?.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
+							<p>{data?.city?.label ? data.city.label : <span className={cl.emptyInfo}>none</span>}</p>
 						</div>
 					</div>
 				</div>

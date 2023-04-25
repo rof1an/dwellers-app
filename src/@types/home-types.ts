@@ -44,7 +44,7 @@ export interface ProfileProps {
 	setVisible: (arg: boolean) => void
 }
 
-export type HandleSubmitForm = {
+export type FormTypes = {
 	languages: Lang[],
 	city: City,
 	date?: string,

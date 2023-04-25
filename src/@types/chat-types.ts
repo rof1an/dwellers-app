@@ -1,11 +1,14 @@
-import { UserInfo } from '../redux/slices/chat-slice/types'
+import { TUserInfo } from '../redux/slices/chat-slice/types'
 
 export type LastMsg = {
 	text: string
 }
 export interface ChatsProps {
-	date: number,
-	userInfo: UserInfo,
+	date: {
+		seconds: number,
+		nanoseconds: number
+	},
+	userInfo: TUserInfo,
 	lastMessage: LastMsg
 }
 

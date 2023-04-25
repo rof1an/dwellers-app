@@ -103,7 +103,7 @@ export const FriendsRequests = () => {
 			<div className={cl.content}>
 				<ul className={cl.requests}>
 					<h2>
-						New friend requests
+						New friend requests:
 						<span>{requestsCount}</span>
 					</h2>
 					{requests.map((req) => {

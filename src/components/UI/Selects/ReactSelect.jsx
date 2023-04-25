@@ -9,6 +9,10 @@ export const customStyles = {
 		...base,
 		zIndex: 999,
 	}),
+	input: (base) => ({
+		...base,
+		color: '#fff',
+	}),
 	control: (base) => ({
 		...base,
 		backgroundColor: 'transparent',
@@ -16,7 +20,7 @@ export const customStyles = {
 		color: '#fff',
 		boxShadow: 'none',
 		'&:hover': {
-			borderColor: '#fff',
+			boxShadow: '0 0 10px rgba(31, 199, 255, 0.7)',
 		},
 	}),
 	option: (base, { isSelected }) => ({
@@ -87,7 +91,7 @@ export const customStyles = {
 	}),
 	placeholder: (base) => ({
 		...base,
-		color: '#ссс',
+		color: '#ccc',
 	}),
 }
 

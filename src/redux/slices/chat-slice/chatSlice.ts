@@ -1,35 +1,35 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { getBothUid } from '../../../utils/getBothUid'
 import { RootState } from '../../store'
-import { ChatState, UserInfo } from './types'
+import { ChatState, TUserInfo } from './types'
 
 
 const initialState: ChatState = {
 	chatId: '',
 	currentUser: null,
 	clickedUser: null,
-	lastSender: null
+	lastSender: null,
 }
 
 const chatSlice = createSlice({
 	name: 'chat',
 	initialState,
 	reducers: {
-		setCurrentUser(state, { payload }: PayloadAction<UserInfo | null>) {
+		setCurrentUser(state, { payload }: PayloadAction<TUserInfo | null>) {
 			state.currentUser = payload
 		},
-		setChatInfo(state, { payload }: PayloadAction<UserInfo | null>) {
+		setChatInfo(state, { payload }: PayloadAction<TUserInfo | null>) {
 			state.clickedUser = payload
 
 			if (state.currentUser && state.clickedUser && payload?.uid) {
-				state.chatId = getBothUid.getUid(payload?.uid, state.currentUser?.uid)
+				state.chatId = getBothUid.getUid(payload.uid, state.currentUser?.uid)
 			} else {
 				state.chatId = ''
 			}
 		},
 		setLastMsgSender: (state, { payload }) => {
 			state.lastSender = payload
-		}
+		},
 	},
 })
 
