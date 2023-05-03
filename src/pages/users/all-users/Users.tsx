@@ -1,8 +1,11 @@
 import { User } from 'firebase/auth'
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { Tooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
+import { IFriend } from '../../../@types/users-types'
 import addFriend from '../../../assets/addFriend.png'
 import { Loader } from '../../../components/UI/loader/Loader'
 import { UsersNavigation } from '../../../components/users/usersNav/UsersNavigation'
@@ -30,8 +33,10 @@ export const Users = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const [users, setUsers] = useState<User[]>([])
+	const [usersFriends, setUsersFriends] = useState<IFriend[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [isError, setIsError] = useState(false)
+
 	const { currentUser } = useAppSelector((state) => state.auth)
 	const allUsersCount = users.filter(user => user.uid !== currentUser?.uid).length
 
@@ -47,7 +52,20 @@ export const Users = () => {
 		setIsError(error)
 	})
 
-	React.useEffect(() => fetchUsers(), [])
+	useEffect(() => fetchUsers(), [])
+
+	useEffect(() => {
+		const fetchUserFriends = async () => {
+			const userFriendsDoc = await getDoc(doc(db, 'userFriends', currentUser!.uid))
+			const friendsList = userFriendsDoc?.data()?.friends
+			setUsersFriends(friendsList || [])
+		}
+		fetchUserFriends()
+	}, [users])
+
+	const isFriendDefination = (user: User) => {
+		return usersFriends.some((friend) => friend.requesterUid === user.uid)
+	}
 
 	// send request to friend
 	const handleSendRequest = async ({ recipientName, recipientUid, recipientImg }: HandleRequestProps) => {
@@ -129,11 +147,14 @@ export const Users = () => {
 										<span className={cl.userName}>{user.displayName}</span>
 										<button
 											onClick={() => checkSendRequest(user)}
-											className={cl.addFriendBtn}>
+											className={cl.addFriendBtn}
+											id='user-status'
+										>
 											<img
 												src={addFriend}
 												alt='add'
 											/>
+											<Tooltip anchorSelect='#user-status' place='bottom' content='Add to friend' />
 										</button>
 									</div>
 								</li>

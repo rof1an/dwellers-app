@@ -36,8 +36,8 @@ export type ProfileValues = {
 
 export interface ProfileProps {
 	visible: boolean
-	value: ProfileValues
-	setValue: (arg: ProfileValues) => void
+	data: ProfileValues
+	setData: (arg: ProfileValues) => void
 	setVisible: (arg: boolean) => void
 }
 

@@ -39,7 +39,7 @@ export const Home = () => {
                         <b>{friends?.length > 0 ? friends?.length : ' 0'}</b>
                     </span>
                     <ul className={cl.friendsList}>
-                        {displayedFriend?.map((friend) => {
+                        {displayedFriend ? displayedFriend?.map((friend) => {
                             return (
                                 <li
                                     key={friend.requesterUid}
@@ -48,7 +48,11 @@ export const Home = () => {
                                     <span>{friend.requesterName}</span>
                                 </li>
                             )
-                        })}
+                        }) : (
+                            <div>
+                                There are no one friend yet
+                            </div>
+                        )}
                     </ul>
                 </div>
             </div>

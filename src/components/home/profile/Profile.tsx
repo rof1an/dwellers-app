@@ -128,8 +128,8 @@ export const Profile = () => {
 				</div>
 			</div>
 			<ProfileModal
-				value={data}
-				setValue={setData}
+				data={data}
+				setData={setData}
 				visible={modalVisible}
 				setVisible={setModalVisible}
 			/>
