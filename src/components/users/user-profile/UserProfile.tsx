@@ -1,4 +1,4 @@
-import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileData } from '../../../@types/home-types'
@@ -29,9 +29,12 @@ export const UserProfile = () => {
 				setData((prevData) => ({ ...prevData, ...doc.data() }))
 				setIsLoading(false)
 			})
+			dispatch(setCurrentUser(currentUser as TUserInfo))
+
 			return () => getData()
 		}
 	}, [selectedUser?.uid])
+
 
 	const openChatWithUser = async () => {
 		const combinedId = getBothUid.getUid(currentUser!.uid, selectedUser!.uid)
@@ -39,11 +42,29 @@ export const UserProfile = () => {
 		const docSnap = await getDoc(docRef)
 
 		dispatch(setChatInfo(selectedUser as TUserInfo))
-		dispatch(setCurrentUser(currentUser as TUserInfo))
 
 		if (!docSnap.exists()) {
 			await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+
+			await updateDoc(doc(db, 'userChats', currentUser!.uid), {
+				[combinedId + '.userInfo']: {
+					uid: selectedUser?.uid,
+					displayName: selectedUser?.displayName,
+					photoURL: selectedUser?.photoURL
+				},
+				[combinedId + '.date']: serverTimestamp(),
+			})
+
+			await updateDoc(doc(db, 'userChats', selectedUser!.uid), {
+				[combinedId + '.userInfo']: {
+					uid: currentUser?.uid,
+					displayName: currentUser?.displayName,
+					photoURL: currentUser?.photoURL
+				},
+				[combinedId + '.date']: serverTimestamp(),
+			})
 		}
+
 		navigate('/chats')
 	}
 

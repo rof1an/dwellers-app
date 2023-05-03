@@ -2,6 +2,7 @@ import { updateProfile } from 'firebase/auth'
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { ProfileData } from '../../../@types/home-types'
 import changeSvg from '../../../assets/edit-svgrepo-com.svg'
 import closedAccSvg from '../../../assets/icons8-замок.svg'
@@ -9,6 +10,7 @@ import { db, storage } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { fetchCurrentUser, setAccountData } from '../../../redux/slices/auth-slice/authSlice'
 import { AccountData } from '../../../redux/slices/auth-slice/types'
+import { ToastNofify } from '../../../utils/ToastNotify'
 import { Button } from '../../UI/button/Button'
 import { Loader } from '../../UI/loader/Loader'
 import cl from './Profile.module.scss'
@@ -45,31 +47,42 @@ export const Profile = () => {
 	}, [currentUser])
 
 	useEffect(() => {
-		handleChangeAvatar()
+		const updateData = async () => {
+			await handleChangeAvatar()
+			dispatch(fetchCurrentUser())
+		}
+		updateData()
 	}, [selectedFile])
 
 	const handleChangeAvatar = async () => {
-		if (currentUser && selectedFile) {
-			setIsLoading(true)
-			const storageRef = ref(storage, `${'avatar'}-${currentUser?.email}`)
-			const downloadURL = await getDownloadURL(storageRef)
+		if (currentUser?.uid && selectedFile) {
+			try {
+				setIsLoading(true)
+				const storageRef = ref(storage, `${'avatar'}-${currentUser?.email}`)
+				const downloadURL = await getDownloadURL(storageRef)
 
-			await uploadBytes(storageRef, selectedFile)
-			await updateProfile(currentUser, {
-				photoURL: downloadURL,
-			})
-			await updateDoc(doc(db, 'users', currentUser!.uid), {
-				photoURL: downloadURL,
-			})
+				await uploadBytes(storageRef, selectedFile)
+				await updateProfile(currentUser, {
+					photoURL: downloadURL,
+				})
+				await updateDoc(doc(db, 'users', currentUser!.uid), {
+					photoURL: downloadURL,
+				})
 
-			dispatch(fetchCurrentUser())
-			setIsLoading(false)
+				// dispatch(fetchCurrentUser())
+			} catch (error) {
+				ToastNofify.errorNotify('Something went wrong, try later')
+			} finally {
+				setIsLoading(false)
+			}
 		}
 	}
 
 	return (
-		<div>
+		<div className={cl.root}>
 			{isLoading && <Loader />}
+			<ToastContainer />
+			<div className={cl.emptyShadow}></div>
 			<div className={cl.mainInfo}>
 				<div className={cl.avatar}>
 					{currentUser?.photoURL && <img className={cl.mainImg} src={currentUser.photoURL} />}
@@ -90,24 +103,26 @@ export const Profile = () => {
 						<h2 className={cl.profileTitle}>{displayName}</h2>
 						{isPrivateAcc && <img src={closedAccSvg} alt="" />}
 					</div>
-					<hr />
+					{/* <hr /> */}
 					<div className={cl.subBlock}>
-						<h3 className={cl.subtitle}>
+						<span className={cl.subtitle}>
 							<img src={changeSvg} alt='#' />
 							<p>Frontend developer</p>
-						</h3>
+						</span>
 						<Button onClick={() => setModalVisible(true)}>Change information</Button>
 					</div>
 					<div className={cl.profileInfo}>
-						<div className={cl.left}>
+						<div>
 							<p>Date of birth:</p>
-							<p>Languages:</p>
-							<p>City:</p>
-						</div>
-						<div className={cl.right}>
 							<p>{data?.date ? data.date : <span className={cl.emptyInfo}>none</span>}</p>
-							<p>{data?.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
+						</div>
+						<div>
+							<p>City:</p>
 							<p>{data?.city?.label ? data.city.label : <span className={cl.emptyInfo}>none</span>}</p>
+						</div>
+						<div>
+							<p>Languages:</p>
+							<p>{data?.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
 						</div>
 					</div>
 				</div>

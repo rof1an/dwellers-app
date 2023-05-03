@@ -16,7 +16,6 @@ export interface HandleSendProps {
 }
 
 export const handleSend = async ({ img, data, text, lastSender }: HandleSendProps) => {
-	console.log(data.chatId)
 	const storageRef = ref(storage, uuid())
 
 	if (img && text.length > 0) {
@@ -25,7 +24,7 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 
 		await updateDoc(doc(db, 'chats', data.chatId), {
 			messages: arrayUnion({
-				id: uuid(),
+				id: data.chatId,
 				text,
 				senderId: data?.currentUser?.uid,
 				date: Timestamp.now(),
@@ -33,13 +32,11 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 			}),
 		})
 	} else if (text.length > 0) {
-		console.log(data, 'aa')
-
 		await updateDoc(doc(db, 'chats', data.chatId), {
 			messages: arrayUnion({
-				id: uuid(),
+				id: data.chatId,
 				text,
-				senderId: data.currentUser!.uid,
+				senderId: data?.currentUser!.uid,
 				date: Timestamp.now(),
 			}),
 		})
@@ -49,9 +46,9 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 
 		await updateDoc(doc(db, 'chats', data.chatId), {
 			messages: arrayUnion({
-				id: uuid(),
+				id: data.chatId,
 				img: downloadURL,
-				senderId: data.currentUser!.uid,
+				senderId: data?.currentUser!.uid,
 				date: Timestamp.now(),
 			}),
 		})
@@ -72,7 +69,7 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 
 	await updateDoc(doc(db, 'userChats', data.currentUser!.uid), {
 		[data.chatId + '.sender']: {
-			senderId: lastSender
+			senderId: lastSender ? lastSender : null,
 		}
 	})
 }

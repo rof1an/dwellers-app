@@ -1,24 +1,33 @@
 .posts {
+	margin-top: 20px;
+	width: 70%;
+
 	.postInput {
 		display: flex;
 		justify-content: center;
-		flex-direction: column;
 		align-items: center;
-		gap: 5px;
 		padding: 10px;
 		background-color: #0000005e;
 		box-shadow: 1px 1px 8px #000;
 		border-radius: 15px;
 
 		input {
+			border-radius: 15px 0 0 15px;
 			font-size: 18px;
 			width: 98%;
-			padding: 10px 10px;
+			padding: 7px 7px;
 			border-style: inset;
+			padding-left: 10px;
 
 			&::placeholder {
 				font-size: 15px;
 			}
+		}
+
+		button {
+			border-radius: 0 15px 15px 0px;
+			width: 150px;
+			border-style: inset;
 		}
 	}
 
@@ -26,7 +35,7 @@
 		padding: 15px;
 		background-color: rgba(0, 0, 0, 0.37);
 		box-shadow: 1px 1px 8px #000;
-		margin-top: 30px;
+		margin-top: 15px;
 		// width: 50.5%;
 
 		.postsSwitchersBtn {

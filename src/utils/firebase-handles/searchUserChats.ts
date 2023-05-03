@@ -13,8 +13,6 @@ interface SearchProps {
 export const searchUserChats = async ({ combinedId, findUser, currentUser }: SearchProps) => {
 	await getDoc(doc(db, 'chats', combinedId)).then(async (res) => {
 		if (!res.exists()) {
-			// await setDoc(doc(db, 'chats', combinedId), { messages: [] })
-
 			await updateDoc(doc(db, 'userChats', currentUser.uid), {
 				[combinedId + '.userInfo']: {
 					uid: findUser?.uid,

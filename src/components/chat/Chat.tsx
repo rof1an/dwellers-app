@@ -48,7 +48,7 @@ export const Chat = () => {
 							const timeAgo = format(createdAt, 'HH:mm')
 
 							return (
-								<Message key={m.id} message={m} createdAt={timeAgo} />
+								<Message key={m.date.seconds} message={m} createdAt={timeAgo} />
 							)
 						})}
 					</ul>

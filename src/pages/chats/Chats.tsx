@@ -1,6 +1,5 @@
-import { doc, onSnapshot } from 'firebase/firestore'
-import React, { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
 import { ChatsProps } from '../../@types/chat-types'
 import { Loader } from '../../components/UI/loader/Loader'
 import { ChatSearch } from '../../components/chat/ChatSearch'
@@ -16,28 +15,24 @@ import cl from './Chats.module.scss'
 export const Chats = () => {
 	const dispatch = useAppDispatch()
 	const [chats, setChats] = useState<ChatsProps[]>([])
-	const [selectedUser, setSelectedUser] = useState<any>({})
+	const [selectedUser, setSelectedUser] = useState<string>('')
 
 	const { currentUser } = useAppSelector(state => state.auth)
 	const { lastSender, clickedUser } = useAppSelector(state => state.chat)
-	const chatsArray = Object.entries(chats)
-	const sortedChats = chatsArray.sort((a, b) => b[1]?.date?.seconds - a[1]?.date?.seconds)
+	const chatsArr = Object.entries(chats)
+	const sortedChats = chatsArr?.sort((a, b) => b[1]?.date?.seconds - a[1]?.date?.seconds)
 
-	React.useEffect(() => {
-		const getData = async () => {
-			const getChats = onSnapshot(doc(db, "userChats", currentUser!.uid), (doc) => {
-				setChats(doc.data() as ChatsProps[])
-			})
-			return () => getChats()
-		}
-		currentUser?.uid && getData()
+	useEffect(() => {
+		onSnapshot(doc(db, "userChats", currentUser!.uid), (doc) => {
+			setChats(doc.data() as ChatsProps[])
+		})
 
 		return () => {
 			dispatch(setChatInfo(null))
 		}
 	}, [currentUser?.uid])
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const getLastSender = async () => {
 			if (clickedUser && currentUser) {
 				const uid = getBothUid.getUid(currentUser.uid, clickedUser.uid)
@@ -55,7 +50,7 @@ export const Chats = () => {
 	const handleSelect = (clickedUserInfo: TUserInfo) => {
 		dispatch(setCurrentUser(currentUser as TUserInfo))
 		dispatch(setChatInfo(clickedUserInfo))
-		setSelectedUser(clickedUserInfo.uid)
+		setSelectedUser(clickedUserInfo?.uid)
 	}
 
 	return (
@@ -65,15 +60,15 @@ export const Chats = () => {
 				<div className={cl.userList}>
 					<ul className={cl.users}>
 						<ChatSearch />
-						{chatsArray.length === 0 ? (
+						{chatsArr.length === 0 ? (
 							<span className={cl.noChats}>No chats yet!</span>
 						) : (
 							<>
-								{sortedChats
-									.map(chat => {
+								{chatsArr
+									.map((chat) => {
 										return (
 											<li
-												key={uuidv4()}
+												key={chat[1]?.date?.seconds}
 												className={clickedUser?.uid === chat[1].userInfo?.uid ? `${cl.user} ${cl.selectedUser}` : `${cl.user}`}
 												onClick={() => handleSelect(chat[1].userInfo)}
 											>

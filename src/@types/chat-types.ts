@@ -12,6 +12,26 @@ export interface ChatsProps {
 	lastMessage: LastMsg
 }
 
+export interface ChatsEls {
+	date: any,
+	lastMessage: {
+		text: string
+	},
+	sender: {
+		senderId: {
+			senderId: string,
+			date: any,
+			text: string,
+			id: string
+		}
+	},
+	userInfo: {
+		displayName: string,
+		uid: string,
+		photoURL: string
+	}
+}
+
 export interface IMessage {
 	date: {
 		nanoseconds: number,

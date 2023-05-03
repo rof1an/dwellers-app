@@ -12,21 +12,18 @@ export interface PostProps {
 	post: TPost
 }
 
-export type ProfileData = {
-	city: City
-	date: string
-	languages: {
-		label: string
-		value: string
-	}[]
-}
-
-export type City = {
+export type Lang = {
 	label: string,
 	value: string
 }
 
-export type Lang = {
+export type ProfileData = {
+	city: City
+	date: string
+	languages: Lang[]
+}
+
+export type City = {
 	label: string,
 	value: string
 }

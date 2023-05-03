@@ -19,9 +19,11 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 	const { currentUser } = useAppSelector(state => state.auth)
 
 	useEffect(() => {
-		if (currentUser?.uid) {
-			const unsub = onSnapshot(doc(db, 'users', currentUser.uid), doc => {
-				doc.exists() && setNewValues(doc.data() as ProfileValues)
+		if (currentUser) {
+			const unsub = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
+				setNewValues(doc.data() as ProfileValues)
+				console.log(doc.data())
+
 			})
 			return () => unsub()
 		}
@@ -38,7 +40,7 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 		await updateDoc(doc(db, 'users', currentUser!.uid), updatedData)
 	}
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
 		setNewValues(prevState => ({ ...prevState, [name]: value }))
 	}
@@ -72,7 +74,7 @@ export const ProfileModal: FC<ProfileProps> = ({ visible, setVisible, value, set
 						<span className={cl.deleteItemValue}>delete value</span>
 					</div>
 					<Input
-						onChange={handleInputChange}
+						onChange={handleChangeDate}
 						value={newValues.date !== undefined && newValues.date}
 						name='date' type='date'
 						className={cl.formInput}

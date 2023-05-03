@@ -4,21 +4,40 @@
 	width: 100%;
 }
 
+.root {
+	background-color: rgba(0, 0, 0, 0.5);
+	box-shadow: 1px 1px 15px #000;
+	border-radius: 25px;
+	margin-top: 15px;
+
+	.emptyShadow {
+		background: rgb(40 103 112 / 26%);
+		border-radius: 20px 20px 0 0;
+		-webkit-mask: linear-gradient(#000 75%, rgba(0, 0, 0, 0.333333333) 95%, rgba(0, 0, 0, 0));
+		height: 157px;
+		position: absolute;
+		width: -webkit-fill-available;
+	}
+}
+
 .mainInfo {
 	display: flex;
-	margin: 15px 0 15px 0;
 	color: #cccccc;
 	max-height: 220px;
+	padding: 10px 20px 10px 10px;
+	border-radius: 0 0 20px 20px;
+	position: relative;
+	padding-top: 35px;
 
 	.avatar {
 		position: relative;
 	}
 
 	.changeMainImg {
-		width: 30px;
+		width: 25px;
 		position: absolute;
-		bottom: 10px;
-		right: 30px;
+		bottom: 15px;
+		right: 45px;
 		cursor: pointer;
 		backdrop-filter: brightness(0.55);
 		border-radius: 30%;
@@ -31,52 +50,51 @@
 }
 
 .mainImg {
-	width: 210px;
-	height: 210px;
-	border-radius: 25px;
-	background-color: rgba(0, 0, 0, 0.4);
-	box-shadow: 1px 1px 15px #000;
+	width: 170px;
+	height: 170px;
+	border-radius: 50%;
 	margin-right: 25px;
-	padding: 5px;
 	object-fit: cover;
+	border: 3px solid #3c3c3c;
 }
 
 .mainAbout {
 	width: 100%;
 	line-height: 0;
-	font-size: 20px;
-	background-color: rgba(0, 0, 0, 0.37);
-	box-shadow: 1px 1px 8px #000;
-	border-radius: 25px;
-	padding: 7px 15px 15px 25px;
+	font-size: 16px;
+	margin-top: 50px;
 
 	.subBlock {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
+		button {
+			border-radius: 10px;
+		}
 	}
 
 	.nameBlock {
+		margin-bottom: -15px;
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 
 		img {
-			width: 30px;
-			height: 30px;
+			padding-left: 10px;
+			width: 25px;
+			height: 25px;
 		}
 	}
 }
 
 .subtitle {
-	font-size: 15px;
+	font-size: 14px;
 	display: flex;
 	justify-content: start;
 	align-items: center;
-	margin: -5px 5px 10px 0;
 
 	img {
-		width: 25px;
+		width: 20px;
 	}
 }
 
@@ -89,22 +107,7 @@
 	display: flex;
 	gap: 40px;
 	align-items: start;
-	font-size: 18px;
-
-	p {
-		padding-bottom: 10px;
-	}
-
-	.right {
-		display: -webkit-box;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-
-		.emptyInfo {
-			color: #ccc;
-		}
-	}
+	font-size: 15px;
 }
 
 .profileInfo .left {

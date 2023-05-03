@@ -4,6 +4,8 @@ import AddAv from '../../assets/addImg.png'
 import errIcon from '../../assets/error-svgrepo-com.svg'
 import { Input } from "../../components/UI/input/Input"
 import { Loader } from '../../components/UI/loader/Loader'
+import { useAppDispatch } from '../../hooks/hooks'
+import { fetchCurrentUser } from '../../redux/slices/auth-slice/authSlice'
 import { createUser } from '../../utils/firebase-handles/createUser'
 import cl from "../register/Register.module.scss"
 import { Button } from './../../components/UI/button/Button'
@@ -12,6 +14,7 @@ import './../../index.scss'
 
 export const Register: FC = () => {
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<boolean>(false)
     const [file, setFile] = useState<File | null>(null)
