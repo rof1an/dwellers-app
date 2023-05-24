@@ -17,6 +17,17 @@
 		overflow: hidden;
 		padding: 10px 15px;
 		border-radius: 10px;
+		display: flex;
+		justify-content: space-between;
+
+		span {
+			color: #000;
+			font-weight: 700;
+			font-size: 15px;
+			background-color: aqua;
+			padding: 0px 7px;
+			border-radius: 20px;
+		}
 	}
 
 	.activeLink {

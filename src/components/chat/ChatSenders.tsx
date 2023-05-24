@@ -3,8 +3,8 @@ import addImg from '../../assets/addImg.png'
 import { Button } from '../../components/UI/button/Button'
 import { Input } from '../../components/UI/input/Input'
 import { useAppSelector } from '../../hooks/hooks'
-import { handleSend } from '../../utils/firebase-handles/handleSend'
 import cl from './../../pages/chats/Chats.module.scss'
+import { handleSend } from './functions'
 
 export const ChatSenders = () => {
 	const [text, setText] = useState('')
@@ -62,10 +62,18 @@ export const ChatSenders = () => {
 				<Button onClick={handleSendMessage}>Send</Button>
 			</div>
 			{isImageModalOpen && imgUrl && (
-				<div onClick={() => setIsImageModalOpen(false)} className={cl.selectedImgModal}>
-					<img
+				<div
+					onClick={() => setIsImageModalOpen(false)}
+					className={cl.selectedImgModal}>
+					<div className={cl.imgBlock}
 						onClick={(e) => e.stopPropagation()}
-						src={imgUrl} alt='selected' className={cl.selectedImgInModal} />
+					>
+						<img
+							src={imgUrl} alt='selected' className={cl.selectedImgInModal} />
+						<span
+							onClick={() => setIsImageModalOpen(false)}
+							className={cl.close}></span>
+					</div>
 				</div>
 			)}
 		</>

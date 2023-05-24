@@ -3,6 +3,17 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { v4 as uuid } from 'uuid'
 import { db, storage } from '../../firebase'
 import { LastSender, TUserInfo } from '../../redux/slices/chat-slice/types'
+import { User } from 'firebase/auth'
+import { getDoc } from 'firebase/firestore'
+import { FindUserData } from '../../@types/chat-types'
+
+
+interface SearchProps {
+	combinedId: string,
+	findUser: FindUserData | null,
+	currentUser: User
+}
+
 
 export interface HandleSendProps {
 	img: File | null,
@@ -60,16 +71,36 @@ export const handleSend = async ({ img, data, text, lastSender }: HandleSendProp
 		},
 		[data.chatId + '.date']: serverTimestamp(),
 	})
+
 	await updateDoc(doc(db, "userChats", data.clickedUser!.uid), {
 		[data.chatId + '.lastMessage']: {
 			text: text || '...',
 		},
 		[data.chatId + '.date']: serverTimestamp(),
 	})
+}
 
-	await updateDoc(doc(db, 'userChats', data.currentUser!.uid), {
-		[data.chatId + '.sender']: {
-			senderId: lastSender ? lastSender : null,
+
+export const searchUserChats = async ({ combinedId, findUser, currentUser }: SearchProps) => {
+	await getDoc(doc(db, 'chats', combinedId)).then(async (res) => {
+		if (!res.exists()) {
+			await updateDoc(doc(db, 'userChats', currentUser.uid), {
+				[combinedId + '.userInfo']: {
+					uid: findUser?.uid,
+					displayName: findUser?.displayName,
+					photoURL: findUser?.photoURL
+				},
+				[combinedId + '.date']: serverTimestamp(),
+			})
+
+			await updateDoc(doc(db, 'userChats', findUser!.uid), {
+				[combinedId + '.userInfo']: {
+					uid: currentUser?.uid,
+					displayName: currentUser?.displayName,
+					photoURL: currentUser?.photoURL
+				},
+				[combinedId + '.date']: serverTimestamp(),
+			})
 		}
 	})
 }

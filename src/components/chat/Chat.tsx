@@ -38,9 +38,24 @@ export const Chat = () => {
 			{clickedUser && (
 				<>
 					<span className={cl.chatUsername}>
-						{clickedUser?.photoURL && <img src={clickedUser?.photoURL} alt="" />}
-						{clickedUser?.displayName}
+						<p className={cl.chatNameInfo}>
+							{clickedUser?.photoURL && <img src={clickedUser?.photoURL} alt="" />}
+							{clickedUser?.displayName}
+						</p>
+						<p className={cl.chatNameInteractive}>
+							<span></span>
+							<span></span>
+							<span></span>
+							<div className={cl.interactiveBlock}>
+								<ul>
+									<li>Delete history</li>
+									<li>Block a user</li>
+								</ul>
+							</div>
+						</p>
 					</span>
+
+
 
 					<ul ref={chatContainerRef} className={cl.chats}>
 						{messages.map(m => {

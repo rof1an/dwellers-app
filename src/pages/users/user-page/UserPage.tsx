@@ -12,7 +12,7 @@ export const UserPage = () => {
 
 	useEffect(() => {
 		if (currentUser?.uid) {
-			onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
+			onSnapshot(doc(db, 'userSettings', currentUser.uid), (doc) => {
 				setIsAccPrivate(doc.data()?.isPrivate)
 			})
 		}

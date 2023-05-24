@@ -6,8 +6,8 @@ import { Input } from '../../components/UI/input/Input'
 import { db } from '../../firebase'
 import { useAppSelector } from '../../hooks/hooks'
 import cl from '../../pages/chats/Chats.module.scss'
-import { searchUserChats } from '../../utils/firebase-handles/searchUserChats'
 import { getBothUid } from '../../utils/getBothUid'
+import { searchUserChats } from './functions'
 
 export const ChatSearch = () => {
 	const [findUser, setFindUser] = useState<FindUserData | null>(null)

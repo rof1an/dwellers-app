@@ -70,6 +70,23 @@
 					}
 				}
 			}
+
+			.emptyRequests {
+				margin-top: 200px;
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+				justify-content: center;
+
+				p {
+					margin: 3px;
+				}
+
+				span {
+					color: aqua;
+					text-decoration: underline;
+				}
+			}
 		}
 	}
 }

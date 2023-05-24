@@ -2,8 +2,6 @@ import { doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'fir
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileData } from '../../../@types/home-types'
-import addFriendSvg from '../../../assets/addFriend.png'
-import sendMessageSvg from '../../../assets/send-mail-2574.svg'
 import { db } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { setChatInfo, setCurrentUser } from '../../../redux/slices/chat-slice/chatSlice'
@@ -70,39 +68,42 @@ export const UserProfile = () => {
 
 	return (
 		<>
+
 			{isLoading && <Loader />}
-			<div className={cl.mainInfo}>
-				<div className={cl.avatar}>
-					{selectedUser?.photoURL && <img className={cl.mainImg} src={selectedUser.photoURL} />}
-				</div>
-				<div className={cl.mainAbout}>
-					<h2 className={cl.profileTitle}>{selectedUser?.displayName}</h2>
-					<hr />
-					<div className={cl.subBlock}>
-						<h3 className={cl.subtitle}>
-							<p>Frontend developer</p>
-						</h3>
-						<div className={cl.interaction}>
-							<span>
-								<p>add to friends</p>
-								<img src={addFriendSvg} alt="" />
-							</span>
-							<span onClick={openChatWithUser}>
-								<p>Send a message</p>
-								<img className={cl.invertSvg} src={sendMessageSvg} alt="" />
-							</span>
-						</div>
+
+			<div className={cl.root}>
+				<div className={cl.emptyShadow}></div>
+				<div className={cl.mainInfo}>
+					<div className={cl.avatar}>
+						{selectedUser?.photoURL && <img className={cl.mainImg} src={selectedUser.photoURL} />}
 					</div>
-					<div className={cl.profileInfo}>
-						<div className={cl.left}>
-							<p>Date of birth:</p>
-							<p>Languages:</p>
-							<p>City:</p>
+					<div className={cl.mainAbout}>
+						<div className={cl.nameBlock}>
+							<h2 className={cl.profileTitle}>{selectedUser?.displayName}</h2>
 						</div>
-						<div className={cl.right}>
-							<p className={cl.rightInfo}>{data.date ? data.date : <span>none</span>}</p>
-							<p className={cl.rightInfo}>{data.languages.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span>none</span>}</p>
-							<p className={cl.rightInfo}>{data.city.label ? data.city.label : <span>none</span>}</p>
+						<div className={cl.subBlock}>
+							<span className={cl.subtitle}>
+								<p>Frontend developer</p>
+							</span>
+							<div className={cl.btns}>
+								<div className={cl.moreBtn}>
+								</div>
+							</div>
+
+						</div>
+						<div className={cl.profileInfo}>
+							<div>
+								<p>Date of birth:</p>
+								<p>{data?.date ? data.date : <span className={cl.emptyInfo}>none</span>}</p>
+							</div>
+							<div>
+								<p>City:</p>
+								<p>{data?.city?.label ? data.city.label : <span className={cl.emptyInfo}>none</span>}</p>
+							</div>
+							<div>
+								<p>Languages:</p>
+								<p>{data?.languages?.length > 0 ? data.languages.map((l) => l.label).join(', ') : <span className={cl.emptyInfo}>none</span>}</p>
+							</div>
 						</div>
 					</div>
 				</div>

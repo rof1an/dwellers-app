@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { ChatsProps } from '../../@types/chat-types'
 import { Loader } from '../../components/UI/loader/Loader'
@@ -7,7 +7,6 @@ import { db } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { setChatInfo, setCurrentUser, setLastMsgSender } from '../../redux/slices/chat-slice/chatSlice'
 import { TUserInfo } from '../../redux/slices/chat-slice/types'
-import { getBothUid } from '../../utils/getBothUid'
 import { Chat } from './../../components/chat/Chat'
 import cl from './Chats.module.scss'
 
@@ -32,21 +31,6 @@ export const Chats = () => {
 		}
 	}, [currentUser?.uid])
 
-	useEffect(() => {
-		const getLastSender = async () => {
-			if (clickedUser && currentUser) {
-				const uid = getBothUid.getUid(currentUser.uid, clickedUser.uid)
-
-				onSnapshot(doc(db, "chats", uid), (doc) => {
-					const data = doc.data()?.messages
-					dispatch(setLastMsgSender(data?.[data.length - 1]))
-				})
-			}
-		}
-
-		getLastSender()
-	}, [selectedUser])
-
 	const handleSelect = (clickedUserInfo: TUserInfo) => {
 		dispatch(setCurrentUser(currentUser as TUserInfo))
 		dispatch(setChatInfo(clickedUserInfo))
@@ -64,31 +48,33 @@ export const Chats = () => {
 							<span className={cl.noChats}>No chats yet!</span>
 						) : (
 							<>
-								{chatsArr
-									.map((chat) => {
-										return (
-											<li
-												key={chat[1]?.date?.seconds}
-												className={clickedUser?.uid === chat[1].userInfo?.uid ? `${cl.user} ${cl.selectedUser}` : `${cl.user}`}
-												onClick={() => handleSelect(chat[1].userInfo)}
-											>
-												{chat[1]?.userInfo?.photoURL && <img src={chat[1].userInfo.photoURL} alt="" />}
-												<div className={cl.userText}>
-													<span className={cl.userName}>{chat[1]?.userInfo?.displayName}</span>
-													{chat[1].lastMessage?.text && (
-														<span className={cl.lastMsg}>
-															{lastSender && (
-																<b>{lastSender.senderId === currentUser?.uid && (
-																	currentUser?.photoURL && <img className={cl.lastMsgImg} src={currentUser.photoURL} alt="" />
-																)}</b>
-															)}
-															{chat[1].lastMessage?.text}
-														</span>
-													)}
-												</div>
-											</li>
-										)
-									})}
+								{chatsArr.map((chat) => {
+									return (
+										<li
+											key={chat[0]}
+											className={
+												clickedUser?.uid === chat[1].userInfo?.uid
+													? `${cl.user} ${cl.selectedUser}`
+													: `${cl.user}`
+											}
+											onClick={() => handleSelect(chat[1].userInfo)}
+										>
+											{chat[1]?.userInfo?.photoURL && (
+												<img src={chat[1].userInfo.photoURL} alt="" />
+											)}
+											<div className={cl.userText}>
+												<span className={cl.userName}>
+													{chat[1]?.userInfo?.displayName}
+												</span>
+												{chat[1].lastMessage?.text && (
+													<span className={cl.lastMsg}>
+														{chat[1].lastMessage?.text}
+													</span>
+												)}
+											</div>
+										</li>
+									)
+								})}
 							</>
 						)}
 					</ul>

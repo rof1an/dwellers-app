@@ -69,8 +69,24 @@
 		align-items: center;
 		justify-content: space-between;
 
+		.btns {
+			display: flex;
+
+			.moreBtn {
+			}
+		}
+
 		button {
 			border-radius: 10px;
+			margin: 0 3px;
+			display: flex;
+			align-items: end;
+
+			img {
+				width: 11px;
+				height: 11px;
+				padding-left: 4px;
+			}
 		}
 	}
 
@@ -78,6 +94,7 @@
 		margin-bottom: -15px;
 		display: flex;
 		align-items: center;
+		text-transform: capitalize;
 
 		img {
 			padding-left: 10px;

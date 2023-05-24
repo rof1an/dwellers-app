@@ -25,6 +25,14 @@
 			list-style: none;
 			padding: 0;
 
+			.friendLink {
+				transition: all 0.3s ease;
+				&:hover {
+					background-color: #3c3c3cc1;
+					border-radius: 12px;
+				}
+			}
+
 			.friend {
 				display: flex;
 				padding: 3px;

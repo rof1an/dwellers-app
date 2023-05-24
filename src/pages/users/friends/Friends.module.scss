@@ -2,4 +2,96 @@
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row-reverse;
+
+	.title {
+		margin: 10px 0;
+		color: #fff;
+	}
+
+	.usersTitle {
+		margin: 0;
+		font-size: 20px;
+		display: inline-block;
+		line-height: 0;
+		margin: 10px 0;
+		background-color: #3c3c3c;
+		padding: 20px 15px;
+		border-radius: 15px;
+
+		span {
+			margin-left: 10px;
+			color: aqua;
+			font-size: 22px;
+			background-color: #2e2e2e;
+			padding: 0px 10px 0 10px;
+			border-radius: 20px;
+		}
+	}
+
+	.friends {
+		padding: 15px;
+		background-color: rgba(0, 0, 0, 0.37);
+		box-shadow: 1px 1px 8px #000;
+		width: 100%;
+		min-height: 80vh;
+
+		.emptyFriends {
+			margin-top: 200px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+			p {
+				margin: 3px;
+			}
+
+			span {
+				color: aqua;
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.requesterItem {
+		display: flex;
+		align-items: center;
+		padding: 10px 0;
+
+		&:not(:first-child) {
+			border-top: 1px solid #787878;
+		}
+
+		.reqImg {
+			width: 100px;
+			height: 100px;
+			object-fit: cover;
+			border-radius: 50%;
+			margin-right: 30px;
+		}
+		.reqName {
+			font-size: 23px;
+			color: aqua;
+			text-transform: capitalize;
+		}
+		.reqInfo {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+
+			.btns {
+				display: flex;
+				gap: 30px;
+
+				button {
+					border-radius: 10px;
+					color: #fff;
+
+					&:hover {
+						background-color: transparent;
+					}
+				}
+			}
+		}
+	}
 }

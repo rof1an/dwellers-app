@@ -7,6 +7,7 @@ import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 import { IFriend } from '../../../@types/users-types'
 import addFriend from '../../../assets/addFriend.png'
+import addedFrSvg from '../../../assets/addedFriend.svg'
 import { Loader } from '../../../components/UI/loader/Loader'
 import { UsersNavigation } from '../../../components/users/usersNav/UsersNavigation'
 import { db } from '../../../firebase'
@@ -63,10 +64,6 @@ export const Users = () => {
 		fetchUserFriends()
 	}, [users])
 
-	const isFriendDefination = (user: User) => {
-		return usersFriends.some((friend) => friend.requesterUid === user.uid)
-	}
-
 	// send request to friend
 	const handleSendRequest = async ({ recipientName, recipientUid, recipientImg }: HandleRequestProps) => {
 		const refUid = `${currentUser?.displayName}${currentUser!.uid > recipientUid
@@ -116,6 +113,10 @@ export const Users = () => {
 		navigate(`/users/${user.displayName}-${user.uid}`)
 	}
 
+	const mappedFriends = usersFriends.map(friend => friend.uid)
+	// console.log(mappedFriends.map(friend => friend))
+
+
 	return (
 		<div className={cl.root}>
 			<ToastContainer />
@@ -135,31 +136,59 @@ export const Users = () => {
 					) : isError ? (
 						<span>Error</span>
 					) : (
-						users.filter(users => users.uid !== currentUser?.uid).map((user) => {
-							return (
-								<li key={user.uid} className={cl.userItem}>
-									{user.photoURL &&
-										<img onClick={() => selectUser(user)}
-											src={user.photoURL}
-											className={cl.userPhoto} alt='' />
-									}
-									<div className={cl.info}>
-										<span className={cl.userName}>{user.displayName}</span>
-										<button
-											onClick={() => checkSendRequest(user)}
-											className={cl.addFriendBtn}
-											id='user-status'
-										>
+						<>
+							{/* ALL USERS */}
+							{users
+								.filter(user => user.uid !== currentUser?.uid && !mappedFriends.includes(user.uid))
+								.map((user) => {
+									return (
+										<li key={user.uid} className={cl.userItem}>
+											{user.photoURL && (
+												<img
+													onClick={() => selectUser(user)}
+													src={user.photoURL}
+													className={cl.userPhoto}
+													alt=''
+												/>
+											)}
+											<div className={cl.info}>
+												<span className={cl.userName}>{user.displayName}</span>
+												<button
+													onClick={() => checkSendRequest(user)}
+													className={cl.addFriendBtn}
+													id='user-status'
+												>
+													<img src={addFriend} alt='add' />
+													<Tooltip anchorSelect='#user-status' place='bottom' content='Add to friend' />
+												</button>
+											</div>
+										</li>
+									)
+								})}
+							{/* FRRIENDS IN ALL USERS CATEGORY */}
+							{usersFriends.map(friend => {
+								return (
+									<li key={friend.uid} className={cl.userItem}>
+										{friend.photoURL && (
 											<img
-												src={addFriend}
-												alt='add'
+												src={friend.photoURL}
+												className={cl.userPhoto}
 											/>
-											<Tooltip anchorSelect='#user-status' place='bottom' content='Add to friend' />
-										</button>
-									</div>
-								</li>
-							)
-						})
+										)}
+										<div className={cl.info}>
+											<span className={cl.userName}>{friend.displayName}</span>
+											<button
+												className={`${cl.addFriendBtn} ${cl.addedFriend}`}
+												id='friend-status'
+											>
+												<img src={addedFrSvg} alt="" />
+												<Tooltip anchorSelect='#friend-status' place='bottom' content='Delete friend' />
+											</button>
+										</div>
+									</li>
+								)
+							})}
+						</>
 					)}
 				</ul>
 			</div>

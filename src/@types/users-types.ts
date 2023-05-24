@@ -1,5 +1,5 @@
 export interface IFriend {
-	requesterImg: string,
-	requesterName: string,
-	requesterUid: string,
+	photoURL: string,
+	displayName: string,
+	uid: string,
 }

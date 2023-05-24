@@ -6,10 +6,10 @@ import { Input } from "../../components/UI/input/Input"
 import { Loader } from '../../components/UI/loader/Loader'
 import { useAppDispatch } from '../../hooks/hooks'
 import { fetchCurrentUser } from '../../redux/slices/auth-slice/authSlice'
-import { createUser } from '../../utils/firebase-handles/createUser'
 import cl from "../register/Register.module.scss"
 import { Button } from './../../components/UI/button/Button'
 import './../../index.scss'
+import { createUser } from './functions'
 
 
 export const Register: FC = () => {

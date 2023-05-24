@@ -56,7 +56,7 @@ export const NavSettings = ({ isVisible, setIsVisible }: INavSettings) => {
 	const privateAccount = () => {
 		if (currentUser) {
 			setIsPrivateAccount(!isPrivateAccount)
-			updateDoc(doc(db, 'users', currentUser.uid), {
+			updateDoc(doc(db, 'userSettings', currentUser.uid), {
 				isPrivate: !isPrivateAccount
 			})
 		}

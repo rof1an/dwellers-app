@@ -1,6 +1,6 @@
-import { collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Button } from '../../../components/UI/button/Button'
 import { UsersNavigation } from '../../../components/users/usersNav/UsersNavigation'
 import { db } from '../../../firebase'
@@ -8,14 +8,14 @@ import { useAppSelector } from '../../../hooks/hooks'
 import cl from './FriendsReq.module.scss'
 
 type Recipient = {
-	recipientName: string
-	recipientUid: string
-	recipientImg: string
+	displayName: string
+	uid: string
+	photoURL: string
 }
 export type Requester = {
-	requesterName: string
-	requesterUid: string
-	requesterImg: string
+	displayName: string
+	uid: string
+	photoURL: string
 }
 
 interface RequestValues {
@@ -28,7 +28,7 @@ export const FriendsRequests = () => {
 	const [requests, setRequests] = useState<RequestValues[]>([])
 	const [requestsCount, setRequestsCount] = useState<number>(0)
 	const { currentUser } = useAppSelector((state) => state.auth)
-	const requesterUid = requests.map((req) => req.requester.requesterUid)
+	const requesterUid = requests.map((req) => req.requester.uid)
 
 	React.useEffect(() => {
 		getRequests()
@@ -47,31 +47,37 @@ export const FriendsRequests = () => {
 				const data = doc.data()
 				const request = {
 					recipient: {
-						recipientName: data.recipient.name,
-						recipientUid: data.recipient.uid,
-						recipientImg: data.recipient.photoURL,
+						displayName: data.recipient.name,
+						uid: data.recipient.uid,
+						photoURL: data.recipient.photoURL,
 					},
 					requester: {
-						requesterName: data.requester.name,
-						requesterUid: data.requester.uid,
-						requesterImg: data.requester.photoUrl,
+						displayName: data.requester.name,
+						uid: data.requester.uid,
+						photoURL: data.requester.photoUrl,
 					},
 				}
 				requestsData.push(request as RequestValues)
 			})
-			setRequestsCount(requestsData.length)
 			setRequests(requestsData)
+			setRequestsCount(requestsData.length)
+
+			updateDoc(doc(db, 'users', currentUser!.uid), {
+				requestsReceived: requestsData?.length
+			})
 		})
 	}
 
 	const acceptRequest = async (user: Requester) => {
-		const senderFriendsRef = doc(db, 'userFriends', user.requesterUid)
+		const senderFriendsRef = doc(db, 'userFriends', user.uid)
 		const recipientRef = doc(db, 'userFriends', currentUser!.uid)
 		const docUid = currentUser!.uid > requesterUid[0]
-			? user?.requesterName + currentUser!.uid + requesterUid[0] : user?.requesterName + requesterUid[0] + currentUser!.uid
+			? user?.displayName + currentUser!.uid + requesterUid[0] : user?.displayName + requesterUid[0] + currentUser!.uid
 
 		const userFriendsDoc = await getDoc(recipientRef)
 		const currentFriends = userFriendsDoc.data()?.friends || []
+		console.log('currFriends', currentFriends)
+		console.log(user)
 		const updatedFriends = [...currentFriends, user]
 
 		await setDoc(recipientRef, { friends: updatedFriends })
@@ -81,19 +87,19 @@ export const FriendsRequests = () => {
 		const senderFriendsDoc = await getDoc(senderFriendsRef)
 		const senderCurrentFriends = senderFriendsDoc.data()?.friends || []
 		const senderUpdatedFriends = [...senderCurrentFriends, {
-			requesterName: currentUser!.displayName,
-			requesterUid: currentUser!.uid,
-			requesterImg: currentUser!.photoURL,
+			displayName: currentUser!.displayName,
+			uid: currentUser!.uid,
+			photoURL: currentUser!.photoURL,
 		}]
 
 		await setDoc(senderFriendsRef, { friends: senderUpdatedFriends })
-		const updatedRequests = requests.filter((req) => req.requester.requesterUid !== user.requesterUid)
+		const updatedRequests = requests.filter((req) => req.requester.uid !== user.uid)
 		setRequests(updatedRequests)
 	}
 
 	const rejectRequest = async (user: Requester) => {
 		const docUid = currentUser!.uid > requesterUid[0]
-			? user?.requesterName + currentUser!.uid + requesterUid[0] : user?.requesterName + requesterUid[0] + currentUser!.uid
+			? user?.displayName + currentUser!.uid + requesterUid[0] : user?.displayName + requesterUid[0] + currentUser!.uid
 		await deleteDoc(doc(db, 'friendsRequests', docUid))
 	}
 
@@ -106,12 +112,12 @@ export const FriendsRequests = () => {
 						New friend requests:
 						<span>{requestsCount}</span>
 					</h2>
-					{requests.map((req) => {
+					{requests.length > 0 ? requests.map((req) => {
 						return (
-							<li className={cl.requesterItem} key={req.requester.requesterUid}>
-								<img className={cl.reqImg} src={req.requester.requesterImg} alt='' />
+							<li className={cl.requesterItem} key={req.requester.uid}>
+								<img className={cl.reqImg} src={req.requester.photoURL} alt='' />
 								<div className={cl.reqInfo}>
-									<span className={cl.reqName}>{req.requester.requesterName}</span>
+									<span className={cl.reqName}>{req.requester.displayName}</span>
 									<div className={cl.btns}>
 										<Button onClick={() => acceptRequest(req.requester)}>Accept the request</Button>
 										<Button onClick={() => rejectRequest(req.requester)}>Reject the request</Button>
@@ -119,7 +125,12 @@ export const FriendsRequests = () => {
 								</div>
 							</li>
 						)
-					})}
+					}) : (
+						<div className={cl.emptyRequests}>
+							<p>There are no requests for friends yet.</p>
+							<p>You can be the first to send it in the <span> <NavLink to='/users'>All users</NavLink> </span> section.</p>
+						</div>
+					)}
 				</ul>
 			</div>
 		</div>

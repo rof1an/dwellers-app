@@ -4,6 +4,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { ProfileData } from '../../../@types/home-types'
+import arrowDown from '../../../assets/arrow-down-sign-to-navigate.png'
 import changeSvg from '../../../assets/edit-svgrepo-com.svg'
 import closedAccSvg from '../../../assets/icons8-замок.svg'
 import { db, storage } from '../../../firebase'
@@ -35,16 +36,23 @@ export const Profile = () => {
 
 	useEffect(() => {
 		if (currentUser?.uid) {
-			const unsub = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
-				setIsLoading(true)
-				setData((prevData) => ({ ...prevData, ...doc.data() }))
-				setIsPrivateAcc(doc.data()?.isPrivate)
-				dispatch(setAccountData(doc.data() as AccountData))
-				setIsLoading(false)
-			})
+			const unsub = function () {
+				onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
+					setIsLoading(true)
+					setData((prevData) => ({ ...prevData, ...doc.data() }))
+					setIsPrivateAcc(doc.data()?.isPrivate)
+					dispatch(setAccountData(doc.data() as AccountData))
+					setIsLoading(false)
+				})
+				onSnapshot(doc(db, 'userSettings', currentUser.uid), (doc) => {
+					setIsLoading(true)
+					setIsPrivateAcc(doc.data()?.isPrivate)
+					setIsLoading(false)
+				})
+			}
 			return () => unsub()
 		}
-	}, [currentUser])
+	}, [currentUser?.uid])
 
 	useEffect(() => {
 		const updateData = async () => {
@@ -109,7 +117,16 @@ export const Profile = () => {
 							<img src={changeSvg} alt='#' />
 							<p>Frontend developer</p>
 						</span>
-						<Button onClick={() => setModalVisible(true)}>Change information</Button>
+						<div className={cl.btns}>
+							<Button onClick={() => setModalVisible(true)}>Change information</Button>
+							<div className={cl.moreBtn}>
+								<Button onClick={() => setModalVisible(true)}>
+									More
+									<img src={arrowDown} alt="" />
+								</Button>
+							</div>
+						</div>
+
 					</div>
 					<div className={cl.profileInfo}>
 						<div>
