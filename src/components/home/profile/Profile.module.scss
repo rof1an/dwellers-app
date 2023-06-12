@@ -9,6 +9,8 @@
 	box-shadow: 1px 1px 15px #000;
 	border-radius: 25px;
 	margin-top: 15px;
+	max-width: 900px;
+	width: 100%;
 
 	.emptyShadow {
 		background: rgb(40 103 112 / 26%);
@@ -16,6 +18,7 @@
 		-webkit-mask: linear-gradient(#000 75%, rgba(0, 0, 0, 0.333333333) 95%, rgba(0, 0, 0, 0));
 		height: 157px;
 		position: absolute;
+		max-width: 900px;
 		width: -webkit-fill-available;
 	}
 }
@@ -60,7 +63,6 @@
 
 .mainAbout {
 	width: 100%;
-	line-height: 0;
 	font-size: 16px;
 	margin-top: 50px;
 
@@ -85,7 +87,8 @@
 			img {
 				width: 11px;
 				height: 11px;
-				padding-left: 4px;
+				padding-left: 5px;
+				filter: invert(1);
 			}
 		}
 	}
@@ -100,8 +103,57 @@
 			padding-left: 10px;
 			width: 25px;
 			height: 25px;
+			cursor: pointer;
 		}
 	}
+}
+
+.accModalOptions {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	line-height: 20px;
+	gap: 10px;
+
+	.item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 10px;
+
+		.itemSeperator {
+			display: flex;
+			gap: 10px;
+		}
+
+		.itemImg {
+			width: 40px;
+			height: 40px;
+			object-fit: cover;
+		}
+		span {
+			color: #fff;
+			font-size: 16px;
+		}
+		p {
+			color: #ccc;
+			font-size: 12px;
+			margin: 0;
+		}
+		.itemSwitcher {
+			cursor: pointer;
+			font-size: 15px;
+			color: aqua;
+			text-decoration: underline;
+		}
+	}
+	hr {
+		width: 100%;
+	}
+}
+.modalTitle {
+	margin: 0;
 }
 
 .subtitle {
@@ -109,9 +161,39 @@
 	display: flex;
 	justify-content: start;
 	align-items: center;
+	margin-top: 6px;
 
 	img {
 		width: 20px;
+	}
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+
+	.editingSubtitleBlock {
+		margin-top: 8px;
+		border: 1px solid aqua;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+	}
+
+	.editingSubtitleInput {
+		background: none;
+		border: none;
+		outline: none;
+		color: #fff;
+		padding-left: 11px;
+
+		&::placeholder {
+			color: #ccc;
+		}
+	}
+
+	.changeSubBtn {
+		padding: 0 7px;
 	}
 }
 
@@ -125,6 +207,7 @@
 	gap: 40px;
 	align-items: start;
 	font-size: 15px;
+	line-height: 0;
 }
 
 .profileInfo .left {
@@ -133,4 +216,14 @@
 
 .noneInfo {
 	color: rgb(21, 156, 156);
+}
+
+@media (max-width: 1000px) {
+	.root {
+		max-width: none;
+
+		.emptyShadow {
+			max-width: none;
+		}
+	}
 }

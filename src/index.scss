@@ -1,7 +1,6 @@
 body {
 	margin: 0;
-	background: url('https://sun2.dataix-kz-akkol.userapi.com/impg/d6UnrwUM51gg7ewMPbNwtj_PeeV0aPKMPqduDw/YfK3MB2DabI.jpg?size=2560x1600&quality=96&sign=4d8c470927bfe189ea764d4b53e22a73&type=album')
-		no-repeat;
+	background: url('./assets/mainBg.jpg') no-repeat;
 	background-attachment: fixed;
 	background-position: center center;
 	background-size: cover;
@@ -27,15 +26,17 @@ $primary: #2f2f32e3;
 
 .App {
 	position: relative;
-	display: grid;
-	max-width: 1200px;
+	max-width: 1050px;
 	width: 100%;
 	padding-bottom: 50px;
 	margin: 0 auto;
-	grid-template-areas: 'h h' 'n c';
-	grid-template-rows: 60px 1fr;
-	grid-template-columns: 1fr 10fr;
 	color: #ccc;
+}
+
+.routes {
+	width: 100%;
+	margin-top: 55px;
+	margin-left: 175px;
 }
 
 a {
@@ -44,8 +45,23 @@ a {
 }
 
 :root {
-	--mainBg: #2f2f32e3;
+	--mainBg: #2f2f32;
 }
+
+//burger menu
+.burger {
+	display: none;
+}
+.bar1,
+.bar2,
+.bar3 {
+	width: 35px;
+	height: 3px;
+	background-color: #ccc;
+	margin: 6px 0;
+	transition: 0.2s;
+}
+//
 
 .modal {
 	position: absolute;
@@ -69,10 +85,21 @@ a {
 }
 
 .sideBar {
+	position: fixed;
 	margin-right: 15px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-top: 55px;
+}
+
+.mobileSideBar {
+	position: absolute;
+	z-index: 100;
+	left: 0;
+	height: 100vh;
+	margin-top: 42px;
+	margin-left: -10px;
 }
 
 /* TransitionGroup */
@@ -94,4 +121,16 @@ a {
 @mixin main-bg-and-shadow {
 	background-color: rgba(0, 0, 0, 0.368627451);
 	box-shadow: 1px 1px 8px #000;
+}
+
+@media (max-width: 1000px) {
+	.burger {
+		display: block;
+	}
+	.sideBar {
+		left: -300px;
+	}
+	.routes {
+		margin-left: 0;
+	}
 }

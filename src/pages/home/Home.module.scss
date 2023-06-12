@@ -1,15 +1,16 @@
 .infoPart {
 	display: flex;
 	justify-content: space-between;
-	align-items: baseline;
 
 	.homeFriends {
 		padding: 15px 15px 0;
 		background-color: rgba(0, 0, 0, 0.37);
 		box-shadow: 1px 1px 8px #000;
-		max-width: 265px;
+		max-width: 235px;
+		height: 140px;
 		width: 100%;
 		margin: 20px 0px 0 15px;
+		border-radius: 20px;
 
 		.friendsTitle {
 			font-size: 17px;
@@ -22,6 +23,7 @@
 		.friendsList {
 			display: flex;
 			flex-wrap: wrap;
+			gap: 10px;
 			list-style: none;
 			padding: 0;
 
@@ -30,6 +32,17 @@
 				&:hover {
 					background-color: #3c3c3cc1;
 					border-radius: 12px;
+				}
+			}
+
+			.noneFriendsLink {
+				background-color: #3c3c3c42;
+				border-radius: 15px;
+
+				span {
+					color: aqua;
+					font-size: 18px;
+					font-weight: 500;
 				}
 			}
 
@@ -47,6 +60,44 @@
 					height: 60px;
 					object-fit: cover;
 					border-radius: 50%;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 860px) {
+	.infoPart {
+		flex-direction: column-reverse;
+
+		.homeFriends {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 13px;
+			margin-left: 0;
+			padding: 5px 10px;
+			max-width: none;
+			height: 50px;
+			width: auto;
+
+			.friendsList {
+				gap: 0;
+
+				.friendLink {
+					margin-left: -5px;
+					border: 2px solid transparent;
+					border-radius: 50%;
+
+					.friend {
+						img {
+							width: 45px;
+							height: 45px;
+						}
+						span {
+							display: none;
+						}
+					}
 				}
 			}
 		}

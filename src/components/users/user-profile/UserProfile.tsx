@@ -1,7 +1,7 @@
 import { doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ProfileData } from '../../../@types/home-types'
+import { ProfileUserData } from '../../../@types/home-types'
 import { db } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { setChatInfo, setCurrentUser } from '../../../redux/slices/chat-slice/chatSlice'
@@ -13,14 +13,14 @@ import cl from './UserProfile.module.scss'
 export const UserProfile = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const [data, setData] = useState<ProfileData>({
+	const [data, setData] = useState<ProfileUserData>({
 		city: { label: '', value: '' }, date: '', languages: [],
 	})
 	const [isLoading, setIsLoading] = useState(false)
 	const { selectedUser } = useAppSelector(state => state.users)
 	const { currentUser } = useAppSelector(state => state.auth)
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (selectedUser?.uid) {
 			const getData = onSnapshot(doc(db, 'users', selectedUser.uid), (doc) => {
 				setIsLoading(true)
@@ -66,11 +66,10 @@ export const UserProfile = () => {
 		navigate('/chats')
 	}
 
+
 	return (
 		<>
-
 			{isLoading && <Loader />}
-
 			<div className={cl.root}>
 				<div className={cl.emptyShadow}></div>
 				<div className={cl.mainInfo}>

@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react'
 import { NavLink, useNavigate } from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
 import AddAv from '../../assets/addImg.png'
-import errIcon from '../../assets/error-svgrepo-com.svg'
 import { Input } from "../../components/UI/input/Input"
 import { Loader } from '../../components/UI/loader/Loader'
 import { useAppDispatch } from '../../hooks/hooks'
-import { fetchCurrentUser } from '../../redux/slices/auth-slice/authSlice'
+import { ToastNofify } from '../../utils/ToastNotify'
 import cl from "../register/Register.module.scss"
 import { Button } from './../../components/UI/button/Button'
 import './../../index.scss'
@@ -16,11 +16,16 @@ export const Register: FC = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(false)
+    const [isToastDisplayed, setIsToastDisplayed] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
     const [file, setFile] = useState<File | null>(null)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        if (isToastDisplayed) {
+            return
+        }
+
         setIsLoading(true)
         const email = (e.currentTarget[1] as HTMLInputElement).value
         const password = (e.currentTarget[2] as HTMLInputElement).value
@@ -31,10 +36,12 @@ export const Register: FC = () => {
             navigate('/')
         } catch (err) {
             setError(true)
-        } finally {
+            ToastNofify.errorNotify('Something went wrong!')
+
             setTimeout(() => {
                 setError(false)
-            }, 5000)
+                setIsToastDisplayed(false)
+            }, 1000)
         }
         setIsLoading(false)
     }
@@ -42,6 +49,7 @@ export const Register: FC = () => {
     return (
         <>
             {isLoading && <Loader />}
+            <ToastContainer />
             <div className={cl.form}>
                 <h2 className={cl.heading}>Register</h2>
                 <form onSubmit={handleSubmit} className={cl.inputs}>
@@ -67,12 +75,6 @@ export const Register: FC = () => {
                         <Button>Create account</Button>
                     </div>
                 </form>
-                {error && (
-                    <div className='modal'>
-                        <img src={errIcon} alt="" />
-                        <span>Something went wrong!</span>
-                    </div>
-                )}
             </div>
         </>
     )

@@ -8,11 +8,12 @@ import cl from './UserPage.module.scss'
 
 export const UserPage = () => {
 	const { currentUser } = useAppSelector(state => state.auth)
-	const [isAccPrivate, setIsAccPrivate] = useState(false)
+	const { selectedUser } = useAppSelector(state => state.users)
+	const [isAccPrivate, setIsAccPrivate] = useState<boolean>(false)
 
 	useEffect(() => {
-		if (currentUser?.uid) {
-			onSnapshot(doc(db, 'userSettings', currentUser.uid), (doc) => {
+		if (selectedUser?.uid) {
+			onSnapshot(doc(db, 'userSettings', selectedUser.uid), (doc) => {
 				setIsAccPrivate(doc.data()?.isPrivate)
 			})
 		}
@@ -26,7 +27,7 @@ export const UserPage = () => {
 					<h2>This account is private.</h2>
 				</div>
 			) : (
-				<UserPosts />
+				<UserPosts isAccPrivate={isAccPrivate} />
 			)}
 		</>
 	)

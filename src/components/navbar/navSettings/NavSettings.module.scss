@@ -15,7 +15,7 @@
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-		padding: 20px 5px;
+		padding: 30px 15px 20px;
 		background: #2f2f32;
 		border-radius: 15px;
 		max-width: 500px;
@@ -74,6 +74,12 @@
 			}
 		}
 	}
+}
+
+.itemHr {
+	border-color: rgba(204, 204, 204, 0.48);
+	margin-top: 0;
+	width: 100%;
 }
 
 .active {

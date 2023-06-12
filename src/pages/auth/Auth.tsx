@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { FC, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import errIcon from '../../assets/error-svgrepo-com.svg'
+import { ToastContainer } from 'react-toastify'
 import { Button } from '../../components/UI/button/Button'
 import { Input } from '../../components/UI/input/Input'
 import { Loader } from '../../components/UI/loader/Loader'
@@ -9,16 +9,22 @@ import { auth } from '../../firebase'
 import { useAppDispatch } from '../../hooks/hooks'
 import '../../index.scss'
 import { setAuth } from '../../redux/slices/auth-slice/authSlice'
+import { ToastNofify } from '../../utils/ToastNotify'
 import cl from './Auth.module.scss'
 
 export const Auth: FC = React.memo(() => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isToastDisplayed, setIsToastDisplayed] = useState<boolean>(false)
 	const [error, setError] = useState<boolean>(false)
 
 	const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		if (isToastDisplayed) {
+			return
+		}
+
 		setIsLoading(true)
 		const email = (e.currentTarget[0] as HTMLInputElement).value
 		const password = (e.currentTarget[1] as HTMLInputElement).value
@@ -30,11 +36,13 @@ export const Auth: FC = React.memo(() => {
 			})
 			.catch(() => {
 				setError(true)
-			})
-			.finally(() => {
+				ToastNofify.errorNotify('Wrong login or password!')
+				setIsToastDisplayed(true)
+
 				setTimeout(() => {
+					setIsToastDisplayed(false)
 					setError(false)
-				}, 5000)
+				}, 1000)
 			})
 		setIsLoading(false)
 	}
@@ -42,6 +50,7 @@ export const Auth: FC = React.memo(() => {
 	return (
 		<>
 			{isLoading && <Loader />}
+			<ToastContainer />
 			<div className={cl.form}>
 				<h2 className={cl.heading}>Log In</h2>
 				<form onSubmit={handleLogin} className={cl.inputs}>
@@ -54,12 +63,6 @@ export const Auth: FC = React.memo(() => {
 						<Button>Enter</Button>
 					</div>
 				</form>
-				{error && (
-					<div className='modal'>
-						<img src={errIcon} alt='' />
-						<span>Incorrect login or password!</span>
-					</div>
-				)}
 			</div>
 		</>
 	)

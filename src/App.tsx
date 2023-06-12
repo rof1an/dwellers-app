@@ -10,6 +10,7 @@ import { useAppSelector } from './hooks/hooks'
 
 export const App: FC = () => {
     const [isClockActive, setIsClockActive] = useState(false)
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
     const { currentUser } = useAppSelector(state => state.auth)
 
     useEffect(() => {
@@ -22,13 +23,15 @@ export const App: FC = () => {
 
     return (
         <div className='App'>
-            <Header />
-            <div className='sideBar'>
-                <Navbar />
-                {isClockActive && <Clock />}
-            </div>
-            <div className='routes'>
-                <AppRouter />
+            <Header isMobileSidebarOpen={isMobileSidebarOpen} setIsMobileSidebarOpen={setIsMobileSidebarOpen} />
+            <div style={{ display: 'flex' }}>
+                <div className={isMobileSidebarOpen ? 'mobileSideBar' : 'sideBar'}>
+                    <Navbar />
+                    {isClockActive && <Clock />}
+                </div>
+                <div className='routes'>
+                    <AppRouter />
+                </div>
             </div>
         </div>
     )

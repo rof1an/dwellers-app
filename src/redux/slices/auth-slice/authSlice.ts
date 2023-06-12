@@ -15,7 +15,8 @@ const initialState: AuthState = {
 			label: ''
 		},
 		languages: [],
-		dateOfBirth: ''
+		dateOfBirth: '',
+		subtitle: ''
 	}
 }
 

@@ -1,4 +1,92 @@
+.root {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-top: -15px;
+
+	.homeFriends {
+		padding: 20px 15px 0;
+		background-color: rgba(0, 0, 0, 0.37);
+		box-shadow: 1px 1px 8px #000;
+		max-width: 265px;
+		width: 100%;
+		margin: 20px 0px 0 15px;
+
+		.friendsTitle {
+			font-size: 17px;
+			margin-top: -5px;
+
+			b {
+				color: aqua;
+			}
+		}
+
+		.friendsList {
+			display: flex;
+			flex-wrap: wrap;
+			list-style: none;
+			padding: 0;
+
+			.friendLink {
+				transition: all 0.3s ease;
+				&:hover {
+					background-color: #3c3c3cc1;
+					border-radius: 12px;
+				}
+			}
+
+			.friend {
+				display: flex;
+				padding: 3px;
+				flex-direction: column;
+				align-items: center;
+				text-transform: capitalize;
+				max-width: 60px;
+				width: 100%;
+
+				img {
+					width: 60px;
+					height: 60px;
+					object-fit: cover;
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+}
+
 .posts {
+	width: 70%;
+
+	.postInput {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 10px;
+		background-color: #0000005e;
+		box-shadow: 1px 1px 8px #000;
+		border-radius: 15px;
+
+		input {
+			border-radius: 15px 0 0 15px;
+			font-size: 18px;
+			width: 98%;
+			padding: 7px 7px;
+			border-style: inset;
+			padding-left: 10px;
+
+			&::placeholder {
+				font-size: 15px;
+			}
+		}
+
+		button {
+			border-radius: 0 15px 15px 0px;
+			width: 150px;
+			border-style: inset;
+		}
+	}
+
 	.postsBlock {
 		padding: 15px;
 		background-color: rgba(0, 0, 0, 0.37);

@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { fetchNews } from '../../redux/slices/news-slice/newsSlice'
 import { Loader } from '../../components/UI/loader/Loader'
 import { Pagination } from '../../components/UI/pagination/Pagination'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { fetchNews } from '../../redux/slices/news-slice/newsSlice'
+import { Article } from '../../redux/slices/news-slice/types'
 import { getConvertTime } from './../../utils/convertTime'
 import cl from './News.module.scss'
-import { Article } from '../../redux/slices/news-slice/types'
 
 export const News: FC = () => {
 	const dispatch = useAppDispatch()

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import cl from '../navbar/Navbar.module.scss'
 import { NavSettings } from './navSettings/NavSettings'
 
+
 export const Navbar = () => {
 	const [isSettingsVisible, setIsSettingsVisible] = useState(false)
 	const [links] = useState([

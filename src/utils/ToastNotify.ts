@@ -15,7 +15,7 @@ export const ToastNofify = {
 	},
 	errorNotify: (title: string) => {
 		toast.error(`${title}`, {
-			position: "top-center",
+			position: "top-right",
 			autoClose: 1000,
 			hideProgressBar: true,
 			closeOnClick: true,

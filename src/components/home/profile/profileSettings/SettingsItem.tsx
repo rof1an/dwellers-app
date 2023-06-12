@@ -1,4 +1,4 @@
-import cl from '../NavSettings.module.scss'
+import cl from '../profileSettings/ProfileSettings.module.scss'
 
 interface SettingProps {
 	title: string,
@@ -31,7 +31,7 @@ export const SettingsItem = ({ title, subtitle, interactiveBtnTitle, switcherTit
 					{!isDone && interactiveBtnTitle && <>{interactiveBtnTitle}</>}
 				</span>
 			</li>
-			<hr className={cl.itemHr} />
+			<hr />
 		</>
 	)
 }
